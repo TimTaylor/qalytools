@@ -1,0 +1,16 @@
+^.git$
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^data-raw$
+^README\.Rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^xpkgdown$
+^doc$
+^Meta$
+^R/xplotsBase\.R$
+^scrap$
+^\.github$
+^codecov\.yml$

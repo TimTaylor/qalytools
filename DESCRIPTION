@@ -1,0 +1,36 @@
+Package: surveyTools
+Title: Tools for Analysing EQ5D Surveys
+Version: 0.0.2.9000
+Authors@R: person(
+    given = "Tim",
+    family = "Taylor",
+    email = "timothy.taylor@ukhsa.gov.uk",
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0002-8587-7113"))
+Description: Provides helper functions to calculate various metrics relating
+    to the analysis of EQ5D surveys.
+URL: https://github.com/TimTaylor/surveyTools,
+    https://timtaylor.github.io/surveyTools/
+BugReports: https://github.com/TimTaylor/surveyTools/issues
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports: 
+    data.table,
+    eq5d (>= 0.11.0),
+    stats,
+    utils,
+    pillar,
+    dplyr
+Depends: 
+    R (>= 3.5.0)
+Suggests: 
+    covr,
+    ggplot2,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3

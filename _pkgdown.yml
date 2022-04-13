@@ -2,7 +2,7 @@ url: https://timtaylor.github.io/surveyTools/
 template:
   bootstrap: 5
 reference:
-- title: EQ5D objects
+    - title: EQ5D objects
   contents:
   - starts_with("new_eq5d")
   - starts_with("validate_eq5d")

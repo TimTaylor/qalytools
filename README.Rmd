@@ -8,11 +8,9 @@ editor_options:
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/TimTaylor/surveyTools/workflows/R-CMD-check/badge.svg)](https://github.com/TimTaylor/surveyTools/actions)
+[![R-CMD-check](https://github.com/TimTaylor/surveyTools/workflows/R-CMD-check/badge.svg)](https://github.com/TimTaylor/surveyTools/actions){.pkgdown-devel}
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
-
-<span style="color:red"> ***This package is currently under active development. The code has yet been reviewed and is likely to change over the following months. We recommend it is not used for analysis for the time being.***  </span>
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -24,6 +22,10 @@ knitr::opts_chunk$set(
 ```
 
 # Overview
+
+<span style="color:red"> ***This package is currently under active development. The code has yet been reviewed and is likely to change over the following months. We recommend it is not used for analysis for the time being.***  </span>
+
+---
 
 *surveyTools* aims to provide a coherent interface for the analysis of
 [EQ-5D](https://euroqol.org/eq-5d-instruments) surveys (EQ-5D-3L, EQ-5D-5L and
@@ -62,6 +64,8 @@ functionality.
 The development version, which this documentation refers to, can be installed
 from GitHub via
 
+
+::: {.pkgdown-devel}
 ```{r, eval=FALSE}
 
     if (!require(remotes))
@@ -72,6 +76,7 @@ from GitHub via
         build_vignettes = TRUE
     )
 ```
+:::
 
 # Getting help online
 

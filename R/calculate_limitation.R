@@ -2,12 +2,11 @@
 #'
 #' @description
 #'
-#' Generic function that calculates the limitation of survey responses across
-#' response dimensions. Methods are provided for [`eq5d`][new_eq5d] objects.
+#' Generic function that calculates the limitation of survey
+#' responses across response dimensions. Methods are provided for
+#' [`eq5d`][new_eq5d] objects.
 #'
-#' @note
-#'
-#' We define a limitation to be a dimension value not equal to 1.
+#' @note We define a limitation to be a dimension value not equal to 1.
 #'
 #' @param x An \R object.
 #'

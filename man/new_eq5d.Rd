@@ -41,54 +41,35 @@ validate_eq5d5l(x)
 validate_eq5dy(x)
 }
 \arguments{
-\item{x}{\verb{[data.frame]}
+\item{x}{Data frame of EQ5D survey data.}
 
-EQ5D survey data.}
+\item{respondentID}{\verb{[character]} The name of a variable in \code{x} that uniquely
+identifies respondents.}
 
-\item{respondentID}{\verb{[character]}
-
-The name of a variable in \code{x} that uniquely identifies respondents.}
-
-\item{surveyID}{\verb{[character]}
-
-Name of variable in \code{x} that uniquely identifies surveys over time.
+\item{surveyID}{\verb{[character]} Name of variable in \code{x} that uniquely
+identifies surveys over time.
 
 To avoid ambiguity the specified variable must be either numeric or a
 factor (in which case the  order will be taken as that given  by the factor
 levels).}
 
-\item{time_index}{\verb{[character]}
+\item{time_index}{\verb{[character]} Name of variable in \code{x} representing the
+relative time within the survey framework.}
 
-Name of variable in \code{x} representing the relative time within the survey
-framework.}
+\item{mobility}{\verb{[character]} Name of the 'mobility' dimension in \code{x}.}
 
-\item{mobility}{\verb{[character]}
+\item{self_care}{\verb{[character]} Name of the 'self-care' dimension in \code{x}.}
 
-Name of the 'mobility' dimension in \code{x}.}
+\item{usual}{\verb{[character]} Name of the 'usual activities' dimension in \code{x}.}
 
-\item{self_care}{\verb{[character]}
+\item{pain}{\verb{[character]} Name of the 'pain / discomfort' dimension in \code{x}.}
 
-Name of the 'self-care' dimension in \code{x}.}
+\item{anxiety}{\verb{[character]} Name of the 'anxiety / depression' dimension in
+\code{x}.}
 
-\item{usual}{\verb{[character]}
+\item{vas}{\verb{[character]} Name of the 'visual analogue score' variable in \code{x}.}
 
-Name of the 'usual activities' dimension in \code{x}.}
-
-\item{pain}{\verb{[character]}
-
-Name of the 'pain / discomfort' dimension in \code{x}.}
-
-\item{anxiety}{\verb{[character]}
-
-Name of the 'anxiety / depression' dimension in \code{x}.}
-
-\item{vas}{\verb{[character]}
-
-Name of the 'visual analogue score' variable in \code{x}.}
-
-\item{version}{\verb{[character]}
-
-The EQ5D version. One of "3L", "5L" or "Y".}
+\item{version}{\verb{[character]} The EQ5D version. One of "3L", "5L" or "Y".}
 }
 \value{
 An EQ5D3L, EQ5D5L or EQ5D3Y object (invisibly for the corresponding

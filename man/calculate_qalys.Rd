@@ -32,9 +32,7 @@ calculate_qalys(x, ...)
 
 \item{...}{Further arguments passed to or from other methods.}
 
-\item{type}{\verb{[character]}
-
-Method type(s) used for calculating the value sets.
+\item{type}{\verb{[character]} Method type(s) used for calculating the value sets.
 
 For EQ5D3L inputs this can be:
 \itemize{
@@ -54,22 +52,17 @@ protocol;
 EQ5D5L values accounting for both age and sex.
 }}
 
-\item{country}{\verb{[character]}
+\item{country}{\verb{[character]} Value set countries to use.}
 
-Value set countries to use.}
+\item{units}{\code{\link{character}} The units of the \code{time_index} column of \code{x}. Can
+be one of "days", "weeks", "months", "quarters" or "years".}
 
-\item{units}{\code{\link{character}}
-
-The units of the \code{time_index} column of \code{x}. Can be one of "days", "weeks",
-"months", "quarters" or "years".}
-
-\item{baseline}{(optional)
-
-Either a \code{character} string specifying the surveyID, to use as a baseline or
-a data frame. If a data frame, it must have at least two columns; one for the
-respondentID (with name matching that in \code{x} input) and another (of any name)
-for the associated utility values. If desired you can also specify columns
-that match on the utility and country type columns of the input \code{x}.}
+\item{baseline}{(optional) Either a \code{character} string specifying the
+surveyID, to use as a baseline or a data frame. If a data frame, it must have
+at least two columns; one for the respondentID (with name matching that in
+\code{x} input) and another (of any name) for the associated utility values. If
+desired you can also specify columns that match on the utility and country
+type columns of the input \code{x}.}
 }
 \value{
 A data frame.

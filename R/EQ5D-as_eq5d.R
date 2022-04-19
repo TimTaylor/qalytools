@@ -25,13 +25,11 @@
 #'
 #' @param x An \R object.
 #'
-#' @param respondentID `[character]`
+#' @param respondentID `[character]` The name of a variable in `x` that uniquely
+#' identifies respondents.
 #'
-#' The name of a variable in `x` that uniquely identifies respondents.
-#'
-#' @param surveyID `[character]`
-#'
-#' Name of variable `x` that uniquely identifies surveys over time.
+#' @param surveyID `[character]` Name of variable `x` that uniquely identifies
+#' surveys over time.
 #'
 #' To avoid ambiguity the specified variable should be either numeric or a
 #' factor (in which case the  order will be taken as that given by the factor
@@ -40,51 +38,37 @@
 #' A character variable in `x` will be accepted but converted, with
 #' warning, via `as.factor()`.
 #'
-#' @param time_index
-#'
-#' Name of variable in `x` representing the relative time within the survey
-#' framework.
+#' @param time_index Name of variable in `x` representing the relative time
+#' within the survey framework.
 #'
 #' If the variable does not exist within `x` it will be created and set to
 #' `NA_integer`.
 #'
-#' @param mobility `[character]`
+#' @param mobility `[character]` Name of the 'mobility' dimension in `x`.
 #'
-#' Name of the 'mobility' dimension in `x`.
+#' @param self_care `[character]` Name of the 'self-care' dimension in `x`.
 #'
-#' @param self_care `[character]`
+#' @param usual `[character]` Name of the 'usual activities' dimension in `x`.
 #'
-#' Name of the 'self-care' dimension in `x`.
+#' @param pain `[character]` Name of the 'pain / discomfort' dimension in `x`.
 #'
-#' @param usual `[character]`
+#' @param anxiety `[character]` Name of the 'anxiety / depression' dimension in
+#' `x`.
 #'
-#' Name of the 'usual activities' dimension in `x`.
+#' @param vas `[character]` Name of the 'visual analogue score' variable in `x`.
 #'
-#' @param pain `[character]`
-#'
-#' Name of the 'pain / discomfort' dimension in `x`.
-#'
-#' @param anxiety `[character]`
-#'
-#' Name of the 'anxiety / depression' dimension in `x`.
-#'
-#' @param vas `[character]`
-#'
-#' Name of the 'visual analogue score' variable in `x`.
-#'
-#' @param drop `[logical]`
-#'
-#'   Should additional columns, not specified by arguments, be dropped.
+#' @param drop `[logical]` Should additional columns, not specified by
+#' arguments, be dropped.
 #'
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @return
 #'
-#'   An EQ5D5L, EQ5D3L or EQ5DY object.
+#' An EQ5D5L, EQ5D3L or EQ5DY object.
 #'
 #' @seealso
 #'
-#'   [`new_eq5d`] for more minimal, developer focussed, alternatives.
+#' [`new_eq5d`] for more minimal, developer focussed, alternatives.
 #'
 #' @examples
 #'

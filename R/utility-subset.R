@@ -91,7 +91,3 @@
 dplyr_reconstruct_utility <- function(data, template) {
     .utility_reconstruct(data, template)
 }
-
-
-
-

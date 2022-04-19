@@ -23,9 +23,7 @@
 #'
 #' @param x An \R object.
 #'
-#' @param type `[character]`
-#'
-#' Method type(s) used for calculating the value sets.
+#' @param type `[character]` Method type(s) used for calculating the value sets.
 #'
 #' For EQ5D3L inputs this can be:
 #'
@@ -43,22 +41,17 @@
 #' - "DSU", the NICE Decision Support Unit's model that allows mappings on to
 #'          EQ5D5L values accounting for both age and sex.
 #'
-#' @param country `[character]`
+#' @param country `[character]` Value set countries to use.
 #'
-#' Value set countries to use.
+#' @param units [`character`] The units of the `time_index` column of `x`. Can
+#' be one of "days", "weeks", "months", "quarters" or "years".
 #'
-#' @param units [`character`]
-#'
-#' The units of the `time_index` column of `x`. Can be one of "days", "weeks",
-#' "months", "quarters" or "years".
-#'
-#' @param baseline (optional)
-#'
-#' Either a `character` string specifying the surveyID, to use as a baseline or
-#' a data frame. If a data frame, it must have at least two columns; one for the
-#' respondentID (with name matching that in `x` input) and another (of any name)
-#' for the associated utility values. If desired you can also specify columns
-#' that match on the utility and country type columns of the input `x`.
+#' @param baseline (optional) Either a `character` string specifying the
+#' surveyID, to use as a baseline or a data frame. If a data frame, it must have
+#' at least two columns; one for the respondentID (with name matching that in
+#' `x` input) and another (of any name) for the associated utility values. If
+#' desired you can also specify columns that match on the utility and country
+#' type columns of the input `x`.
 #'
 #' @param ... Further arguments passed to or from other methods.
 #'
@@ -264,7 +257,7 @@ calculate_qalys.utility <- function(
         return(y[[1]]) # could just be y but no checks on size so being safe
     }
     tmp <- diff(x) * (head(y, -1) + tail(y, -1))
-    #tmp <- (x[-1L]-x[-length(x)]) * (y[-length(y)] + y[-1L])
+    # tmp <- (x[-1L]-x[-length(x)]) * (y[-length(y)] + y[-1L])
     sum(tmp, na.rm = TRUE) / 2
 }
 

@@ -60,9 +60,7 @@ add_utility(x, type, country, ...)
 \arguments{
 \item{x}{An \R object.}
 
-\item{type}{\verb{[character]}
-
-Method type(s) used for calculating the value sets.
+\item{type}{\verb{[character]} Method type(s) used for calculating the value sets.
 
 For EQ5D3L inputs this can be:
 \itemize{
@@ -82,27 +80,19 @@ protocol;
 EQ5D5L values accounting for both age and sex.
 }}
 
-\item{country}{\verb{[character]}
-
-Value set countries to use.}
+\item{country}{\verb{[character]} Value set countries to use.}
 
 \item{...}{Further arguments passed to or from other methods.}
 
-\item{drop}{\verb{[logical]}
+\item{drop}{\verb{[logical]} If TRUE (default), only columns corresponding to the
+surveyID, respondentID and time_index are kept from the input \code{x}.}
 
-If TRUE (default), only columns corresponding to the surveyID, respondentID
-and time_index are kept from the input \code{x}.}
+\item{age}{\verb{[character]} Column in \code{x} representing the age, in years, of the
+respondent. Only used if \code{type = "DSU"}.}
 
-\item{age}{\verb{[character]}
-
-Column in \code{x} representing the age, in years, of the respondent. Only used if
-\code{type = "DSU"}.}
-
-\item{sex}{\verb{[character]}
-
-Column in \code{x} representing the sex, in years, of the respondent. Only used if
-\code{type = "DSU"}. Column entries must be one of "Male", "M", "Female" or "F"
-(case insensitive).}
+\item{sex}{\verb{[character]} Column in \code{x} representing the sex, in years, of the
+respondent. Only used if \code{type = "DSU"}. Column entries must be one of
+"Male", "M", "Female" or "F" (case insensitive).}
 }
 \value{
 A data frame of utility values linked to responses.

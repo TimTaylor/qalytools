@@ -8,11 +8,9 @@
 #'
 #' @param ... Not currently used.
 #'
-#' @param tidy `[logical]`
-#'
-#' Should results be returned as single, "tidy", table in long format.
-#' If `FALSE`, output will be a list of frequency / proportion tables split by
-#' survey ID.
+#' @param tidy `[logical]` Should results be returned as single, "tidy", table
+#' in long format. If `FALSE`, output will be a list of frequency / proportion
+#' tables split by survey ID.
 #'
 #' @export
 summary.EQ5D <- function(object, ..., tidy = FALSE) {

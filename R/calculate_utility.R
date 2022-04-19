@@ -16,9 +16,7 @@
 #'
 #' @param x An \R object.
 #'
-#' @param type `[character]`
-#'
-#' Method type(s) used for calculating the value sets.
+#' @param type `[character]` Method type(s) used for calculating the value sets.
 #'
 #' For EQ5D3L inputs this can be:
 #'
@@ -36,25 +34,17 @@
 #' - "DSU", the NICE Decision Support Unit's model that allows mappings on to
 #'          EQ5D5L values accounting for both age and sex.
 #'
-#' @param country `[character]`
+#' @param country `[character]` Value set countries to use.
 #'
-#' Value set countries to use.
+#' @param drop `[logical]` If TRUE (default), only columns corresponding to the
+#' surveyID, respondentID and time_index are kept from the input `x`.
 #'
-#' @param drop `[logical]`
+#' @param age `[character]` Column in `x` representing the age, in years, of the
+#' respondent. Only used if `type = "DSU"`.
 #'
-#' If TRUE (default), only columns corresponding to the surveyID, respondentID
-#' and time_index are kept from the input `x`.
-#'
-#' @param age `[character]`
-#'
-#' Column in `x` representing the age, in years, of the respondent. Only used if
-#' `type = "DSU"`.
-#'
-#' @param sex `[character]`
-#'
-#' Column in `x` representing the sex, in years, of the respondent. Only used if
-#' `type = "DSU"`. Column entries must be one of "Male", "M", "Female" or "F"
-#' (case insensitive).
+#' @param sex `[character]` Column in `x` representing the sex, in years, of the
+#' respondent. Only used if `type = "DSU"`. Column entries must be one of
+#' "Male", "M", "Female" or "F" (case insensitive).
 #'
 #' @param ... Further arguments passed to or from other methods.
 #'
@@ -243,7 +233,6 @@ add_utility.EQ5DY <- function(
 # ------------------------------------------------------------------------- #
 # ------------------------------------------------------------------------- #
 .calculate_utility <- function(x, type, country, version, drop, age, sex) {
-
     age_dat <- x[age]
     sex_dat <- x[sex]
 
@@ -308,8 +297,9 @@ add_utility.EQ5DY <- function(
     setnames(tmp, old = 1:3, new = c(resp, surv, ti))
     setDF(tmp)
 
-    if (isFALSE(drop))
+    if (isFALSE(drop)) {
         tmp <- merge(tmp, original, by = c(resp, surv, ti), all.x = TRUE)
+    }
 
     # construct utility and return
     new_utility(
@@ -352,7 +342,7 @@ add_utility.EQ5DY <- function(
                 call. = FALSE
             )
         }
-        if ( length(which(ages <18 | ages>100)) ) {
+        if (length(which(ages < 18 | ages > 100))) {
             warning("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.")
         }
 

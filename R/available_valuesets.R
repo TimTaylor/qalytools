@@ -44,8 +44,9 @@ available_valuesets <- function(x, ...) {
 #' @rdname available_valuesets
 #' @export
 available_valuesets.default <- function(x, ...) {
-    if (missing(x) && !...length())
+    if (missing(x) && !...length()) {
         return(.valuesets())
+    }
 
     cls <- paste(class(x), collapse = ", ")
     stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
@@ -76,7 +77,6 @@ available_valuesets.EQ5DY <- function(x, ...) {
 #' @rdname available_valuesets
 #' @export
 available_valuesets.character <- function(x, ...) {
-
     stopifnot(length(x) == 1L)
 
     x <- tolower(x)
@@ -92,11 +92,13 @@ available_valuesets.character <- function(x, ...) {
         )
     }
 
-    x <- switch(
-        x,
-        "eq5d5l" = , "eq-5d-5l" = "5L",
-        "eq5d3l" = , "eq-5d-3l" = "3L",
-        "eq5dy"  = , "eq-5d-y"  = "Y"
+    x <- switch(x,
+        "eq5d5l" = ,
+        "eq-5d-5l" = "5L",
+        "eq5d3l" = ,
+        "eq-5d-3l" = "3L",
+        "eq5dy" = ,
+        "eq-5d-y" = "Y"
     )
 
     .valuesets(version = x)

@@ -12,33 +12,25 @@ validate_utility(xx)
 \arguments{
 \item{x}{A data frame.}
 
-\item{respondentID}{\verb{[character]}
+\item{respondentID}{\verb{[character]} Unique respondent identifier. The name of a
+variable in \code{x} that uniquely identifies respondents.}
 
-Unique respondent identifier. The name of a variable in \code{x} that uniquely
-identifies respondents.}
+\item{surveyID}{\verb{[character]} Name of variable in \code{x} that uniquely
+identifies surveys over time. To avoid ambiguity the specified variable must
+be either numeric or a factor (in which case the order will be taken as that
+given by the factor levels).}
 
-\item{surveyID}{\verb{[character]}
+\item{time_index}{\verb{[character]} Name of variable in \code{x} representing the
+relative time within the survey framework.}
 
-Name of variable in \code{x} that uniquely identifies surveys over time. To avoid
-ambiguity the specified variable must be either numeric or a factor (in which
-case the order will be taken as that given by the factor levels).}
+\item{country}{\verb{[character]} Name of variable in \code{x} representing the utility
+country.}
 
-\item{time_index}{\verb{[character]}
+\item{type}{\verb{[character]} Name of variable in \code{x} representing the utility
+country.}
 
-Name of variable in \code{x} representing the relative time within the survey
-framework.}
-
-\item{country}{\verb{[character]}
-
-Name of variable in \code{x} representing the utility country.}
-
-\item{type}{\verb{[character]}
-
-Name of variable in \code{x} representing the utility country.}
-
-\item{value}{\verb{[character]}
-
-Name of variable in \code{x} representing the utility value.}
+\item{value}{\verb{[character]} Name of variable in \code{x} representing the utility
+value.}
 
 \item{xx}{An \R Object to validate.}
 }

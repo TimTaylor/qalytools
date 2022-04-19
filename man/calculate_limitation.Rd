@@ -21,8 +21,9 @@ calculate_limitation(x, ...)
 A data frame of the fraction of individuals without limitation.
 }
 \description{
-Generic function that calculates the limitation of survey responses across
-response dimensions. Methods are provided for \code{\link[=new_eq5d]{eq5d}} objects.
+Generic function that calculates the limitation of survey
+responses across response dimensions. Methods are provided for
+\code{\link[=new_eq5d]{eq5d}} objects.
 }
 \note{
 We define a limitation to be a dimension value not equal to 1.

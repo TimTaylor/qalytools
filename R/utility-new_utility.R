@@ -27,33 +27,25 @@
 #'
 #' @param x A data frame.
 #'
-#' @param respondentID `[character]`
+#' @param respondentID `[character]` Unique respondent identifier. The name of a
+#' variable in `x` that uniquely identifies respondents.
 #'
-#' Unique respondent identifier. The name of a variable in `x` that uniquely
-#' identifies respondents.
+#' @param surveyID `[character]` Name of variable in `x` that uniquely
+#' identifies surveys over time. To avoid ambiguity the specified variable must
+#' be either numeric or a factor (in which case the order will be taken as that
+#' given by the factor levels).
 #'
-#' @param surveyID `[character]`
+#' @param time_index `[character]` Name of variable in `x` representing the
+#' relative time within the survey framework.
 #'
-#' Name of variable in `x` that uniquely identifies surveys over time. To avoid
-#' ambiguity the specified variable must be either numeric or a factor (in which
-#' case the order will be taken as that given by the factor levels).
+#' @param country `[character]` Name of variable in `x` representing the utility
+#' country.
 #'
-#' @param time_index `[character]`
+#' @param type `[character]` Name of variable in `x` representing the utility
+#' country.
 #'
-#' Name of variable in `x` representing the relative time within the survey
-#' framework.
-#'
-#' @param country `[character]`
-#'
-#' Name of variable in `x` representing the utility country.
-#'
-#' @param type `[character]`
-#'
-#' Name of variable in `x` representing the utility country.
-#'
-#' @param value `[character]`
-#'
-#' Name of variable in `x` representing the utility value.
+#' @param value `[character]` Name of variable in `x` representing the utility
+#' value.
 #'
 #' @param xx An \R Object to validate.
 #'

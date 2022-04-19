@@ -56,54 +56,35 @@
 #'
 #' validate_eq5dy(x)
 #'
-#' @param x `[data.frame]`
+#' @param x Data frame of EQ5D survey data.
 #'
-#' EQ5D survey data.
+#' @param respondentID `[character]` The name of a variable in `x` that uniquely
+#' identifies respondents.
 #'
-#' @param respondentID `[character]`
-#'
-#' The name of a variable in `x` that uniquely identifies respondents.
-#'
-#' @param surveyID `[character]`
-#'
-#' Name of variable in `x` that uniquely identifies surveys over time.
+#' @param surveyID `[character]` Name of variable in `x` that uniquely
+#' identifies surveys over time.
 #'
 #' To avoid ambiguity the specified variable must be either numeric or a
 #' factor (in which case the  order will be taken as that given  by the factor
 #' levels).
 #'
-#' @param time_index `[character]`
+#' @param time_index `[character]` Name of variable in `x` representing the
+#' relative time within the survey framework.
 #'
-#' Name of variable in `x` representing the relative time within the survey
-#' framework.
+#' @param mobility `[character]` Name of the 'mobility' dimension in `x`.
 #'
-#' @param mobility `[character]`
+#' @param self_care `[character]` Name of the 'self-care' dimension in `x`.
 #'
-#' Name of the 'mobility' dimension in `x`.
+#' @param usual `[character]` Name of the 'usual activities' dimension in `x`.
 #'
-#' @param self_care `[character]`
+#' @param pain `[character]` Name of the 'pain / discomfort' dimension in `x`.
 #'
-#' Name of the 'self-care' dimension in `x`.
+#' @param anxiety `[character]` Name of the 'anxiety / depression' dimension in
+#' `x`.
 #'
-#' @param usual `[character]`
+#' @param vas `[character]` Name of the 'visual analogue score' variable in `x`.
 #'
-#' Name of the 'usual activities' dimension in `x`.
-#'
-#' @param pain `[character]`
-#'
-#' Name of the 'pain / discomfort' dimension in `x`.
-#'
-#' @param anxiety `[character]`
-#'
-#' Name of the 'anxiety / depression' dimension in `x`.
-#'
-#' @param vas `[character]`
-#'
-#' Name of the 'visual analogue score' variable in `x`.
-#'
-#' @param version `[character]`
-#'
-#' The EQ5D version. One of "3L", "5L" or "Y".
+#' @param version `[character]` The EQ5D version. One of "3L", "5L" or "Y".
 #'
 #' @return
 #'

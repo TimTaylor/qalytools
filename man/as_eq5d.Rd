@@ -158,13 +158,11 @@ as_eq5dy(x, ...)
 
 \item{...}{Further arguments passed to or from other methods.}
 
-\item{respondentID}{\verb{[character]}
+\item{respondentID}{\verb{[character]} The name of a variable in \code{x} that uniquely
+identifies respondents.}
 
-The name of a variable in \code{x} that uniquely identifies respondents.}
-
-\item{surveyID}{\verb{[character]}
-
-Name of variable \code{x} that uniquely identifies surveys over time.
+\item{surveyID}{\verb{[character]} Name of variable \code{x} that uniquely identifies
+surveys over time.
 
 To avoid ambiguity the specified variable should be either numeric or a
 factor (in which case the  order will be taken as that given by the factor
@@ -173,39 +171,27 @@ levels).
 A character variable in \code{x} will be accepted but converted, with
 warning, via \code{as.factor()}.}
 
-\item{time_index}{Name of variable in \code{x} representing the relative time within the survey
-framework.
+\item{time_index}{Name of variable in \code{x} representing the relative time
+within the survey framework.
 
 If the variable does not exist within \code{x} it will be created and set to
 \code{NA_integer}.}
 
-\item{mobility}{\verb{[character]}
+\item{mobility}{\verb{[character]} Name of the 'mobility' dimension in \code{x}.}
 
-Name of the 'mobility' dimension in \code{x}.}
+\item{self_care}{\verb{[character]} Name of the 'self-care' dimension in \code{x}.}
 
-\item{self_care}{\verb{[character]}
+\item{usual}{\verb{[character]} Name of the 'usual activities' dimension in \code{x}.}
 
-Name of the 'self-care' dimension in \code{x}.}
+\item{pain}{\verb{[character]} Name of the 'pain / discomfort' dimension in \code{x}.}
 
-\item{usual}{\verb{[character]}
+\item{anxiety}{\verb{[character]} Name of the 'anxiety / depression' dimension in
+\code{x}.}
 
-Name of the 'usual activities' dimension in \code{x}.}
+\item{vas}{\verb{[character]} Name of the 'visual analogue score' variable in \code{x}.}
 
-\item{pain}{\verb{[character]}
-
-Name of the 'pain / discomfort' dimension in \code{x}.}
-
-\item{anxiety}{\verb{[character]}
-
-Name of the 'anxiety / depression' dimension in \code{x}.}
-
-\item{vas}{\verb{[character]}
-
-Name of the 'visual analogue score' variable in \code{x}.}
-
-\item{drop}{\verb{[logical]}
-
-Should additional columns, not specified by arguments, be dropped.}
+\item{drop}{\verb{[logical]} Should additional columns, not specified by
+arguments, be dropped.}
 }
 \value{
 An EQ5D5L, EQ5D3L or EQ5DY object.

@@ -11,11 +11,9 @@
 
 \item{...}{Not currently used.}
 
-\item{tidy}{\verb{[logical]}
-
-Should results be returned as single, "tidy", table in long format.
-If \code{FALSE}, output will be a list of frequency / proportion tables split by
-survey ID.}
+\item{tidy}{\verb{[logical]} Should results be returned as single, "tidy", table
+in long format. If \code{FALSE}, output will be a list of frequency / proportion
+tables split by survey ID.}
 }
 \description{
 Provides a summary of dimension values by survey ID.

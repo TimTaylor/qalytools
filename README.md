@@ -56,18 +56,12 @@ functionality.
 # Installation
 
 The development version, which this documentation refers to, can be
-installed from GitHub via
+installed via:
 
 <div class="pkgdown-devel">
 
 ``` r
-    if (!require(remotes))
-        install.packages("remotes")
-
-    remotes::install_github(
-        "Timothy.Taylor/surveyTools",
-        build_vignettes = TRUE
-    )
+    install.packages("surveyTools", repos = "https://timtaylor.r-universe.dev")
 ```
 
 </div>

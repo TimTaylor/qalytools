@@ -56,7 +56,7 @@
 #'
 #' validate_eq5dy(x)
 #'
-#' @param x Data frame of EQ5D survey data.
+#' @param x `[data.frame]` EQ5D survey data.
 #'
 #' @param respondentID `[character]` The name of a variable in `x` that uniquely
 #' identifies respondents.

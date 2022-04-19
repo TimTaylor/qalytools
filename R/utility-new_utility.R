@@ -25,7 +25,7 @@
 #' by a call to `validate_utility()` which performs further checking of the
 #' underlying data.
 #'
-#' @param x A data frame.
+#' @param x `[data.frame]`.
 #'
 #' @param respondentID `[character]` Unique respondent identifier. The name of a
 #' variable in `x` that uniquely identifies respondents.

@@ -41,7 +41,7 @@ validate_eq5d5l(x)
 validate_eq5dy(x)
 }
 \arguments{
-\item{x}{Data frame of EQ5D survey data.}
+\item{x}{\verb{[data.frame]} EQ5D survey data.}
 
 \item{respondentID}{\verb{[character]} The name of a variable in \code{x} that uniquely
 identifies respondents.}

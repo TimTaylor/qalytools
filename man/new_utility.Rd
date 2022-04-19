@@ -10,7 +10,7 @@ new_utility(x, respondentID, surveyID, time_index, country, type, value)
 validate_utility(xx)
 }
 \arguments{
-\item{x}{A data frame.}
+\item{x}{\verb{[data.frame]}.}
 
 \item{respondentID}{\verb{[character]} Unique respondent identifier. The name of a
 variable in \code{x} that uniquely identifies respondents.}

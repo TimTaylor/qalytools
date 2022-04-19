@@ -171,8 +171,8 @@ levels).
 A character variable in \code{x} will be accepted but converted, with
 warning, via \code{as.factor()}.}
 
-\item{time_index}{Name of variable in \code{x} representing the relative time
-within the survey framework.
+\item{time_index}{\verb{[character]} Name of variable in \code{x} representing the
+relative time within the survey framework.
 
 If the variable does not exist within \code{x} it will be created and set to
 \code{NA_integer}.}

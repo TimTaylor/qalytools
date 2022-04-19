@@ -38,8 +38,8 @@
 #' A character variable in `x` will be accepted but converted, with
 #' warning, via `as.factor()`.
 #'
-#' @param time_index Name of variable in `x` representing the relative time
-#' within the survey framework.
+#' @param time_index `[character]` Name of variable in `x` representing the
+#' relative time within the survey framework.
 #'
 #' If the variable does not exist within `x` it will be created and set to
 #' `NA_integer`.

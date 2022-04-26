@@ -318,6 +318,12 @@ add_utility.EQ5DY <- function(
     if (type == "DSU") {
 
         # check character vectors of length 1
+        if (is.null(age)) {
+            stop("Please specify the `age` variable.", call. = FALSE)
+        }
+        if (is.null(sex)) {
+            stop("Please specify the `sex` variable.", call. = FALSE)
+        }
         age <- .assert_scalar_chr(age)
         sex <- .assert_scalar_chr(sex)
 

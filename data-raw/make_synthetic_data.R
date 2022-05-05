@@ -1,6 +1,8 @@
 set.seed(32)
 library(data.table)
 library(eq5d)
+library(dplyr)
+library(purrr)
 
 # initially we generate for more individuals than we actually want as some
 # observations will be thrown away at a later stage
@@ -14,41 +16,48 @@ nsurveys <- 10
 lower_age <- 20
 upper_age <- 80
 
-# Assume beta distribution with varying alpha and fixed beta across surveys
-male_survey_alpha <- c(8, 2, 3, 5, 7, 7.5, 7.8, 8, 8, 8)
-female_survey_alpha <- c(8.5, 2, 3, 4, 5, 6, 7, 8, 8.5, 8.5)
-beta <- 1
+# Participants
+dplyr::tibble(
+  id = seq_len(ninit),
+  age = sample(lower_age:upper_age, size = ninit, replace = TRUE),
+  sex = sample(c("Male", "Female"), size = ninit, replace = TRUE)
+) -> dat
 
-# for male alpha we add an age effect
-male_alpha <- function(x, age, lower_age, upper_age) {
-    x - 1.5 * (age - lower_age) / (upper_age - lower_age)
+# Alternative parameterisation of beta distribution
+rbeta_mu <- function(n, mu, phi) {
+  rbeta(n, mu * phi, (1 - mu) * phi)
 }
 
-# function for generating an individual survey data
-survey_data <- function(i) {
-    DT <- data.table(
-        survey = i,
-        id =  seq_len(ninit),
-        age = sample(lower_age:upper_age, size = ninit, replace = TRUE),
-        sex = sample(c("Male", "Female"), size = ninit, replace = TRUE),
-        beta = beta,
-        alpha = female_survey_alpha[i],
-        alpha2 = female_survey_alpha[i] # used for VAS
-    )
-    DT[sex == "Male", `:=`(alpha = male_alpha(male_survey_alpha[i], age, lower_age, upper_age),
-                           alpha2 = male_survey_alpha[i])]
-    DT[, `:=`(value = mapply(rbeta, shape1=alpha, shape2=beta, MoreArgs = list(n=1)),
-              vas = mapply(rbeta, shape1=alpha2, shape2=beta, MoreArgs = list(n=1)))]
-    DT
+# for male means we add an age effect to base age
+male_mu <- function(x, age, lower_age, upper_age) {
+    x - 0.25 * (age - lower_age) / (upper_age - lower_age)
 }
 
-# generate all of the data and combine
-dat <- lapply(seq_len(nsurveys), survey_data)
-dat <- rbindlist(dat)
+# Maximum values, used as the base for each participant
+dat |>
+  dplyr::mutate(mu = dplyr::case_when(sex == "Male" ~ male_mu(0.85, age, lower_age, upper_age), T ~ 0.85)) |>
+  dplyr::mutate(max_value = rbeta_mu(dplyr::n(), mu, 25)) -> dat0
 
-# Need to throw away values which do not fit the pattern we would like to create
-keepid <- dat[, value[1]>=value[2] && value[3]>=value[2] && value[1] >= value[3], keyby=id][V1==TRUE, .(id)]
-dat <- dat[keepid, on = "id"]
+
+male_survey_mu <- c(0.95, 0.2, 0.85, 0.9, 0.9, rep(0.95, 5))
+female_survey_mu <- c(0.95, 0.3, 0.75, 0.8, 0.9, rep(0.95, 5))
+survey_phi <- c(100, 10, 70, rep(100, 7))
+
+seq(1, nsurveys) |> purrr::map(function(survey_id) {
+  sid <- as.numeric(survey_id)
+  dat0 |>
+    dplyr::mutate(value = max_value*
+      dplyr::case_when(
+        sex == "Male" ~
+          rbeta_mu(dplyr::n(), male_survey_mu[sid], survey_phi[sid]),
+        T ~ rbeta_mu(dplyr::n(), female_survey_mu[sid], survey_phi[sid])),
+    survey = sid)
+}) |> dplyr::bind_rows() |>
+  dplyr::select(survey, id, age, sex, value) |>
+  dplyr::mutate(vas = value*rnorm(dplyr::n(), 1, 0.05),
+    vas = pmax(pmin(vas, 1), 0)) -> survey_data
+
+dat <- as.data.table(survey_data)
 
 # Generate all possible utility values using the eq5d package
 x=1:5
@@ -73,23 +82,29 @@ write.csv(
 )
 usethis::use_data(EQ5D5L_surveys, overwrite = TRUE, version = 3)
 
-
-
 # checking ----------------------------------------------------------------
 library(surveyTools)
 library(ggplot2)
 
 # calculate utility
-util <- add_utility(as_eq5d5l(EQ5D5L_surveys), type = "VT", country = "England")
+util <- add_utility(
+    as_eq5d5l(
+        EQ5D5L_surveys,
+        surveyID = "surveyID",
+        respondentID = "respondentID",
+        mobility = "mobility",
+        self_care = "self_care",
+        usual = "usual",
+        pain = "pain",
+        anxiety = "anxiety",
+        time_index = "time_index",
+        vas = "vas"),
+    type = "VT",
+    country = "England"
+)
 
 
 # plot
 ggplot(util, aes(x=surveyID, y = .value, group = respondentID)) +
     geom_line(aes(colour=sex), alpha = 0.1) +
     geom_smooth(aes(group=sex,colour=sex))
-
-
-
-
-
-

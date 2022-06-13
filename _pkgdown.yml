@@ -1,10 +1,10 @@
 url: https://timtaylor.github.io/surveyTools/
 template:
   bootstrap: 5
-  bootswatch: spacelab
-
-development:
-  mode: unreleased
+  bslib:
+    base_font: '"Helvetica Neue", Helvetica, sans-serif'
+    heading_font: '"Helvetica Neue", Helvetica, sans-serif'
+    code_font: '"Courier New", Courier, mono'
 
 reference:
 - title: EQ5D objects
@@ -28,3 +28,9 @@ reference:
   - eq5d3l_example
   - EQ5D5L_surveys
 
+footer:
+  structure:
+    left: legal
+    right:
+  components:
+    legal: © [Crown Copyright](https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/), 2022, UKHSA.<br>The source code for the software is released under the MIT licence as per the the [UK Government Licensing Framework](https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/) and the [GDS Way licensing guidance](https://gds-way.cloudapps.digital/manuals/licensing.html).<br>The documentation for the software is released under the [Open Government Licence](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)

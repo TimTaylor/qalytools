@@ -12,7 +12,7 @@ EQ5D survey respondents."><!-- mathjax --><script src="https://cdnjs.cloudflare.
     
     <a class="navbar-brand me-2" href="../index.html">surveyTools</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,8 +91,12 @@ EQ5D survey respondents.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>An <span style="R">R</span> object.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
+
 <dt>type</dt>
 <dd><p><code>[character]</code> Method type(s) used for calculating the value sets.</p>
 <p>For EQ5D3L inputs this can be:</p><ul><li><p>"TTO", the time trade-off valuation technique;</p></li>
@@ -106,11 +110,17 @@ protocol;</p></li>
 <li><p>"DSU", the NICE Decision Support Unit's model that allows mappings on to
 EQ5D5L values accounting for both age and sex.</p></li>
 </ul></dd>
+
+
 <dt>country</dt>
 <dd><p><code>[character]</code> Value set countries to use.</p></dd>
+
+
 <dt>units</dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></code> The units of the <code>time_index</code> column of <code>x</code>. Can
 be one of "days", "weeks", "months", "quarters" or "years".</p></dd>
+
+
 <dt>baseline</dt>
 <dd><p>(optional) Either a <code>character</code> string specifying the
 surveyID, to use as a baseline or a data frame. If a data frame, it must have
@@ -118,10 +128,13 @@ at least two columns; one for the respondentID (with name matching that in
 <code>x</code> input) and another (of any name) for the associated utility values. If
 desired you can also specify columns that match on the utility and country
 type columns of the input <code>x</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame.</p>
+    
+
+<p>A data frame.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -177,11 +190,11 @@ calculation.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Tim Taylor.</p>
+  <p></p><p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, 2022, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p>
 </div>
 
     </footer></div>

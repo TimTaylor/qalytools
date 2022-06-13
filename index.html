@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="index.html">surveyTools</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,33 +73,42 @@
 <div class="row">
   <main id="main" class="col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<div class="page-header"><h1 id="surveytools">surveyTools<a class="anchor" aria-label="anchor" href="#surveytools"></a>
 </h1></div>
 <p><span style="color:red"> <strong><em>This package is currently under active development. The code has yet been reviewed and is likely to change over the following months. We recommend it is not used for analysis for the time being.</em></strong> </span></p>
 <hr>
 <p><em>surveyTools</em> aims to provide a coherent interface for the analysis of <a href="https://euroqol.org/eq-5d-instruments" class="external-link">EQ-5D</a> surveys (EQ-5D-3L, EQ-5D-5L and EQ-5D-Y formats).</p>
 <p>The package provides a range of features including:</p>
 <ul>
-<li><p>Constructors (and validators) for EQ5D data frame subclasses (EQ5D3L, EQ5D5L and EQ5D): <code><a href="reference/new_eq5d.html">new_eq5d3l()</a></code> (<code><a href="reference/new_eq5d.html">validate_eq5d3l()</a></code>), <code><a href="reference/new_eq5d.html">new_eq5d5l()</a></code> (<code><a href="reference/new_eq5d.html">validate_eq5d5l()</a></code>) and <code><a href="reference/new_eq5d.html">new_eq5dy()</a></code> (<code><a href="reference/new_eq5d.html">validate_eq5dy()</a></code>).</p></li>
-<li><p>User-friendly coercion functions <code><a href="reference/as_eq5d.html">as_eq5d3l()</a></code>, <code><a href="reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="reference/as_eq5d.html">as_eq5dy()</a></code>.</p></li>
-<li><p>The calculation of utility values based on a range of different value sets. This functionality is provided via the <code><a href="reference/calculate_utility.html">calculate_utility()</a></code>, <code><a href="reference/calculate_utility.html">add_utility()</a></code> and <code><a href="reference/available_valuesets.html">available_valuesets()</a></code> functions which are wrappers around the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package.</p></li>
-<li><p>The calculation of different Quality of Life Years (QALY) metrics including unadjusted ‘raw’ values, and the disutility from both perfect health and, optionally, a specified baseline. See <code><a href="reference/calculate_qalys.html">calculate_qalys()</a></code>.</p></li>
-<li><p>The calculation of the Paretian Classification of Health Change (PCHC) in an individual’s health state between two surveys via <code><a href="reference/calculate_pchc.html">calculate_pchc()</a></code> (again wrapping the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package).</p></li>
-<li><p>Easy calculation of responses with a health limitation (i.e. a non-one response in one of the dimensions) via <code><a href="reference/calculate_limitation.html">calculate_limitation()</a></code>.</p></li>
+<li>Constructors (and validators) for EQ5D data frame subclasses (EQ5D3L, EQ5D5L and EQ5D): <code><a href="reference/new_eq5d.html">new_eq5d3l()</a></code> (<code><a href="reference/new_eq5d.html">validate_eq5d3l()</a></code>), <code><a href="reference/new_eq5d.html">new_eq5d5l()</a></code> (<code><a href="reference/new_eq5d.html">validate_eq5d5l()</a></code>) and <code><a href="reference/new_eq5d.html">new_eq5dy()</a></code> (<code><a href="reference/new_eq5d.html">validate_eq5dy()</a></code>).</li>
+<li>User-friendly coercion functions <code><a href="reference/as_eq5d.html">as_eq5d3l()</a></code>, <code><a href="reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="reference/as_eq5d.html">as_eq5dy()</a></code>.</li>
+<li>The calculation of utility values based on a range of different value sets. This functionality is provided via the <code><a href="reference/calculate_utility.html">calculate_utility()</a></code>, <code><a href="reference/calculate_utility.html">add_utility()</a></code> and <code><a href="reference/available_valuesets.html">available_valuesets()</a></code> functions which are wrappers around the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package.</li>
+<li>The calculation of different Quality of Life Years (QALY) metrics including unadjusted ‘raw’ values, and the disutility from both perfect health and, optionally, a specified baseline. See <code><a href="reference/calculate_qalys.html">calculate_qalys()</a></code>.</li>
+<li>The calculation of the Paretian Classification of Health Change (PCHC) in an individual’s health state between two surveys via <code><a href="reference/calculate_pchc.html">calculate_pchc()</a></code> (again wrapping the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package).</li>
+<li>Easy calculation of responses with a health limitation (i.e. a non-one response in one of the dimensions) via <code><a href="reference/calculate_limitation.html">calculate_limitation()</a></code>.</li>
 </ul>
-<p>See <code><a href="articles/surveyTools.html">vignette("surveyTools")</a></code> for a gentle introduction to the main functionality.</p>
+<div class="section level2">
+<h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
+</h2>
+<ul>
+<li>
+<code><a href="articles/surveyTools.html">vignette("surveyTools")</a></code> provides an introduction to the main functionality of the package.</li>
+<li>
+<code><a href="articles/example_analysis.html">vignette("example_analysis")</a></code> illustrates how to use the package as part of a larger analysis.</li>
+</ul>
 </div>
-<div class="section level1">
-<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h1>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>The development version, which this documentation refers to, can be installed via:</p>
 <div class="pkgdown-devel"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R">    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"surveyTools"</span>, repos <span class="op">=</span> <span class="st">"https://timtaylor.r-universe.dev"</span><span class="op">)</span></code></pre></div></div>
 </div>
-<div class="section level1">
-<h1 id="getting-help-online">Getting help online<a class="anchor" aria-label="anchor" href="#getting-help-online"></a>
-</h1>
+<div class="section level2">
+<h2 id="getting-help-online">Getting help online<a class="anchor" aria-label="anchor" href="#getting-help-online"></a>
+</h2>
 <p>Bug reports and feature requests should be posted on <em>github</em> using the <a href="https://github.com/TimTaylor/surveyTools/issues" class="external-link"><em>issue</em> system</a>.</p>
+</div>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
@@ -129,6 +138,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
+<li>Crown Copyright <br><small class="roles"> Copyright holder, funder </small>  </li>
 <li>Tim Taylor <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-8587-7113" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
@@ -147,12 +157,11 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Tim Taylor.</p>
+<p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, 2022, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
 </div>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer>

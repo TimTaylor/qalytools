@@ -1,12 +1,11 @@
 Package: surveyTools
 Title: Tools for Analysing EQ5D Surveys
 Version: 0.0.2.9000
-Authors@R: person(
-    given = "Tim",
-    family = "Taylor",
-    email = "timothy.taylor@ukhsa.gov.uk",
-    role = c("aut", "cre"),
-    comment = c(ORCID = "0000-0002-8587-7113"))
+Authors@R: c(person(given = "Crown Copyright", role = c("cph", "fnd")),
+             person(given = "Tim", family = "Taylor",
+                    email = "timothy.taylor@ukhsa.gov.uk",
+                    role = c("aut", "cre"), 
+                    comment = c(ORCID = "0000-0002-8587-7113")))
 Description: Provides helper functions to calculate various metrics relating
     to the analysis of EQ5D surveys.
 URL: https://github.com/TimTaylor/surveyTools,

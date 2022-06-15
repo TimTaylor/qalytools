@@ -6,34 +6,34 @@
 \alias{surveyTools-package}
 \title{Tools for Analysing EQ5D Surveys}
 \description{
-\emph{surveyTools} aims to provide a coherent interface for the analysis of
-\href{https://euroqol.org/eq-5d-instruments/}{EQ-5D} surveys (EQ-5D-3L, EQ-5D-5L
-and EQ-5D-Y formats).
+\emph{\strong{surveyTools}} provides a simple and intuitive user interface for the
+analysis of repeated \href{https://euroqol.org/eq-5d-instruments}{EQ-5D} surveys,
+facilitating calculation of QALY values and other related metrics.
 
-The package provides a range of features including:
+The package provides a range of functions:
 \itemize{
 \item Constructors (and validators) for EQ5D data frame subclasses (EQ5D3L,
 EQ5D5L and EQ5D): \code{new_eq5d3l()} (\code{validate_eq5d3l()}), \code{new_eq5d5l()}
 (\code{validate_eq5d5l()}) and \code{new_eq5dy()} (\code{validate_eq5dy()}).
 \item User-friendly coercion functions \code{as_eq5d3l()}, \code{as_eq5d5l()} and
 \code{as_eq5dy()}.
-\item The calculation of utility values based on a range of different value
-sets. This functionality is provided via the \code{calculate_utility()},
-\code{add_utility()} and \code{available_valuesets()} functions which are wrappers
-around the \href{https://cran.r-project.org/package=eq5d}{{eq5d}} package.
-\item The calculation of different Quality of Life Years (QALY) metrics
-including unadjusted 'raw' values, and the disutility from both perfect
-health and, optionally, a specified baseline. See \code{calculate_qalys()}.
-\item The calculation of the Paretian Classification of Health Change (PCHC)
-in an individual's health state between two surveys via
-\code{calculate_pchc()} (again wrapping the
-\href{https://cran.r-project.org/package=eq5d}{{eq5d}} package).
+\item The calculation of utility values based on a range of different value sets.
+This functionality is provided via the \code{calculate_utility()}, \code{add_utility()}
+and \code{available_valuesets()} functions which are wrappers around the
+\href{https://cran.r-project.org/package=eq5d}{eq5d} package.
+\item The calculation of different Quality of Life Years (QALY) metrics including
+unadjusted 'raw' values, and the disutility from both perfect health and,
+optionally, a specified baseline. See \code{calculate_qalys()}.
+\item The calculation of the Paretian Classification of Health Change (PCHC) in an
+individual's health state between two surveys via \code{calculate_pchc()} (again
+wrapping the \href{https://cran.r-project.org/package=eq5d}{eq5d} package).
 \item Easy calculation of responses with a health limitation (i.e. a non-one
-response in one of the dimensions) via \code{calculate_limitation()}.#'
+response in one of the dimensions) via \code{calculate_limitation()}.
 }
 
-See \code{vignette("surveyTools")} for a gentle introduction to the main
-functionality.
+See \code{vignette("surveyTools")} for an introduction to the main functionality
+of the package and \code{vignette("example_analysis")} for an illustration of how
+the package can be used as part of a larger analysis.
 }
 \seealso{
 Useful links:
@@ -46,6 +46,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Tim Taylor \email{timothy.taylor@ukhsa.gov.uk} (\href{https://orcid.org/0000-0002-8587-7113}{ORCID})
+
+Other contributors:
+\itemize{
+  \item Crown Copyright [copyright holder, funder]
+}
 
 }
 \keyword{internal}

@@ -117,9 +117,10 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>An <span style="R">R</span> object.</p></dd>
+
+
 <dt>type</dt>
-<dd><p><code>[character]</code></p>
-<p>Method type(s) used for calculating the value sets.</p>
+<dd><p><code>[character]</code> Method type(s) used for calculating the value sets.</p>
 <p>For EQ5D3L inputs this can be:</p><ul><li><p>"TTO", the time trade-off valuation technique;</p></li>
 <li><p>"VAS", the visual analogue scale valuation technique;</p></li>
 <li><p>"RCW", a reverse crosswalk conversion to EQ5D5L values; or</p></li>
@@ -131,28 +132,37 @@ protocol;</p></li>
 <li><p>"DSU", the NICE Decision Support Unit's model that allows mappings on to
 EQ5D5L values accounting for both age and sex.</p></li>
 </ul></dd>
+
+
 <dt>country</dt>
-<dd><p><code>[character]</code></p>
-<p>Value set countries to use.</p></dd>
+<dd><p><code>[character]</code> Value set countries to use.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
+
 <dt>drop</dt>
-<dd><p><code>[logical]</code></p>
-<p>If TRUE (default), only columns corresponding to the surveyID, respondentID
-and time_index are kept from the input <code>x</code>.</p></dd>
+<dd><p><code>[logical]</code> If TRUE (default), only columns corresponding to the
+surveyID, respondentID and time_index are kept from the input <code>x</code>.</p></dd>
+
+
 <dt>age</dt>
-<dd><p><code>[character]</code></p>
-<p>Column in <code>x</code> representing the age, in years, of the respondent. Only used if
-<code>type = "DSU"</code>.</p></dd>
+<dd><p><code>[character]</code> Column in <code>x</code> representing the age, in years, of the
+respondent. Only used if <code>type = "DSU"</code>.</p></dd>
+
+
 <dt>sex</dt>
-<dd><p><code>[character]</code></p>
-<p>Column in <code>x</code> representing the sex, in years, of the respondent. Only used if
-<code>type = "DSU"</code>. Column entries must be one of "Male", "M", "Female" or "F"
-(case insensitive).</p></dd>
+<dd><p><code>[character]</code> Column in <code>x</code> representing the sex, in years, of the
+respondent. Only used if <code>type = "DSU"</code>. Column entries must be one of
+"Male", "M", "Female" or "F" (case insensitive).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame of utility values linked to responses.</p>
+    
+
+<p>A data frame of utility values linked to responses.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -204,11 +214,11 @@ each survey type.</p></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Tim Taylor.</p>
+  <p></p><p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, 2022, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p>
 </div>
 
     </footer></div>

@@ -73,7 +73,7 @@
 
 
 <script src="surveyTools_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>surveyTools</h1>
             
       
@@ -83,15 +83,15 @@
 
     
     
-<p><em>surveyTools</em> aims to provide a coherent interface for the analysis of <a href="https://euroqol.org/eq-5d-instruments/" class="external-link">EQ-5D</a> surveys (EQ-5D-3L, EQ-5D-5L and EQ-5D-Y formats).</p>
-<p>The package provides a range of features including:</p>
+<p><strong><em>surveyTools</em></strong> provides a simple and intuitive user interface for the analysis of repeated <a href="https://euroqol.org/eq-5d-instruments" class="external-link">EQ-5D</a> surveys, facilitating calculation of QALY values and other related metrics.</p>
+<p>The package provides a range of functions:</p>
 <ul>
-<li><p>Constructors (and validators) for EQ5D data frame subclasses (EQ5D3L, EQ5D5L and EQ5D): <code><a href="../reference/new_eq5d.html">new_eq5d3l()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5d3l()</a></code>), <code><a href="../reference/new_eq5d.html">new_eq5d5l()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5d5l()</a></code>) and <code><a href="../reference/new_eq5d.html">new_eq5dy()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5dy()</a></code>).</p></li>
-<li><p>User-friendly coercion functions <code><a href="../reference/as_eq5d.html">as_eq5d3l()</a></code>, <code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="../reference/as_eq5d.html">as_eq5dy()</a></code>.</p></li>
-<li><p>The calculation of utility values based on a range of different value sets. This functionality is provided via the <code><a href="../reference/calculate_utility.html">calculate_utility()</a></code>, <code><a href="../reference/calculate_utility.html">add_utility()</a></code> and <code><a href="../reference/available_valuesets.html">available_valuesets()</a></code> functions which are wrappers around the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package.</p></li>
-<li><p>The calculation of different Quality of Life Years (QALY) metrics including unadjusted ‘raw’ values, and the disutility from both perfect health and, optionally, a specified baseline. See <code><a href="../reference/calculate_qalys.html">calculate_qalys()</a></code>.</p></li>
-<li><p>The calculation of the Paretian Classification of Health Change (PCHC) in an individual’s health state between two surveys via <code><a href="../reference/calculate_pchc.html">calculate_pchc()</a></code> (again wrapping the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package).</p></li>
-<li><p>Easy calculation of responses with a health limitation (i.e. a non-one response in one of the dimensions) via <code><a href="../reference/calculate_limitation.html">calculate_limitation()</a></code>.</p></li>
+<li>Constructors (and validators) for EQ5D data frame subclasses (EQ5D3L, EQ5D5L and EQ5D): <code><a href="../reference/new_eq5d.html">new_eq5d3l()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5d3l()</a></code>), <code><a href="../reference/new_eq5d.html">new_eq5d5l()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5d5l()</a></code>) and <code><a href="../reference/new_eq5d.html">new_eq5dy()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5dy()</a></code>).</li>
+<li>User-friendly coercion functions <code><a href="../reference/as_eq5d.html">as_eq5d3l()</a></code>, <code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="../reference/as_eq5d.html">as_eq5dy()</a></code>.</li>
+<li>The calculation of utility values based on a range of different value sets. This functionality is provided via the <code><a href="../reference/calculate_utility.html">calculate_utility()</a></code>, <code><a href="../reference/calculate_utility.html">add_utility()</a></code> and <code><a href="../reference/available_valuesets.html">available_valuesets()</a></code> functions which are wrappers around the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package.</li>
+<li>The calculation of different Quality of Life Years (QALY) metrics including unadjusted ‘raw’ values, and the disutility from both perfect health and, optionally, a specified baseline. See <code><a href="../reference/calculate_qalys.html">calculate_qalys()</a></code>.</li>
+<li>The calculation of the Paretian Classification of Health Change (PCHC) in an individual’s health state between two surveys via <code><a href="../reference/calculate_pchc.html">calculate_pchc()</a></code> (again wrapping the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package).</li>
+<li>Easy calculation of responses with a health limitation (i.e. a non-one response in one of the dimensions) via <code><a href="../reference/calculate_limitation.html">calculate_limitation()</a></code>.</li>
 </ul>
 <div class="section level2">
 <h2 id="the-eq5d-object-class">The EQ5D object class<a class="anchor" aria-label="anchor" href="#the-eq5d-object-class"></a>
@@ -493,12 +493,11 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Tim Taylor.</p>
+<p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, 2022, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
 </div>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
     </footer>

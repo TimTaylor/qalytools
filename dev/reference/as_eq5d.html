@@ -271,49 +271,69 @@ with the additional restriction  that the corresponding dimension columns in
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>An <span style="R">R</span> object.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
+
 <dt>respondentID</dt>
-<dd><p><code>[character]</code></p>
-<p>The name of a variable in <code>x</code> that uniquely identifies respondents.</p></dd>
+<dd><p><code>[character]</code> The name of a variable in <code>x</code> that uniquely
+identifies respondents.</p></dd>
+
+
 <dt>surveyID</dt>
-<dd><p><code>[character]</code></p>
-<p>Name of variable <code>x</code> that uniquely identifies surveys over time.</p>
+<dd><p><code>[character]</code> Name of variable <code>x</code> that uniquely identifies
+surveys over time.</p>
 <p>To avoid ambiguity the specified variable should be either numeric or a
 factor (in which case the  order will be taken as that given by the factor
 levels).</p>
 <p>A character variable in <code>x</code> will be accepted but converted, with
 warning, via <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor()</a></code>.</p></dd>
+
+
 <dt>time_index</dt>
-<dd><p>Name of variable in <code>x</code> representing the relative time within the survey
-framework.</p>
+<dd><p><code>[character]</code> Name of variable in <code>x</code> representing the
+relative time within the survey framework.</p>
 <p>If the variable does not exist within <code>x</code> it will be created and set to
 <code>NA_integer</code>.</p></dd>
+
+
 <dt>mobility</dt>
-<dd><p><code>[character]</code></p>
-<p>Name of the 'mobility' dimension in <code>x</code>.</p></dd>
+<dd><p><code>[character]</code> Name of the 'mobility' dimension in <code>x</code>.</p></dd>
+
+
 <dt>self_care</dt>
-<dd><p><code>[character]</code></p>
-<p>Name of the 'self-care' dimension in <code>x</code>.</p></dd>
+<dd><p><code>[character]</code> Name of the 'self-care' dimension in <code>x</code>.</p></dd>
+
+
 <dt>usual</dt>
-<dd><p><code>[character]</code></p>
-<p>Name of the 'usual activities' dimension in <code>x</code>.</p></dd>
+<dd><p><code>[character]</code> Name of the 'usual activities' dimension in <code>x</code>.</p></dd>
+
+
 <dt>pain</dt>
-<dd><p><code>[character]</code></p>
-<p>Name of the 'pain / discomfort' dimension in <code>x</code>.</p></dd>
+<dd><p><code>[character]</code> Name of the 'pain / discomfort' dimension in <code>x</code>.</p></dd>
+
+
 <dt>anxiety</dt>
-<dd><p><code>[character]</code></p>
-<p>Name of the 'anxiety / depression' dimension in <code>x</code>.</p></dd>
+<dd><p><code>[character]</code> Name of the 'anxiety / depression' dimension in
+<code>x</code>.</p></dd>
+
+
 <dt>vas</dt>
-<dd><p><code>[character]</code></p>
-<p>Name of the 'visual analogue score' variable in <code>x</code>.</p></dd>
+<dd><p><code>[character]</code> Name of the 'visual analogue score' variable in <code>x</code>.</p></dd>
+
+
 <dt>drop</dt>
-<dd><p><code>[logical]</code></p>
-<p>Should additional columns, not specified by arguments, be dropped.</p></dd>
+<dd><p><code>[logical]</code> Should additional columns, not specified by
+arguments, be dropped.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An EQ5D5L, EQ5D3L or EQ5DY object.</p>
+    
+
+<p>An EQ5D5L, EQ5D3L or EQ5DY object.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -347,11 +367,11 @@ framework.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Tim Taylor.</p>
+  <p></p><p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, 2022, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p>
 </div>
 
     </footer></div>

@@ -32,7 +32,7 @@
 #' surveys over time.
 #'
 #' To avoid ambiguity the specified variable should be either numeric or a
-#' factor (in which case the  order will be taken as that given by the factor
+#' factor (in which case the order will be taken as that given by the factor
 #' levels).
 #'
 #' A character variable in `x` will be accepted but converted, with
@@ -371,7 +371,7 @@ as_eq5dy.data.frame <- function(
     msg <- NULL
     if (is.character(x[[surveyID]])) {
         x[[surveyID]] <- ordered(x[[surveyID]])
-        msg <- sprintf("`%s` has been converted to an ordered factor with default levels.", surveyID)
+        msg <- sprintf("`%s` has been converted to an ordered factor with default levels equivalent to `sort(unique(%s))`.", surveyID, surveyID)
     }
 
     # get the correct function to call

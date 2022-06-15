@@ -13,11 +13,11 @@ editor_options:
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.align = "center",
-  fig.width = 8,
-  fig.height = 5
+    collapse = TRUE,
+    comment = "#>",
+    fig.align = "center",
+    fig.width = 8,
+    fig.height = 5
 )
 ```
 
@@ -29,22 +29,22 @@ facilitating calculation of QALY values and other related metrics.
 The package provides a range of functions:
 
 - Constructors (and validators) for EQ5D data frame subclasses (EQ5D3L, EQ5D5L
-  and EQ5D): `new_eq5d3l()` (`validate_eq5d3l()`), `new_eq5d5l()`
-  (`validate_eq5d5l()`) and `new_eq5dy()` (`validate_eq5dy()`).
+and EQ5D): `new_eq5d3l()` (`validate_eq5d3l()`), `new_eq5d5l()`
+(`validate_eq5d5l()`) and `new_eq5dy()` (`validate_eq5dy()`).
 - User-friendly coercion functions `as_eq5d3l()`, `as_eq5d5l()` and 
-  `as_eq5dy()`.
+`as_eq5dy()`.
 - The calculation of utility values based on a range of different value sets.
-  This functionality is provided via the `calculate_utility()`, `add_utility()`
-  and `available_valuesets()` functions which are wrappers around the
-  [eq5d](https://cran.r-project.org/package=eq5d) package.
+This functionality is provided via the `calculate_utility()`, `add_utility()`
+and `available_valuesets()` functions which are wrappers around the
+[eq5d](https://cran.r-project.org/package=eq5d) package.
 - The calculation of different Quality of Life Years (QALY) metrics including
-  unadjusted 'raw' values, and the disutility from both perfect health and,
-  optionally, a specified baseline. See `calculate_qalys()`.
+unadjusted 'raw' values, and the disutility from both perfect health and,
+optionally, a specified baseline. See `calculate_qalys()`.
 - The calculation of the Paretian Classification of Health Change (PCHC) in an
-  individual's health state between two surveys via `calculate_pchc()` (again
-  wrapping the [eq5d](https://cran.r-project.org/package=eq5d) package).
+individual's health state between two surveys via `calculate_pchc()` (again
+wrapping the [eq5d](https://cran.r-project.org/package=eq5d) package).
 - Easy calculation of responses with a health limitation (i.e. a non-one
-  response in one of the dimensions) via `calculate_limitation()`.
+response in one of the dimensions) via `calculate_limitation()`.
 
 
 ## The EQ5D object class
@@ -53,18 +53,18 @@ We define an `EQ5D` object as a table containing data in long format that meets
 the following, additional, criteria:
 
 -   It contains columns that represent dimensions from the EQ5D survey
-    specification as well as a column representing the Visual Analogue Score.
+specification as well as a column representing the Visual Analogue Score.
 
 -   Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L
-    and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys
+and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys
 
 -   It contains a column that acts as a unique respondent identifier and another
-    that identifies different surveys over time. Together these should uniquely
-    identify a response and no combination of these should be duplicated within
-    the data frame.
+that identifies different surveys over time. Together these should uniquely
+identify a response and no combination of these should be duplicated within
+the data frame.
 
 -   It contains a column that provides the relative time (e.g. days/weeks) of a
-    response within the survey framework.
+response within the survey framework.
 
 In *{surveyTools}* we implement these objects as a data frame subclass and
 provide functionality for users to coerce input to this representation via the
@@ -82,19 +82,14 @@ data("EQ5D5L_surveys")
 str(EQ5D5L_surveys)
 ```
 
-Before converting to an EQ5D5L object we ensure surveys have an explicit
-ordering by the variable to an ordered factor.
+Before coercing our data to an EQ5D5L object we must ensure that our surveys
+have an explicit ordering. We do this by converting the `surveyID` variable to
+an ordered factor prior to call `as_eq5d5l()`.
 
 ```{r}
 dat <- EQ5D5L_surveys
 dat$surveyID <- ordered(dat$surveyID, levels = 1:10)
-```
 
-We proceed by converting our object to an EQ5D5L object. For clarity we are
-explicitly stating the column values even though, for our example, they match
-the default arguments:
-
-```{r}
 dat <- as_eq5d5l(
     dat,
     mobility = "mobility",
@@ -104,7 +99,8 @@ dat <- as_eq5d5l(
     anxiety = "anxiety",
     respondentID = "respondentID",
     surveyID = "surveyID",
-    vas = "vas"
+    vas = "vas",
+    time_index = "time_index"
 )
 
 dat
@@ -143,7 +139,8 @@ try(as_eq5d5l(
     anxiety = "anxiety",
     respondentID = "respondentID",
     surveyID = "surveyID",
-    vas = "vas"
+    vas = "vas",
+    time_index = "time_index"
 ))
 ```
 
@@ -164,17 +161,17 @@ For EQ5D3L inputs the type can be:
 -   "RCW", a reverse crosswalk conversion to EQ5D5L values; or
 
 -   "DSU", the NICE Decision Support Unit's model that allows mappings on to
-    EQ5D5L values accounting for both age and sex.
+EQ5D5L values accounting for both age and sex.
 
 For EQ5D5L inputs this can be:
 
 -   "VT", value sets generated via a EuroQol standardised valuation study
-    protocol;
+protocol;
 
 -   "CW", a crosswalk conversion EQ5D3L values; or
 
 -   "DSU", the NICE Decision Support Unit's model that allows mappings on to
-    EQ5D5L values accounting for both age and sex.
+EQ5D5L values accounting for both age and sex.
 
 Note that this function is purely a convenience wrapper around the
 `eq5d::valuesets()` function. It will return a data frame with columns
@@ -234,9 +231,9 @@ value which represents the loss from full health.
 
 ```{r}
 qalys <- 
-  dat |> 
-  calculate_utility(type = "VT", country = c("Denmark", "France")) |> 
-  calculate_qalys()
+    dat |> 
+    calculate_utility(type = "VT", country = c("Denmark", "France")) |> 
+    calculate_qalys()
 
 subset(qalys, .qaly=="raw")
 subset(qalys, .qaly=="loss_vs_fullhealth")
@@ -253,17 +250,25 @@ unadjusted calculation, prior to the calculation of loss.
 
 ```{r}
 # Reload the example data and combine with some baseline measurements
-# Note that this time we do not explicitly specify the different columns as they
-# already match the defaults
 data("EQ5D5L_surveys")
 dat <- 
-  EQ5D5L_surveys |> 
-  transform(surveyID = factor(surveyID, levels = 1:10)) |> 
-  as_eq5d5l()
+    EQ5D5L_surveys |> 
+    transform(surveyID = factor(surveyID, levels = 1:10)) |> 
+    as_eq5d5l(
+        mobility = "mobility",
+        self_care = "self_care",
+        usual = "usual",
+        pain = "pain",
+        anxiety = "anxiety",
+        respondentID = "respondentID",
+        surveyID = "surveyID",
+        vas = "vas",
+        time_index = "time_index"
+    )
 
 calculate_utility(dat, type = "VT", country = c("Denmark", "France")) |> 
-  calculate_qalys(baseline = "1") |> 
-  subset(.qaly == "loss_vs_baseline")
+    calculate_qalys(baseline = "1") |> 
+    subset(.qaly == "loss_vs_baseline")
 ```
 
 Alternatively the `baseline` argument can be specified as a data frame with a
@@ -281,12 +286,12 @@ utility_dat <- calculate_utility(surveys,
                                  type = "VT",
                                  country = c("Denmark", "France"))
 baseline_utility <- 
-  baseline |> 
-  calculate_utility(type = "VT", country = c("Denmark", "France")) |> 
-  subset(select=c(respondentID,.utility_country,.utility_type,.value))
+    baseline |> 
+    calculate_utility(type = "VT", country = c("Denmark", "France")) |> 
+    subset(select=c(respondentID,.utility_country,.utility_type,.value))
 
 calculate_qalys(utility_dat, baseline=baseline_utility) |> 
-  subset(.qaly == "loss_vs_baseline")
+    subset(.qaly == "loss_vs_baseline")
 ```
 
 ### Calculate limitations
@@ -307,7 +312,19 @@ ggplot(limitation, aes(x = surveyID, y = without_limitation, group = dimension))
 
 ```{r}
 data("eq5d3l_example")
-dat <- as_eq5d3l(eq5d3l_example, drop = FALSE) # ensure we do not drop additional columns
+dat <- as_eq5d3l(
+    eq5d3l_example,
+    respondentID = "respondentID",
+    surveyID = "surveyID",
+    time_index = "time",
+    mobility = "MO",
+    self_care = "SC",
+    usual = "UA",
+    pain = "PD",
+    anxiety = "AD",
+    vas = "vas",
+    drop = FALSE # ensure we do not drop additional columns
+) 
 grp1 <- subset(dat, Group == "Group1")
 grp2 <- subset(dat, Group == "Group2")
 calculate_pchc(grp1, grp2)

@@ -2,20 +2,21 @@
 #'
 #' A dataset containing dimensions and grouping for 200 observations. Data
 #'   was obtained from the [eq5d](https://cran.r-project.org/package=eq5d)
-#'   package on 2021-09-16.
+#'   package on 2022-06-15, with additional variables added for package
+#'   compatibility.
 #'
 #' @format A data frame with 200 rows and 6 variables:
 #' \describe{
 #'   \item{respondentID}{Unique respondent identifier}
 #'   \item{surveyID}{Unique survey identifier}
-#'   \item{mobility}{Mobility dimension valuea}
-#'   \item{self_care}{Self-care dimension values}
-#'   \item{usual}{Usual activities dimension values}
-#'   \item{pain}{Pain/discomfort dimension values}
-#'   \item{anxiety}{Anxiety/depression dimension values}
+#'   \item{MO}{Mobility dimension valuea}
+#'   \item{SC}{Self-care dimension values}
+#'   \item{UA}{Usual activities dimension values}
+#'   \item{PD}{Pain/discomfort dimension values}
+#'   \item{AD}{Anxiety/depression dimension values}
 #'   \item{Group}{Observation group}
 #'   \item{vas}{VAS score}
-#'   \item{time_index}{Relative time within survey framework}
+#'   \item{time}{Relative time within survey framework}
 #' }
 #' @source \url{https://github.com/fragla/eq5d/raw/master/inst/extdata/eq5d3l_example.xlsx}
 "eq5d3l_example"

@@ -25,45 +25,45 @@ as_eq5d5l(x, ...)
 
 \method{as_eq5d5l}{tbl_df}(
   x,
-  respondentID = "respondentID",
-  surveyID = "surveyID",
-  time_index = "time_index",
-  mobility = "mobility",
-  self_care = "self_care",
-  usual = "usual",
-  pain = "pain",
-  anxiety = "anxiety",
-  vas = "vas",
+  respondentID,
+  surveyID,
+  time_index,
+  mobility,
+  self_care,
+  usual,
+  pain,
+  anxiety,
+  vas,
   drop = FALSE,
   ...
 )
 
 \method{as_eq5d5l}{data.table}(
   x,
-  respondentID = "respondentID",
-  surveyID = "surveyID",
-  time_index = "time_index",
-  mobility = "mobility",
-  self_care = "self_care",
-  usual = "usual",
-  pain = "pain",
-  anxiety = "anxiety",
-  vas = "vas",
+  respondentID,
+  surveyID,
+  time_index,
+  mobility,
+  self_care,
+  usual,
+  pain,
+  anxiety,
+  vas,
   drop = FALSE,
   ...
 )
 
 \method{as_eq5d5l}{data.frame}(
   x,
-  respondentID = "respondentID",
-  surveyID = "surveyID",
-  time_index = "time_index",
-  mobility = "mobility",
-  self_care = "self_care",
-  usual = "usual",
-  pain = "pain",
-  anxiety = "anxiety",
-  vas = "vas",
+  respondentID,
+  surveyID,
+  time_index,
+  mobility,
+  self_care,
+  usual,
+  pain,
+  anxiety,
+  vas,
   drop = FALSE,
   ...
 )
@@ -74,15 +74,15 @@ as_eq5d3l(x, ...)
 
 \method{as_eq5d3l}{tbl_df}(
   x,
-  respondentID = "respondentID",
-  surveyID = "surveyID",
-  time_index = "time_index",
-  mobility = "mobility",
-  self_care = "self_care",
-  usual = "usual",
-  pain = "pain",
-  anxiety = "anxiety",
-  vas = "vas",
+  respondentID,
+  surveyID,
+  time_index,
+  mobility,
+  self_care,
+  usual,
+  pain,
+  anxiety,
+  vas,
   drop = FALSE,
   ...
 )
@@ -91,15 +91,15 @@ as_eq5d3l(x, ...)
 
 \method{as_eq5d3l}{data.frame}(
   x,
-  respondentID = "respondentID",
-  surveyID = "surveyID",
-  time_index = "time_index",
-  mobility = "mobility",
-  self_care = "self_care",
-  usual = "usual",
-  pain = "pain",
-  anxiety = "anxiety",
-  vas = "vas",
+  respondentID,
+  surveyID,
+  time_index,
+  mobility,
+  self_care,
+  usual,
+  pain,
+  anxiety,
+  vas,
   drop = FALSE,
   ...
 )
@@ -110,45 +110,45 @@ as_eq5dy(x, ...)
 
 \method{as_eq5dy}{tbl_df}(
   x,
-  respondentID = "respondentID",
-  surveyID = "surveyID",
-  time_index = "time_index",
-  mobility = "mobility",
-  self_care = "self_care",
-  usual = "usual",
-  pain = "pain",
-  anxiety = "anxiety",
-  vas = "vas",
+  respondentID,
+  surveyID,
+  time_index,
+  mobility,
+  self_care,
+  usual,
+  pain,
+  anxiety,
+  vas,
   drop = FALSE,
   ...
 )
 
 \method{as_eq5dy}{data.table}(
   x,
-  respondentID = "respondentID",
-  surveyID = "surveyID",
-  time_index = "time_index",
-  mobility = "mobility",
-  self_care = "self_care",
-  usual = "usual",
-  pain = "pain",
-  anxiety = "anxiety",
-  vas = "vas",
+  respondentID,
+  surveyID,
+  time_index,
+  mobility,
+  self_care,
+  usual,
+  pain,
+  anxiety,
+  vas,
   drop = FALSE,
   ...
 )
 
 \method{as_eq5dy}{data.frame}(
   x,
-  respondentID = "respondentID",
-  surveyID = "surveyID",
-  time_index = "time_index",
-  mobility = "mobility",
-  self_care = "self_care",
-  usual = "usual",
-  pain = "pain",
-  anxiety = "anxiety",
-  vas = vas,
+  respondentID,
+  surveyID,
+  time_index,
+  mobility,
+  self_care,
+  usual,
+  pain,
+  anxiety,
+  vas,
   drop = FALSE,
   ...
 )
@@ -165,7 +165,7 @@ identifies respondents.}
 surveys over time.
 
 To avoid ambiguity the specified variable should be either numeric or a
-factor (in which case the  order will be taken as that given by the factor
+factor (in which case the order will be taken as that given by the factor
 levels).
 
 A character variable in \code{x} will be accepted but converted, with
@@ -222,7 +222,18 @@ with the additional restriction  that the corresponding dimension columns in
 \examples{
 
 data("eq5d3l_example")
-as_eq5d3l(eq5d3l_example)
+as_eq5d3l(
+    eq5d3l_example,
+    respondentID = "respondentID",
+    surveyID = "surveyID",
+    time_index = "time",
+    mobility = "MO",
+    self_care = "SC",
+    usual = "UA",
+    pain = "PD",
+    anxiety = "AD",
+    vas = "vas"
+)
 
 }
 \seealso{

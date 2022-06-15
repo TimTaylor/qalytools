@@ -65,6 +65,7 @@ EQ5D5L_surveys <- out[chosen, on="respondentID"]
 
 # save output
 setDF(EQ5D5L_surveys)
+class(EQ5D5L_surveys) <- c("tbl", "data.frame")
 write.csv(
     EQ5D5L_surveys,
     file = file.path("data-raw", "EQ5D5L_surveys.csv"),

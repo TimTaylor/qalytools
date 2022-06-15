@@ -64,7 +64,19 @@
 #' @examples
 #'
 #' data("eq5d3l_example")
-#' dat <- as_eq5d3l(eq5d3l_example)
+#' dat <- as_eq5d3l(
+#'     eq5d3l_example,
+#'     respondentID = "respondentID",
+#'     surveyID = "surveyID",
+#'     time_index = "time",
+#'     mobility = "MO",
+#'     self_care = "SC",
+#'     usual = "UA",
+#'     pain = "PD",
+#'     anxiety = "AD",
+#'     vas = "vas",
+#'     drop = FALSE
+#' )
 #' calculate_utility(dat, type = "TTO", country = c("UK", "Germany"))
 #'
 #' @export

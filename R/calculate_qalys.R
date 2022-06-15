@@ -74,8 +74,18 @@
 #' @examples
 #'
 #' data("EQ5D5L_surveys")
-#' dat <- EQ5D5L_surveys
-#' dat <- as_eq5d5l(dat)
+#' dat <- as_eq5d5l(
+#'     EQ5D5L_surveys,
+#'     surveyID = "surveyID",
+#'     respondentID = "respondentID",
+#'     mobility = "mobility",
+#'     self_care = "self_care",
+#'     usual = "usual",
+#'     pain = "pain",
+#'     anxiety = "anxiety",
+#'     time_index = "time_index",
+#'     vas = "vas"
+#' )
 #' calculate_qalys(dat, type = "VT", country = c("Denmark", "France"))
 #'
 #' @export

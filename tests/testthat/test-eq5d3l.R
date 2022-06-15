@@ -1,4 +1,9 @@
 dat <- eq5d3l_example
+data.table::setnames(
+    dat,
+    old = c("MO", "SC", "UA", "PD", "AD", "time"),
+    new = c("mobility", "self_care", "usual", "pain", "anxiety", "time_index")
+)
 
 out <- as_eq5d3l(dat,
                  respondentID = "respondentID",
@@ -114,7 +119,7 @@ test_that("calculate_utility works as expected", {
     names(dat2) <- c("MO", "SC", "UA", "PD", "AD")
     gutil <- eq5d(dat2, version="3L", type = "TTO", country="Germany")
     futil <- eq5d(dat2, version="3L", type = "TTO",country="France")
-    tmp2 <- data.frame(respondentID = dat[[7]],
+    tmp2 <- data.frame(respondentID = dat[["respondentID"]],
                        .utility_country = c(rep_len("Germany", length(dat2[[1]])),
                                             rep_len("France", length(dat2[[1]]))),
                        .value=c(gutil, futil))

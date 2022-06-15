@@ -1,6 +1,17 @@
 dat <- EQ5D5L_surveys
 dat <- transform(dat, surveyID = factor(surveyID, levels = 1:10, ordered = TRUE))
-out <- as_eq5d5l(dat)
+out <- as_eq5d5l(
+    dat,
+    surveyID = "surveyID",
+    respondentID = "respondentID",
+    mobility = "mobility",
+    self_care = "self_care",
+    usual = "usual",
+    pain = "pain",
+    anxiety = "anxiety",
+    time_index = "time_index",
+    vas = "vas"
+)
 
 test_that("as_eq5d5l works", {
 

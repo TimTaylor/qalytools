@@ -22,7 +22,19 @@
 #' @examples
 #'
 #' data("eq5d3l_example")
-#' dat <- as_eq5d3l(eq5d3l_example, drop = FALSE)
+#' dat <- as_eq5d3l(
+#'     eq5d3l_example,
+#'     respondentID = "respondentID",
+#'     surveyID = "surveyID",
+#'     time_index = "time",
+#'     mobility = "MO",
+#'     self_care = "SC",
+#'     usual = "UA",
+#'     pain = "PD",
+#'     anxiety = "AD",
+#'     vas = "vas",
+#'     drop = FALSE
+#' )
 #' grp1 <- subset(dat, Group == "Group1")
 #' grp2 <- subset(dat, Group == "Group2")
 #' calculate_pchc(grp1, grp2)

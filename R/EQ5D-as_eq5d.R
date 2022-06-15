@@ -73,7 +73,18 @@
 #' @examples
 #'
 #' data("eq5d3l_example")
-#' as_eq5d3l(eq5d3l_example)
+#' as_eq5d3l(
+#'     eq5d3l_example,
+#'     respondentID = "respondentID",
+#'     surveyID = "surveyID",
+#'     time_index = "time",
+#'     mobility = "MO",
+#'     self_care = "SC",
+#'     usual = "UA",
+#'     pain = "PD",
+#'     anxiety = "AD",
+#'     vas = "vas"
+#' )
 #'
 #' @name as_eq5d
 NULL
@@ -98,15 +109,15 @@ as_eq5d5l.default <- function(x, ...) {
 #' @export
 as_eq5d5l.tbl_df <- function(
     x,
-    respondentID = "respondentID",
-    surveyID = "surveyID",
-    time_index = "time_index",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = "vas",
+    respondentID,
+    surveyID,
+    time_index,
+    mobility,
+    self_care,
+    usual,
+    pain,
+    anxiety,
+    vas,
     drop = FALSE,
     ...
 ) {
@@ -119,15 +130,15 @@ as_eq5d5l.tbl_df <- function(
 #' @export
 as_eq5d5l.data.table <- function(
     x,
-    respondentID = "respondentID",
-    surveyID = "surveyID",
-    time_index = "time_index",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = "vas",
+    respondentID,
+    surveyID,
+    time_index,
+    mobility,
+    self_care,
+    usual,
+    pain,
+    anxiety,
+    vas,
     drop = FALSE,
     ...
 ) {
@@ -140,15 +151,15 @@ as_eq5d5l.data.table <- function(
 #' @export
 as_eq5d5l.data.frame <- function(
     x,
-    respondentID = "respondentID",
-    surveyID = "surveyID",
-    time_index = "time_index",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = "vas",
+    respondentID,
+    surveyID,
+    time_index,
+    mobility,
+    self_care,
+    usual,
+    pain,
+    anxiety,
+    vas,
     drop = FALSE,
     ...
 ) {
@@ -188,15 +199,15 @@ as_eq5d3l.default <- function(x, ...) {
 #' @export
 as_eq5d3l.tbl_df <- function(
     x,
-    respondentID = "respondentID",
-    surveyID = "surveyID",
-    time_index = "time_index",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = "vas",
+    respondentID,
+    surveyID,
+    time_index,
+    mobility,
+    self_care,
+    usual,
+    pain,
+    anxiety,
+    vas,
     drop = FALSE,
     ...
 ) {
@@ -217,15 +228,15 @@ as_eq5d3l.data.table <- function(x, ...) {
 #' @export
 as_eq5d3l.data.frame <- function(
     x,
-    respondentID = "respondentID",
-    surveyID = "surveyID",
-    time_index = "time_index",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = "vas",
+    respondentID,
+    surveyID,
+    time_index,
+    mobility,
+    self_care,
+    usual,
+    pain,
+    anxiety,
+    vas,
     drop = FALSE,
     ...
 ) {
@@ -266,15 +277,15 @@ as_eq5dy.default <- function(x, ...) {
 #' @export
 as_eq5dy.tbl_df <- function(
     x,
-    respondentID = "respondentID",
-    surveyID = "surveyID",
-    time_index = "time_index",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = "vas",
+    respondentID,
+    surveyID,
+    time_index,
+    mobility,
+    self_care,
+    usual,
+    pain,
+    anxiety,
+    vas,
     drop = FALSE,
     ...
 ) {
@@ -287,15 +298,15 @@ as_eq5dy.tbl_df <- function(
 #' @export
 as_eq5dy.data.table <- function(
     x,
-    respondentID = "respondentID",
-    surveyID = "surveyID",
-    time_index = "time_index",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = "vas",
+    respondentID,
+    surveyID,
+    time_index,
+    mobility,
+    self_care,
+    usual,
+    pain,
+    anxiety,
+    vas,
     drop = FALSE,
     ...
 ) {
@@ -308,15 +319,15 @@ as_eq5dy.data.table <- function(
 #' @export
 as_eq5dy.data.frame <- function(
     x,
-    respondentID = "respondentID",
-    surveyID = "surveyID",
-    time_index = "time_index",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = vas,
+    respondentID,
+    surveyID,
+    time_index,
+    mobility,
+    self_care,
+    usual,
+    pain,
+    anxiety,
+    vas,
     drop = FALSE,
     ...
 ) {
@@ -358,7 +369,10 @@ as_eq5dy.data.frame <- function(
 ) {
 
     # ensure we have a time_index even if non-specified
-    if (!time_index %in% names(x)) {
+    if (missing(time_index)) {
+        time_index <- ".time_index"
+        if (time_index %in% names(x))
+            stop("Unable to allocate a `time_index` column. Attempted to use '.time_index' as a variable name but this was already present in `x`. Please explicitly state a value for `time_index` or rename '.time_index'", call. = FALSE)
         x[time_index] <- NA_integer_
     }
 

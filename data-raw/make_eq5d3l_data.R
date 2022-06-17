@@ -14,6 +14,8 @@ dat$respondentID <- 1:nrow(dat)
 score <- eq5d::eq5d(dat,version = "3L", type = "TTO", country="UK")
 dat$vas <- abs(score + rnorm(length(score), sd = 0.1))
 dat$vas[dat$vas > 1] <- 1
+dat$vas <- round(dat$vas * 100)
+
 dat$time <- 0
 class(dat) <- c("tbl", "data.frame")
 

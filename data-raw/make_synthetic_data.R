@@ -72,6 +72,9 @@ out <- out[,.(surveyID=survey,respondentID=id,sex,age,mobility=MO,self_care=SC,u
 chosen <- out[order(respondentID), .(respondentID = unique(respondentID))][seq_len(n)]
 EQ5D5L_surveys <- out[chosen, on="respondentID"]
 
+# Ensure vas is integer between 0 and 100
+EQ5D5L_surveys[, vas := round(vas * 100)]
+
 # save output
 setDF(EQ5D5L_surveys)
 class(EQ5D5L_surveys) <- c("tbl", "data.frame")

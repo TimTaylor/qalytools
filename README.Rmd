@@ -32,13 +32,7 @@ facilitating calculation of QALY values and other related metrics.
 
 # Installation
 
-::: {.pkgdown-release}
-The package can be installed via:
-:::
-
-::: {.pkgdown-devel}
 The development version of the package can be installed via:
-:::
 
 ```{r, eval=FALSE}
     repos <- c(getOption("repos"), "https://timtaylor.r-universe.dev")

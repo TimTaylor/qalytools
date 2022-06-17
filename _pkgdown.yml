@@ -2,9 +2,6 @@ url: https://timtaylor.github.io/surveyTools/
 template:
   bootstrap: 5
 
-development:
-  mode: auto
-
 reference:
 - title: EQ5D objects
   contents:

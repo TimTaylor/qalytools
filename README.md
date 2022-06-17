@@ -21,17 +21,7 @@ metrics.
 
 # Installation
 
-<div class="pkgdown-release">
-
-The package can be installed via:
-
-</div>
-
-<div class="pkgdown-devel">
-
 The development version of the package can be installed via:
-
-</div>
 
 ``` r
     repos <- c(getOption("repos"), "https://timtaylor.r-universe.dev")

@@ -74,7 +74,7 @@ EQ5D survey respondents.</p>
   <span class="va">type</span>,
   <span class="va">country</span>,
   units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"days"</span>, <span class="st">"weeks"</span>, <span class="st">"months"</span>, <span class="st">"quarters"</span>, <span class="st">"years"</span><span class="op">)</span>,
-  baseline <span class="op">=</span> <span class="cn">NULL</span>,
+  baseline_survey <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>
 <span class="op">)</span>
 
@@ -82,7 +82,7 @@ EQ5D survey respondents.</p>
 <span class="fu">calculate_qalys</span><span class="op">(</span>
   <span class="va">x</span>,
   units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"days"</span>, <span class="st">"weeks"</span>, <span class="st">"months"</span>, <span class="st">"quarters"</span>, <span class="st">"years"</span><span class="op">)</span>,
-  baseline <span class="op">=</span> <span class="cn">NULL</span>,
+  baseline_survey <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -121,7 +121,7 @@ EQ5D5L values accounting for both age and sex.</p></li>
 be one of "days", "weeks", "months", "quarters" or "years".</p></dd>
 
 
-<dt>baseline</dt>
+<dt>baseline_survey</dt>
 <dd><p>(optional) Either a <code>character</code> string specifying the
 surveyID, to use as a baseline or a data frame. If a data frame, it must have
 at least two columns; one for the respondentID (with name matching that in
@@ -149,12 +149,12 @@ represents the loss from a specified baseline utility value.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>If a character string <code>baseline</code> argument is given then this must match
+    <p>If a character string <code>baseline_survey</code> argument is given then this must match
 a surveyID to match against.  In this situation the survey <strong>is</strong> still
 included in the unadjusted, <code>raw</code>, calculation, prior to the calculation of
 loss.</p>
-<p>Alternatively the <code>baseline</code> argument can be specified as a data frame with a
-column corresponding to the respondentID and another representing the
+<p>Alternatively the <code>baseline_survey</code> argument can be specified as a data frame
+with a column corresponding to the respondentID and another representing the
 associated utility. Optionally columns corresponding to the utility country
 and utility type can be included to allow more granular comparisons. For this
 specification of baseline, it <strong>is not</strong> included in the unadjusted, <code>raw</code>,

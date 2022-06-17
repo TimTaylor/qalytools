@@ -475,9 +475,9 @@
 <span class="co">#&gt; <span style="color: #949494;"># … with 1,990 more rows</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="comparison-to-baseline">Comparison to baseline<a class="anchor" aria-label="anchor" href="#comparison-to-baseline"></a>
+<h3 id="comparison-to-a-baseline">Comparison to a baseline<a class="anchor" aria-label="anchor" href="#comparison-to-a-baseline"></a>
 </h3>
-<p><code>calculate_qaly()</code> also allows us to calculate the loss from a specified baseline in one of two ways. Firstly, a character string <code>baseline</code> argument can be placed which matches a survey present in the utility data. If the argument is passed as such then the utility values from the specified survey are used to calculate the loss. Note that the survey is still included in the raw, unadjusted calculation, prior to the calculation of loss.</p>
+<p><code>calculate_qaly()</code> also allows us to calculate the loss from a specified baseline in one of two ways. Firstly, a character string <code>baseline_survey</code> argument can be placed which matches a survey present in the utility data. If the argument is passed as such then the utility values from the specified survey are used to calculate the loss. Note that the survey is still included in the raw, unadjusted calculation, prior to the calculation of loss.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Reload the example data and combine with some baseline measurements</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span>
@@ -497,7 +497,7 @@
     <span class="op">)</span>
 
 <span class="fu"><a href="../reference/calculate_utility.html">calculate_utility</a></span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Denmark"</span>, <span class="st">"France"</span><span class="op">)</span><span class="op">)</span> |&gt; 
-    <span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span>baseline <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span> |&gt; 
+    <span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span>baseline_survey <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span> |&gt; 
     <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">==</span> <span class="st">"loss_vs_baseline"</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A data frame: 2,000 × 5</span></span>
 <span class="co">#&gt;    respondentID .utility_country .utility_type .qaly             .value</span>
@@ -513,7 +513,7 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            5 Denmark          VT            loss_vs_baseline  0.116 </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            5 France           VT            loss_vs_baseline  0.063<span style="text-decoration: underline;">9</span></span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 1,990 more rows</span></span></code></pre></div>
-<p>Alternatively the <code>baseline</code> argument can be specified as a data frame with a column corresponding to the respondentID and another representing the associated utility. Optionally columns corresponding to the utility country and utility type can be included to allow more granular comparisons. Note that for this specification of baseline, it is <strong>not</strong> included in the unadjusted, raw, calculation.</p>
+<p>Alternatively the <code>baseline_survey</code> argument can be specified as a data frame with a column corresponding to the respondentID and another representing the associated utility. Optionally columns corresponding to the utility country and utility type can be included to allow more granular comparisons. Note that for this specification of baseline, it is <strong>not</strong> included in the unadjusted, raw, calculation.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">split_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span><span class="op">==</span><span class="st">"1"</span><span class="op">)</span>
 <span class="va">surveys</span> <span class="op">&lt;-</span> <span class="va">split_dat</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
@@ -526,7 +526,7 @@
     <span class="fu"><a href="../reference/calculate_utility.html">calculate_utility</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Denmark"</span>, <span class="st">"France"</span><span class="op">)</span><span class="op">)</span> |&gt; 
     <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span>select<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">respondentID</span>,<span class="va">.utility_country</span>,<span class="va">.utility_type</span>,<span class="va">.value</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span><span class="va">utility_dat</span>, baseline<span class="op">=</span><span class="va">baseline_utility</span><span class="op">)</span> |&gt; 
+<span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span><span class="va">utility_dat</span>, baseline_survey <span class="op">=</span> <span class="va">baseline_utility</span><span class="op">)</span> |&gt; 
     <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">==</span> <span class="st">"loss_vs_baseline"</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A data frame: 2,000 × 5</span></span>
 <span class="co">#&gt;    respondentID .utility_country .utility_type .qaly             .value</span>

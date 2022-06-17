@@ -95,12 +95,134 @@
 <div class="section level2">
 <h2 id="the-eq5d-object-class">The EQ5D object class<a class="anchor" aria-label="anchor" href="#the-eq5d-object-class"></a>
 </h2>
+<table class="table">
+<caption>Example data</caption>
+<thead><tr class="header">
+<th align="right">surveyID</th>
+<th align="right">respondentID</th>
+<th align="right">time_index</th>
+<th align="right">mobility</th>
+<th align="right">self_care</th>
+<th align="right">usual</th>
+<th align="right">pain</th>
+<th align="right">anxiety</th>
+<th align="right">vas</th>
+<th align="left">sex</th>
+<th align="right">age</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="left">.</td>
+<td align="right">.</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">30</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">87</td>
+<td align="left">Female</td>
+<td align="right">25</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">30</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">65</td>
+<td align="left">Male</td>
+<td align="right">30</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">76</td>
+<td align="left">Male</td>
+<td align="right">39</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">55</td>
+<td align="left">Female</td>
+<td align="right">60</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">30</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">80</td>
+<td align="left">Male</td>
+<td align="right">28</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">83</td>
+<td align="left">Male</td>
+<td align="right">59</td>
+</tr>
+<tr class="even">
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="right">.</td>
+<td align="left">.</td>
+<td align="right">.</td>
+</tr>
+</tbody>
+</table>
 <p>We define an <code>EQ5D</code> object as a table containing data in long format that meets the following, additional, criteria:</p>
 <ul>
-<li><p>It contains columns that represent dimensions from the EQ5D survey specification as well as a column representing the Visual Analogue Score.</p></li>
+<li><p>It contains columns that represent dimensions from the EQ5D survey specification as well as a column representing the Visual Analogue Score (columns ‘mobility’, ‘self_care’, ‘usual’, ‘pain’, ‘anxiety’ and ‘vas’ in the example data above)</p></li>
 <li><p>Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys</p></li>
-<li><p>It contains a column that acts as a unique respondent identifier and another that identifies different surveys over time. Together these should uniquely identify a response and no combination of these should be duplicated within the data frame.</p></li>
-<li><p>It contains a column that provides the relative time (e.g. days/weeks) of a response within the survey framework.</p></li>
+<li><p>It contains a column that acts as a unique respondent identifier (‘respondentID’) and another that identifies different surveys over time (‘surveyID’). Together these should uniquely identify a response and no combination of these should be duplicated within the data frame.</p></li>
+<li><p>It contains a column that provides the relative time (e.g. days/weeks) of a response within the survey framework (‘time_index’).</p></li>
 </ul>
 <p>In <em>{surveyTools}</em> we implement these objects as a data frame subclass and provide functionality for users to coerce input to this representation via the <code><a href="../reference/as_eq5d.html">as_eq5d3l()</a></code>, <code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="../reference/as_eq5d.html">as_eq5dy()</a></code> functions.</p>
 </div>

@@ -50,22 +50,37 @@ response in one of the dimensions) via `calculate_limitation()`.
 
 ## The EQ5D object class
 
+Table: Example data
+
+| surveyID| respondentID| time_index| mobility| self_care| usual| pain| anxiety| vas|sex    | age|
+|--------:|------------:|----------:|--------:|---------:|-----:|----:|-------:|---:|:------|---:|
+|        .|            .|         . |        .|         .|     .|    .|       .|   .|.      |   .|
+|        1|            1|         30|        3|         2|     2|    1|       1|  87|Female |  25|
+|        1|            2|         30|        2|         2|     2|    2|       2|  65|Male   |  30|
+|        1|            3|         30|        1|         3|     3|    1|       3|  76|Male   |  39|
+|        1|            4|         30|        1|         2|     3|    2|       4|  55|Female |  60|
+|        1|            5|         30|        2|         1|     4|    1|       1|  80|Male   |  28|
+|        1|            6|         30|        1|         3|     2|    1|       1|  83|Male   |  59|
+|        .|            .|         . |        .|         .|     .|    .|       .|   .|.      |   .|
+
 We define an `EQ5D` object as a table containing data in long format that meets
 the following, additional, criteria:
 
 -   It contains columns that represent dimensions from the EQ5D survey
-specification as well as a column representing the Visual Analogue Score.
+specification as well as a column representing the Visual Analogue Score
+(columns 'mobility', 'self_care', 'usual', 'pain', 'anxiety' and 'vas' in the
+example data above)
 
 -   Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L
 and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys
 
--   It contains a column that acts as a unique respondent identifier and another
-that identifies different surveys over time. Together these should uniquely
-identify a response and no combination of these should be duplicated within
-the data frame.
+-   It contains a column that acts as a unique respondent identifier
+('respondentID') and another that identifies different surveys over time
+('surveyID'). Together these should uniquely identify a response and no
+combination of these should be duplicated within the data frame.
 
 -   It contains a column that provides the relative time (e.g. days/weeks) of a
-response within the survey framework.
+response within the survey framework ('time_index').
 
 In *{surveyTools}* we implement these objects as a data frame subclass and
 provide functionality for users to coerce input to this representation via the

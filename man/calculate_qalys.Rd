@@ -16,14 +16,14 @@ calculate_qalys(x, ...)
   type,
   country,
   units = c("days", "weeks", "months", "quarters", "years"),
-  baseline = NULL,
+  baseline_survey = NULL,
   ...
 )
 
 \method{calculate_qalys}{utility}(
   x,
   units = c("days", "weeks", "months", "quarters", "years"),
-  baseline = NULL,
+  baseline_survey = NULL,
   ...
 )
 }
@@ -57,7 +57,7 @@ EQ5D5L values accounting for both age and sex.
 \item{units}{\code{\link{character}} The units of the \code{time_index} column of \code{x}. Can
 be one of "days", "weeks", "months", "quarters" or "years".}
 
-\item{baseline}{(optional) Either a \code{character} string specifying the
+\item{baseline_survey}{(optional) Either a \code{character} string specifying the
 surveyID, to use as a baseline or a data frame. If a data frame, it must have
 at least two columns; one for the respondentID (with name matching that in
 \code{x} input) and another (of any name) for the associated utility values. If
@@ -86,13 +86,13 @@ Optionally, a third metric can also be returned, \code{loss_v_baseline}. This
 represents the loss from a specified baseline utility value.
 }
 \note{
-If a character string \code{baseline} argument is given then this must match
+If a character string \code{baseline_survey} argument is given then this must match
 a surveyID to match against.  In this situation the survey \strong{is} still
 included in the unadjusted, \code{raw}, calculation, prior to the calculation of
 loss.
 
-Alternatively the \code{baseline} argument can be specified as a data frame with a
-column corresponding to the respondentID and another representing the
+Alternatively the \code{baseline_survey} argument can be specified as a data frame
+with a column corresponding to the respondentID and another representing the
 associated utility. Optionally columns corresponding to the utility country
 and utility type can be included to allow more granular comparisons. For this
 specification of baseline, it \strong{is not} included in the unadjusted, \code{raw},

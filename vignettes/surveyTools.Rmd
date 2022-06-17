@@ -255,14 +255,14 @@ subset(qalys, .qaly=="raw")
 subset(qalys, .qaly=="loss_vs_fullhealth")
 ```
 
-### Comparison to baseline
+### Comparison to a baseline
 
 `calculate_qaly()` also allows us to calculate the loss from a specified
-baseline in one of two ways. Firstly, a character string `baseline` argument can
-be placed which matches a survey present in the utility data. If the argument is
-passed as such then the utility values from the specified survey are used to
-calculate the loss. Note that the survey is still included in the raw,
-unadjusted calculation, prior to the calculation of loss.
+baseline in one of two ways. Firstly, a character string `baseline_survey`
+argument can be placed which matches a survey present in the utility data. If
+the argument is passed as such then the utility values from the specified survey
+are used to calculate the loss. Note that the survey is still included in the
+raw, unadjusted calculation, prior to the calculation of loss.
 
 ```{r}
 # Reload the example data and combine with some baseline measurements
@@ -283,11 +283,11 @@ dat <-
     )
 
 calculate_utility(dat, type = "VT", country = c("Denmark", "France")) |> 
-    calculate_qalys(baseline = "1") |> 
+    calculate_qalys(baseline_survey = "1") |> 
     subset(.qaly == "loss_vs_baseline")
 ```
 
-Alternatively the `baseline` argument can be specified as a data frame with a
+Alternatively the `baseline_survey` argument can be specified as a data frame with a
 column corresponding to the respondentID and another representing the associated
 utility. Optionally columns corresponding to the utility country and utility
 type can be included to allow more granular comparisons. Note that for this
@@ -306,7 +306,7 @@ baseline_utility <-
     calculate_utility(type = "VT", country = c("Denmark", "France")) |> 
     subset(select=c(respondentID,.utility_country,.utility_type,.value))
 
-calculate_qalys(utility_dat, baseline=baseline_utility) |> 
+calculate_qalys(utility_dat, baseline_survey = baseline_utility) |> 
     subset(.qaly == "loss_vs_baseline")
 ```
 

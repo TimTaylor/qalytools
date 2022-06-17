@@ -46,7 +46,7 @@
 #' @param units [`character`] The units of the `time_index` column of `x`. Can
 #' be one of "days", "weeks", "months", "quarters" or "years".
 #'
-#' @param baseline (optional) Either a `character` string specifying the
+#' @param baseline_survey (optional) Either a `character` string specifying the
 #' surveyID, to use as a baseline or a data frame. If a data frame, it must have
 #' at least two columns; one for the respondentID (with name matching that in
 #' `x` input) and another (of any name) for the associated utility values. If
@@ -57,13 +57,13 @@
 #'
 #' @note
 #'
-#' If a character string `baseline` argument is given then this must match
+#' If a character string `baseline_survey` argument is given then this must match
 #' a surveyID to match against.  In this situation the survey **is** still
 #' included in the unadjusted, `raw`, calculation, prior to the calculation of
 #' loss.
 #'
-#' Alternatively the `baseline` argument can be specified as a data frame with a
-#' column corresponding to the respondentID and another representing the
+#' Alternatively the `baseline_survey` argument can be specified as a data frame
+#' with a column corresponding to the respondentID and another representing the
 #' associated utility. Optionally columns corresponding to the utility country
 #' and utility type can be included to allow more granular comparisons. For this
 #' specification of baseline, it **is not** included in the unadjusted, `raw`,
@@ -109,22 +109,22 @@ calculate_qalys.EQ5D <- function(
     type,
     country,
     units = c("days", "weeks", "months", "quarters", "years"),
-    baseline = NULL,
+    baseline_survey = NULL,
     ...
 ) {
     # check units input
     units <- match.arg(units)
 
     # TODO - think about baseline checks
-    if (!is.null(baseline)) {
-        stopifnot(.is_scalar_character(baseline) || is.data.frame(baseline))
+    if (!is.null(baseline_survey)) {
+        stopifnot(.is_scalar_character(baseline_survey) || is.data.frame(baseline_survey))
     }
 
     # calculate_utility does other input checking
     tmp <- calculate_utility(x, type = type, country = country)
 
     # now use the utilities method
-    calculate_qalys.utility(tmp, units = units, baseline = baseline)
+    calculate_qalys.utility(tmp, units = units, baseline_survey = baseline_survey)
 }
 
 # -------------------------------------------------------------------------
@@ -133,7 +133,7 @@ calculate_qalys.EQ5D <- function(
 calculate_qalys.utility <- function(
     x,
     units = c("days", "weeks", "months", "quarters", "years"),
-    baseline = NULL,
+    baseline_survey = NULL,
     ...
 ) {
     # for CRAN checks
@@ -146,8 +146,8 @@ calculate_qalys.utility <- function(
     units <- match.arg(units)
 
     # check baseline values
-    if (!is.null(baseline)) {
-        stopifnot(.is_scalar_character(baseline) || is.data.frame(baseline))
+    if (!is.null(baseline_survey)) {
+        stopifnot(.is_scalar_character(baseline_survey) || is.data.frame(baseline_survey))
     }
 
     # strip attributes and convert to data.table
@@ -188,21 +188,21 @@ calculate_qalys.utility <- function(
     out[, .loss_vs_fullhealth := .time_diff / div[[units]] - .raw]
 
     # if baseline is specified calculate the calculate the disutility from it
-    if (!is.null(baseline)) {
-        if (is.character(baseline)) { # use rows in utility object as baseline
+    if (!is.null(baseline_survey)) {
+        if (is.character(baseline_survey)) { # use rows in utility object as baseline
             survey_var <- attr(x, "surveyID")
-            tmp <- x[.subset2(x, survey_var) == baseline, ]
+            tmp <- x[.subset2(x, survey_var) == baseline_survey, ]
             if (!nrow(tmp)) {
-                stop(sprintf('No surveys matching baseline ("%s")', baseline))
+                stop(sprintf('No surveys matching baseline ("%s")', baseline_survey))
             }
             tmp <- tmp[, c(resp, ucountry, utype, uvalue)]
             out <- merge(out, tmp, by = c(resp, ucountry, utype), sort = FALSE)
             out$.loss_vs_baseline <- out[[uvalue]] * out$.time_diff / div[[units]] - out$.raw
             out[, (uvalue) := NULL]
         } else { # baseline must be a data frame input
-            nms <- names(baseline)
+            nms <- names(baseline_survey)
             if (!resp %in% nms) {
-                stop(sprintf("`baseline` does not contain respondentID column (`%s`)", resp))
+                stop(sprintf("`baseline_survey` does not contain respondentID column (`%s`)", resp))
             }
             if (!utype %in% nms) {
                 utype <- NULL
@@ -212,9 +212,9 @@ calculate_qalys.utility <- function(
             }
             utility_var <- nms[!nms %in% c(resp, utype, ucountry)]
             if (length(utility_var) != 1L) {
-                stop("Unable to find utility values in `baseline`")
+                stop("Unable to find utility values in `baseline_survey`")
             }
-            out <- merge(out, baseline, by = c(resp, ucountry, utype), sort = FALSE)
+            out <- merge(out, baseline_survey, by = c(resp, ucountry, utype), sort = FALSE)
             out$.loss_vs_baseline <- out[[utility_var]] * out$.time_diff / div[[units]] - out$.raw
             out[, (utility_var) := NULL]
         }

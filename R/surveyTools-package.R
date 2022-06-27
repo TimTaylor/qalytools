@@ -34,6 +34,9 @@
 #' @importFrom utils stack head tail
 #' @importFrom eq5d eq5d pchc valuesets
 #' @importFrom pillar tbl_sum
+#' @importFrom rlang caller_arg caller_env
+#' @importFrom vctrs vec_assert
+#' @importFrom cli cli_abort cli_warn
 #' @import data.table
 #' @keywords internal
 "_PACKAGE"

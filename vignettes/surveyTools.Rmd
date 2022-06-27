@@ -142,7 +142,18 @@ function will error with an informative message.
 
 ```{r}
 # Incorrect bounds for dimension values will cause an error
-try(as_eq5d3l(EQ5D5L_surveys))
+try(as_eq5d3l(
+    EQ5D5L_surveys,
+    mobility = "mobility",
+    self_care = "self_care",
+    usual = "usual",
+    pain = "pain",
+    anxiety = "anxiety",
+    respondentID = "respondentID",
+    surveyID = "surveyID",
+    vas = "vas",
+    time_index = "time_index"
+))
 
 # Dimension values that are not whole numbers will cause an error
 EQ5D5L_surveys[1,5] <- 1.5

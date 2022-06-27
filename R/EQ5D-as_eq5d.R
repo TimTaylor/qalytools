@@ -101,7 +101,7 @@ as_eq5d5l <- function(x, ...) {
 #' @export
 as_eq5d5l.default <- function(x, ...) {
     cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    cli_abort("Not implemented for class {.cls {cls}}")
 }
 
 # -------------------------------------------------------------------------
@@ -191,7 +191,7 @@ as_eq5d3l <- function(x, ...) {
 #' @export
 as_eq5d3l.default <- function(x, ...) {
     cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    cli_abort("Not implemented for class {.cls {cls}}")
 }
 
 # -------------------------------------------------------------------------
@@ -268,7 +268,7 @@ as_eq5dy <- function(x, ...) {
 #' @export
 as_eq5dy.default <- function(x, ...) {
     cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    cli_abort("Not implemented for class {.cls {cls}}")
 }
 
 
@@ -365,14 +365,18 @@ as_eq5dy.data.frame <- function(
     anxiety,
     vas,
     drop,
-    version
+    version,
+    call = caller_env()
 ) {
 
     # ensure we have a time_index even if non-specified
     if (missing(time_index)) {
         time_index <- ".time_index"
         if (time_index %in% names(x))
-            stop("Unable to allocate a `time_index` column. Attempted to use '.time_index' as a variable name but this was already present in `x`. Please explicitly state a value for `time_index` or rename '.time_index'", call. = FALSE)
+            cli_abort(
+                "Unable to allocate a `time_index` column. Attempted to use '.time_index' as a variable name but this was already present in `x`. Please explicitly state a value for `time_index` or rename '.time_index'",
+                call = call
+            )
         x[time_index] <- NA_integer_
     }
 
@@ -385,7 +389,10 @@ as_eq5dy.data.frame <- function(
     msg <- NULL
     if (is.character(x[[surveyID]])) {
         x[[surveyID]] <- ordered(x[[surveyID]])
-        msg <- sprintf("`%s` has been converted to an ordered factor with default levels equivalent to `sort(unique(%s))`.", surveyID, surveyID)
+        cli_abort(
+            "{.var {surveyID}} has been converted to an ordered factor with default levels equivalent to {.code sort(unique(%s))}.",
+            call = call
+        )
     }
 
     # get the correct function to call
@@ -393,7 +400,7 @@ as_eq5dy.data.frame <- function(
         "5L" = new_eq5d5l,
         "3L" = new_eq5d3l,
         "Y" = new_eq5dy,
-        stop("Something has gone wrong - please let the developers know")
+        cli_abort("Something has gone wrong - please let the developers know")
     )
 
     # optionally drop extra columns
@@ -430,7 +437,7 @@ as_eq5dy.data.frame <- function(
 
     # print character to factor message from earlier if it exists
     if (!is.null(msg)) {
-        warning(msg, call. = FALSE)
+        cli_warn(msg, call = call)
     }
     out
 }

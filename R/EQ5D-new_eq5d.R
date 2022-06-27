@@ -222,7 +222,7 @@ new_eq5dy <- function(
 validate_eq5d <- function(x, version) {
 
     if (!inherits(x, "EQ5D")) {
-        stop("`x` must be of class 'EQ5D'")
+        cli_abort("{.var x} must be of class {.cls EQ5D}")
     }
 
     version    <- match.arg(version, c("3L", "5L", "Y"))
@@ -246,14 +246,25 @@ validate_eq5d <- function(x, version) {
     for (i in seq_along(vars)) {
         v <- vars[i]
         if (!v %in% names_x) {
-            stop(sprintf("`%s` variable (%s) not present in `x`", names(v), sQuote(v)))
+            cli_abort(
+                sprintf(
+                    "`%s` variable (%s) not present in `x`",
+                    names(v),
+                    sQuote(v)
+                )
+            )
         }
     }
 
     # check surveyID is either numeric or an ordered factor
     s <- .subset2(x, surv)
     if (!(is.factor(s) || is.numeric(s))) {
-        stop(sprintf("`surveyID` variable (%s) must be numeric or an ordered factor", sQuote(surv)))
+        cli_abort(
+            sprintf(
+                "`surveyID` variable (%s) must be numeric or an ordered factor",
+                sQuote(surv)
+            )
+        )
     }
 
     # check presence of dimension variables in data
@@ -262,9 +273,11 @@ validate_eq5d <- function(x, version) {
     if (!all(cols_present)) {
         missing <- cols[!cols_present]
         missing <- paste(sQuote(missing), collapse = ", ")
-        stop(
-            "Not all dimensions specified are present in `x`\n",
-            sprintf(" - The following columns cannot be found: %s", missing)
+        cli_abort(
+            c(
+                "Not all dimensions specified are present in {.var x}",
+                "*" = "The following columns cannot be found: {.val {missing}}"
+            )
         )
     }
 
@@ -275,18 +288,18 @@ validate_eq5d <- function(x, version) {
     # check unique combinations of survey and respondent ID
     combos <- dat[, c(resp, surv)]
     if (anyDuplicated(combos)) {
-        stop("`respondentID` / `surveyID` combinations cannot be duplicated")
+        cli_abort("`respondentID` / `surveyID` combinations cannot be duplicated")
     }
 
     # check dimensions data is numeric
     dat <- dat[, cols]
     if (!all(vapply(dat, is.numeric, logical(1)))) {
-        stop("Dimension values must be whole numbers")
+        cli_abort("Dimension values must be whole numbers")
     }
 
     # check that the data is bounded correctly or na
     if (!all(is.na(dat) | (dat >= 1 & dat <= n))) {
-        stop(sprintf("Dimensions  must be either bounded by 1 and %d, or NA", n))
+        cli_abort("Dimensions must be either bounded by 1 and {n}, or NA")
     }
 
     # check that the data is whole numbers or na
@@ -337,22 +350,21 @@ validate_eq5dy <- function(x) {
     pain,
     anxiety,
     vas,
-    version
+    version,
+    call = caller_env()
 ) {
 
     # only check class of inputs at this stage
-    stopifnot(
-        is.data.frame(x),
-        .is_scalar_character(respondentID),
-        .is_scalar_character(surveyID),
-        .is_scalar_character(time_index),
-        .is_scalar_character(mobility),
-        .is_scalar_character(self_care),
-        .is_scalar_character(usual),
-        .is_scalar_character(pain),
-        .is_scalar_character(anxiety),
-        .is_scalar_character(vas)
-    )
+    x <- .assert_data_frame(x, call = call)
+    respondentID <- .assert_scalar_chr(respondentID, call = call)
+    surveyID <- .assert_scalar_chr(surveyID,  call = call)
+    time_index <- .assert_scalar_chr(time_index, call = call)
+    mobility <- .assert_scalar_chr(mobility, call = call)
+    self_care <- .assert_scalar_chr(self_care, call = call)
+    usual <- .assert_scalar_chr(usual, call = call)
+    pain <- .assert_scalar_chr(pain, call = call)
+    anxiety <- .assert_scalar_chr(anxiety, call = call)
+    vas <- .assert_scalar_chr(vas, call = call)
 
     structure(
         x,

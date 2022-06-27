@@ -27,17 +27,17 @@
 
     # check the data is numeric
     if (!all(vapply(dat, is.numeric, logical(1)))) {
-        stop("Dimension values should be whole numbers", call. = FALSE)
+        cli_abort("Dimension values should be whole numbers")
     }
 
     # check that the data is bounded correctly or na
     if (!all((dat >= 1 & dat <= n) | is.na(dat))) {
-        stop(sprintf("Dimension values should either be NA or bounded by 1 and %d", n), call. = FALSE)
+        cli_abort("Dimension values should either be NA or bounded by 1 and {n}")
     }
 
     # check that the data is whole numbers or na
     if (!(all(.is_whole(dat) | is.na(dat)))) {
-        stop("Dimension values should be whole numbers or NA", call. = FALSE)
+        cli_abort("Dimension values should be whole numbers or {n}")
     }
 
     .eq5d_reconstruct(out, x)

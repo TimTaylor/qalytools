@@ -41,7 +41,7 @@ calculate_limitation <- function(x, ...) {
 #' @export
 calculate_limitation.default <- function(x, ...) {
     cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    cli_abort("Not implemented for class {.cls {cls}}")
 }
 
 # -------------------------------------------------------------------------

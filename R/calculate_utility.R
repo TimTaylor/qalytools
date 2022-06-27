@@ -89,7 +89,7 @@ calculate_utility <- function(x, type, country, ...) {
 #' @export
 calculate_utility.default <- function(x, type, country, ...) {
     cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    cli_abort("Not implemented for class {.cls {cls}}")
 }
 
 
@@ -173,7 +173,7 @@ add_utility <- function(x, type, country, ...) {
 #' @export
 add_utility.default <- function(x, type, country, ...) {
     cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    cli_abort("Not implemented for class {.cls {cls}}")
 }
 
 # -------------------------------------------------------------------------
@@ -244,12 +244,13 @@ add_utility.EQ5DY <- function(
 # -------------------------------- INTERNALS ------------------------------ #
 # ------------------------------------------------------------------------- #
 # ------------------------------------------------------------------------- #
-.calculate_utility <- function(x, type, country, version, drop, age, sex) {
+.calculate_utility <- function(x, type, country, version, drop, age, sex, call = caller_env()) {
     age_dat <- x[age]
     sex_dat <- x[sex]
 
     # check input types
-    stopifnot(is.character(type), is.character(country))
+    type <- .assert_chr(type)
+    country <- .assert_chr(country)
 
     # Recycle type and country inputs and check against available value sets
     if (length(type) == 1L && length(country) > 1L) {
@@ -257,9 +258,9 @@ add_utility.EQ5DY <- function(
     } else if (length(country) == 1L && length(type) > 1L) {
         country <- rep_len(type, length(type))
     } else if (length(type) != length(country)) {
-        stop("lengths of `type` and `country` are not compatible", call. = FALSE)
+        cli_abort("lengths of {.arg type} and {.arg country} are not compatible", call = call)
     } else if (!length(type) || !length(country)) {
-        stop("`type` and `country` must have length greater than 0", call. = FALSE)
+        cli_abort("{.arg type} and {.arg country} must have length greater than 0", call = call)
     }
 
     # create data frame of combinations
@@ -271,9 +272,12 @@ add_utility.EQ5DY <- function(
     valueset_strings <- do.call(paste, c(valuesets, sep = "_"))
     tmp <- combos[!combo_strings %in% valueset_strings, ]
     if (nrow(tmp)) {
-        stop(
-            "Invalid value set and country combination:\n",
-            sprintf(" - Type = %s, Country = %s\n", tmp$type[1], tmp$country[1])
+        cli_abort(
+            c(
+                "Invalid value set and country combination:",
+                "*"="Type = {tmp$type[1]}, Country = {tmp$country[1]}"
+            ),
+            call = call
         )
     }
 
@@ -326,15 +330,15 @@ add_utility.EQ5DY <- function(
 }
 
 
-.eq5d <- function(country, type, scores, version, age, sex) {
+.eq5d <- function(country, type, scores, version, age, sex, call = caller_env()) {
     if (type == "DSU") {
 
         # check character vectors of length 1
         if (is.null(age)) {
-            stop("Please specify the `age` variable.", call. = FALSE)
+            cli_abort("Please specify the {.var age} variable.", call = call)
         }
         if (is.null(sex)) {
-            stop("Please specify the `sex` variable.", call. = FALSE)
+            stop("Please specify the {.var sex} variable.", call = call)
         }
         age <- .assert_scalar_chr(age)
         sex <- .assert_scalar_chr(sex)
@@ -345,9 +349,9 @@ add_utility.EQ5DY <- function(
         for (i in seq_along(vars)) {
             v <- vars[i]
             if (!v %in% nms) {
-                stop(
-                    sprintf("`%s` variable (%s) not present in `x`", names(v), sQuote(v)),
-                    call. = FALSE
+                cli_abort(
+                    "{.var {names(v)}} variable ({sQuote(v)}) not present in {.var x}",
+                    call. = call
                 )
             }
         }
@@ -355,23 +359,23 @@ add_utility.EQ5DY <- function(
         # check valid values
         ages <- .subset2(scores, age)
         if (!is.numeric(ages)) {
-            stop(
-                "`age` variable in `x` should be a numeric vector",
-                call. = FALSE
-            )
+            vec_assert(age, ptype = numeric(), call = call)
         }
         if (length(which(ages < 18 | ages > 100))) {
-            warning("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.")
+            cli_warn(
+                "`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.",
+                call = call
+            )
         }
 
         # check valid values
         sexes <- .subset2(scores, sex)
         if (!is.character(sexes)) {
-            stop("`sex` variable in `x` should be a character vector", call. = FALSE)
+            stop("{.var sex} variable in {.var x} should be a character vector", call = call)
         }
         sexes <- tolower(sexes)
         if (any(!sexes %in% c("male", "m", "female", "f", NA_character_))) {
-            stop('`sex` variable entries should be one of "Male", "M", "Female" or "F" (case independent)')
+            stop('{.var sex} variable entries should be one of "Male", "M", "Female" or "F" (case independent)')
         }
     }
 

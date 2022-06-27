@@ -304,7 +304,7 @@ validate_eq5d <- function(x, version) {
 
     # check that the data is whole numbers or na
     if (!(all(.is_whole(dat) | is.na(dat)))) {
-        stop("Dimension values must be whole numbers or NA")
+        cli_abort("Dimension values must be whole numbers or NA")
     }
 
     invisible(x)

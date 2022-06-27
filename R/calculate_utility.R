@@ -338,7 +338,7 @@ add_utility.EQ5DY <- function(
             cli_abort("Please specify the {.var age} variable.", call = call)
         }
         if (is.null(sex)) {
-            stop("Please specify the {.var sex} variable.", call = call)
+            cli_abort("Please specify the {.var sex} variable.", call = call)
         }
         age <- .assert_scalar_chr(age)
         sex <- .assert_scalar_chr(sex)
@@ -370,12 +370,13 @@ add_utility.EQ5DY <- function(
 
         # check valid values
         sexes <- .subset2(scores, sex)
-        if (!is.character(sexes)) {
-            stop("{.var sex} variable in {.var x} should be a character vector", call = call)
-        }
+        sexes <- .assert_chr(sexes)
         sexes <- tolower(sexes)
         if (any(!sexes %in% c("male", "m", "female", "f", NA_character_))) {
-            stop('{.var sex} variable entries should be one of "Male", "M", "Female" or "F" (case independent)')
+            cli_abort(
+                '{.var sex} variable entries should be one of "Male", "M", "Female" or "F" (case independent)',
+                call = call
+            )
         }
     }
 

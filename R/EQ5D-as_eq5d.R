@@ -381,7 +381,9 @@ as_eq5dy.data.frame <- function(
     }
 
     # check surveyID input (most checks actually occur within fun below)
-    stopifnot(length(surveyID) == 1L)
+    if (length(surveyID) != 1L) {
+        vec_assert(surveyID, size = 1L, call = call)
+    }
 
     # if surveyID is a factor convert to character and provide message to use
     # as warning at end. We delay the message in case the function errors for

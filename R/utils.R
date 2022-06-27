@@ -92,8 +92,8 @@
 }
 
 # convert rownames to a column
-.rownames_2_column <- function(x, var = "rowname") {
-    stopifnot(is.data.frame(x))
+.rownames_2_column <- function(x, var = "rowname", call = caller_env()) {
+    x <- .assert_data_frame(x, call = call)
     rnms <- rownames(x)
     nms <- names(x)
     if (var %in% nms) {

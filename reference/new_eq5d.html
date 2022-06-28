@@ -126,34 +126,34 @@ with the additional restriction  that the corresponding dimension columns in
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">new_eq5d3l</span><span class="op">(</span>
-    <span class="va">x</span>,
-    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,
-    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,
-    <span class="va">vas</span>
-<span class="op">)</span>
-
-<span class="fu">new_eq5d3l</span><span class="op">(</span>
-    <span class="va">x</span>,
-    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,
-    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,
-    <span class="va">vas</span>
-<span class="op">)</span>
-
-<span class="fu">new_eq5dy</span><span class="op">(</span>
-    <span class="va">x</span>,
-    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,
-    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,
-    <span class="va">vas</span>
-<span class="op">)</span>
-
-<span class="fu">validate_eq5d</span><span class="op">(</span><span class="va">x</span>, <span class="va">version</span><span class="op">)</span>
-
-<span class="fu">validate_eq5d3l</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">validate_eq5d5l</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">validate_eq5dy</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">new_eq5d3l</span><span class="op">(</span></span>
+<span>    <span class="va">x</span>,</span>
+<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,</span>
+<span>    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,</span>
+<span>    <span class="va">vas</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">new_eq5d3l</span><span class="op">(</span></span>
+<span>    <span class="va">x</span>,</span>
+<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,</span>
+<span>    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,</span>
+<span>    <span class="va">vas</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">new_eq5dy</span><span class="op">(</span></span>
+<span>    <span class="va">x</span>,</span>
+<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,</span>
+<span>    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,</span>
+<span>    <span class="va">vas</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">validate_eq5d</span><span class="op">(</span><span class="va">x</span>, <span class="va">version</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">validate_eq5d3l</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">validate_eq5d5l</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">validate_eq5dy</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -223,32 +223,32 @@ validation functions).</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">EQ5D5L_surveys</span></span>
-<span class="r-in"><span class="va">dat</span><span class="op">$</span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">survey</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">new_eq5d5l</span><span class="op">(</span><span class="va">dat</span>,</span>
-<span class="r-in">    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span>
-<span class="r-in">    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span>
-<span class="r-in">    mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
-<span class="r-in">    self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
-<span class="r-in">    usual <span class="op">=</span> <span class="st">"usual"</span>,</span>
-<span class="r-in">    pain <span class="op">=</span> <span class="st">"pain"</span>,</span>
-<span class="r-in">    anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span>
-<span class="r-in">    vas <span class="op">=</span> <span class="st">"vas"</span>,</span>
-<span class="r-in">    time_index <span class="op">=</span> <span class="st">"time_index"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">validate_eq5d</span><span class="op">(</span><span class="va">res</span>, version <span class="op">=</span> <span class="st">"5L"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">validate_eq5d5l</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">validate_eq5d3l</span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">EQ5D5L_surveys</span></span></span>
+<span class="r-in"><span><span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">new_eq5d5l</span><span class="op">(</span><span class="va">dat</span>,</span></span>
+<span class="r-in"><span>    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span></span>
+<span class="r-in"><span>    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span></span>
+<span class="r-in"><span>    mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span></span>
+<span class="r-in"><span>    self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span></span>
+<span class="r-in"><span>    usual <span class="op">=</span> <span class="st">"usual"</span>,</span></span>
+<span class="r-in"><span>    pain <span class="op">=</span> <span class="st">"pain"</span>,</span></span>
+<span class="r-in"><span>    anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span></span>
+<span class="r-in"><span>    vas <span class="op">=</span> <span class="st">"vas"</span>,</span></span>
+<span class="r-in"><span>    time_index <span class="op">=</span> <span class="st">"time_index"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">validate_eq5d</span><span class="op">(</span><span class="va">res</span>, version <span class="op">=</span> <span class="st">"5L"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">validate_eq5d5l</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">validate_eq5d3l</span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in validate_eq5d(x, version = "3L") : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Dimensions  must be either bounded by 1 and 3, or NA</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">validate_eq5d</span><span class="op">(</span><span class="va">res</span>, version <span class="op">=</span> <span class="st">"3L"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">validate_eq5d</span><span class="op">(</span><span class="va">res</span>, version <span class="op">=</span> <span class="st">"3L"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in validate_eq5d(res, version = "3L") : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Dimensions  must be either bounded by 1 and 3, or NA</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

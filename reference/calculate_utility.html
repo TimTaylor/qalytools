@@ -60,57 +60,57 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_utility</span><span class="op">(</span><span class="va">x</span>, <span class="va">type</span>, <span class="va">country</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">calculate_utility</span><span class="op">(</span><span class="va">x</span>, <span class="va">type</span>, <span class="va">country</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for EQ5D5L</span>
-<span class="fu">calculate_utility</span><span class="op">(</span>
-  <span class="va">x</span>,
-  type <span class="op">=</span> <span class="st">"VT"</span>,
-  country <span class="op">=</span> <span class="st">"England"</span>,
-  drop <span class="op">=</span> <span class="cn">TRUE</span>,
-  age <span class="op">=</span> <span class="cn">NULL</span>,
-  sex <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for EQ5D3L</span>
-<span class="fu">calculate_utility</span><span class="op">(</span>
-  <span class="va">x</span>,
-  type <span class="op">=</span> <span class="st">"VT"</span>,
-  country <span class="op">=</span> <span class="st">"England"</span>,
-  drop <span class="op">=</span> <span class="cn">TRUE</span>,
-  age <span class="op">=</span> <span class="cn">NULL</span>,
-  sex <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for EQ5DY</span>
-<span class="fu">calculate_utility</span><span class="op">(</span>
-  <span class="va">x</span>,
-  type <span class="op">=</span> <span class="st">"VT"</span>,
-  country <span class="op">=</span> <span class="st">"England"</span>,
-  drop <span class="op">=</span> <span class="cn">TRUE</span>,
-  age <span class="op">=</span> <span class="cn">NULL</span>,
-  sex <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, <span class="va">type</span>, <span class="va">country</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, <span class="va">type</span>, <span class="va">country</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for EQ5D5L</span>
-<span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="st">"England"</span>, age <span class="op">=</span> <span class="cn">NULL</span>, sex <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for EQ5D3L</span>
-<span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="st">"England"</span>, age <span class="op">=</span> <span class="cn">NULL</span>, sex <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for EQ5DY</span>
-<span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="st">"England"</span>, age <span class="op">=</span> <span class="cn">NULL</span>, sex <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_utility</span><span class="op">(</span><span class="va">x</span>, <span class="va">type</span>, <span class="va">country</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">calculate_utility</span><span class="op">(</span><span class="va">x</span>, <span class="va">type</span>, <span class="va">country</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for EQ5D5L</span></span>
+<span><span class="fu">calculate_utility</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"VT"</span>,</span>
+<span>  country <span class="op">=</span> <span class="st">"England"</span>,</span>
+<span>  drop <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  age <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sex <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for EQ5D3L</span></span>
+<span><span class="fu">calculate_utility</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"VT"</span>,</span>
+<span>  country <span class="op">=</span> <span class="st">"England"</span>,</span>
+<span>  drop <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  age <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sex <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for EQ5DY</span></span>
+<span><span class="fu">calculate_utility</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"VT"</span>,</span>
+<span>  country <span class="op">=</span> <span class="st">"England"</span>,</span>
+<span>  drop <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  age <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sex <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, <span class="va">type</span>, <span class="va">country</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, <span class="va">type</span>, <span class="va">country</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for EQ5D5L</span></span>
+<span><span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="st">"England"</span>, age <span class="op">=</span> <span class="cn">NULL</span>, sex <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for EQ5D3L</span></span>
+<span><span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="st">"England"</span>, age <span class="op">=</span> <span class="cn">NULL</span>, sex <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for EQ5DY</span></span>
+<span><span class="fu">add_utility</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="st">"England"</span>, age <span class="op">=</span> <span class="cn">NULL</span>, sex <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -188,22 +188,22 @@ each survey type.</p></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"eq5d3l_example"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_eq5d.html">as_eq5d3l</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">eq5d3l_example</span>,</span>
-<span class="r-in">    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span>
-<span class="r-in">    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span>
-<span class="r-in">    time_index <span class="op">=</span> <span class="st">"time"</span>,</span>
-<span class="r-in">    mobility <span class="op">=</span> <span class="st">"MO"</span>,</span>
-<span class="r-in">    self_care <span class="op">=</span> <span class="st">"SC"</span>,</span>
-<span class="r-in">    usual <span class="op">=</span> <span class="st">"UA"</span>,</span>
-<span class="r-in">    pain <span class="op">=</span> <span class="st">"PD"</span>,</span>
-<span class="r-in">    anxiety <span class="op">=</span> <span class="st">"AD"</span>,</span>
-<span class="r-in">    vas <span class="op">=</span> <span class="st">"vas"</span>,</span>
-<span class="r-in">    drop <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">calculate_utility</span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="st">"TTO"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UK"</span>, <span class="st">"Germany"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"eq5d3l_example"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_eq5d.html">as_eq5d3l</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">eq5d3l_example</span>,</span></span>
+<span class="r-in"><span>    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span></span>
+<span class="r-in"><span>    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span></span>
+<span class="r-in"><span>    time_index <span class="op">=</span> <span class="st">"time"</span>,</span></span>
+<span class="r-in"><span>    mobility <span class="op">=</span> <span class="st">"MO"</span>,</span></span>
+<span class="r-in"><span>    self_care <span class="op">=</span> <span class="st">"SC"</span>,</span></span>
+<span class="r-in"><span>    usual <span class="op">=</span> <span class="st">"UA"</span>,</span></span>
+<span class="r-in"><span>    pain <span class="op">=</span> <span class="st">"PD"</span>,</span></span>
+<span class="r-in"><span>    anxiety <span class="op">=</span> <span class="st">"AD"</span>,</span></span>
+<span class="r-in"><span>    vas <span class="op">=</span> <span class="st">"vas"</span>,</span></span>
+<span class="r-in"><span>    drop <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">calculate_utility</span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="st">"TTO"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UK"</span>, <span class="st">"Germany"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A data frame: 400 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    respondentID surveyID  time .utility_country .utility_type .value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  <span style="color: #BCBCBC;">*</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -218,7 +218,7 @@ each survey type.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>            9        1     0 UK               TTO            0.656</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>           10        1     0 UK               TTO            0.779</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 390 more rows</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -63,28 +63,28 @@ EQ5D survey respondents.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_qalys</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">calculate_qalys</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for EQ5D</span>
-<span class="fu">calculate_qalys</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">type</span>,
-  <span class="va">country</span>,
-  units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"days"</span>, <span class="st">"weeks"</span>, <span class="st">"months"</span>, <span class="st">"quarters"</span>, <span class="st">"years"</span><span class="op">)</span>,
-  baseline_survey <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for utility</span>
-<span class="fu">calculate_qalys</span><span class="op">(</span>
-  <span class="va">x</span>,
-  units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"days"</span>, <span class="st">"weeks"</span>, <span class="st">"months"</span>, <span class="st">"quarters"</span>, <span class="st">"years"</span><span class="op">)</span>,
-  baseline_survey <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_qalys</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">calculate_qalys</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for EQ5D</span></span>
+<span><span class="fu">calculate_qalys</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">type</span>,</span>
+<span>  <span class="va">country</span>,</span>
+<span>  units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"days"</span>, <span class="st">"weeks"</span>, <span class="st">"months"</span>, <span class="st">"quarters"</span>, <span class="st">"years"</span><span class="op">)</span>,</span>
+<span>  baseline_survey <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for utility</span></span>
+<span><span class="fu">calculate_qalys</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"days"</span>, <span class="st">"weeks"</span>, <span class="st">"months"</span>, <span class="st">"quarters"</span>, <span class="st">"years"</span><span class="op">)</span>,</span>
+<span>  baseline_survey <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -163,21 +163,21 @@ calculation.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">EQ5D5L_surveys</span>,</span>
-<span class="r-in">    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span>
-<span class="r-in">    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span>
-<span class="r-in">    mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
-<span class="r-in">    self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
-<span class="r-in">    usual <span class="op">=</span> <span class="st">"usual"</span>,</span>
-<span class="r-in">    pain <span class="op">=</span> <span class="st">"pain"</span>,</span>
-<span class="r-in">    anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span>
-<span class="r-in">    time_index <span class="op">=</span> <span class="st">"time_index"</span>,</span>
-<span class="r-in">    vas <span class="op">=</span> <span class="st">"vas"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">calculate_qalys</span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Denmark"</span>, <span class="st">"France"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">EQ5D5L_surveys</span>,</span></span>
+<span class="r-in"><span>    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span></span>
+<span class="r-in"><span>    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span></span>
+<span class="r-in"><span>    mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span></span>
+<span class="r-in"><span>    self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span></span>
+<span class="r-in"><span>    usual <span class="op">=</span> <span class="st">"usual"</span>,</span></span>
+<span class="r-in"><span>    pain <span class="op">=</span> <span class="st">"pain"</span>,</span></span>
+<span class="r-in"><span>    anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span></span>
+<span class="r-in"><span>    time_index <span class="op">=</span> <span class="st">"time_index"</span>,</span></span>
+<span class="r-in"><span>    vas <span class="op">=</span> <span class="st">"vas"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">calculate_qalys</span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Denmark"</span>, <span class="st">"France"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A data frame: 4,000 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    respondentID .utility_type .utility_country .qaly .value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -192,7 +192,7 @@ calculation.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>            5 VT            Denmark          raw    0.491</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>            5 VT            France           raw    0.532</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3,990 more rows</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

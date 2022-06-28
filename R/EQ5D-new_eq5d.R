@@ -99,7 +99,7 @@
 #'
 #' data("EQ5D5L_surveys")
 #' dat <- EQ5D5L_surveys
-#' dat$survey <- factor(dat$survey)
+#' dat$surveyID <- factor(dat$surveyID)
 #'
 #' res <- new_eq5d5l(dat,
 #'     respondentID = "respondentID",

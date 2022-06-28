@@ -140,13 +140,9 @@ summary(dat, tidy = TRUE)
 If we try and coerce an object that does not meet the required criteria, the
 function will error with an informative message.
 
-```{r}
+```{r, error=TRUE}
 # Incorrect bounds for dimension values will cause an error
-try(as_eq5d3l(EQ5D5L_surveys))
-
-# Dimension values that are not whole numbers will cause an error
-EQ5D5L_surveys[1,5] <- 1.5
-try(as_eq5d5l(
+as_eq5d3l(
     EQ5D5L_surveys,
     mobility = "mobility",
     self_care = "self_care",
@@ -157,7 +153,22 @@ try(as_eq5d5l(
     surveyID = "surveyID",
     vas = "vas",
     time_index = "time_index"
-))
+)
+
+# Dimension values that are not whole numbers will cause an error
+EQ5D5L_surveys[1,5] <- 1.5
+as_eq5d5l(
+    EQ5D5L_surveys,
+    mobility = "mobility",
+    self_care = "self_care",
+    usual = "usual",
+    pain = "pain",
+    anxiety = "anxiety",
+    respondentID = "respondentID",
+    surveyID = "surveyID",
+    vas = "vas",
+    time_index = "time_index"
+)
 ```
 
 ### Available value sets

@@ -325,13 +325,7 @@
 <p>If we try and coerce an object that does not meet the required criteria, the function will error with an informative message.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Incorrect bounds for dimension values will cause an error</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_eq5d.html">as_eq5d3l</a></span><span class="op">(</span><span class="va">EQ5D5L_surveys</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in .as_eq5d(x = x, respondentID = respondentID, surveyID = surveyID,  : </span></span>
-<span><span class="co">#&gt;   argument "surveyID" is missing, with no default</span></span>
-<span></span>
-<span><span class="co"># Dimension values that are not whole numbers will cause an error</span></span>
-<span><span class="va">EQ5D5L_surveys</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1.5</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/as_eq5d.html">as_eq5d3l</a></span><span class="op">(</span></span>
 <span>    <span class="va">EQ5D5L_surveys</span>,</span>
 <span>    mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
 <span>    self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
@@ -342,9 +336,24 @@
 <span>    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span>
 <span>    vas <span class="op">=</span> <span class="st">"vas"</span>,</span>
 <span>    time_index <span class="op">=</span> <span class="st">"time_index"</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in validate_eq5d(out, version) : </span></span>
-<span><span class="co">#&gt;   Dimension values must be whole numbers or NA</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in validate_eq5d(out, version): Dimensions  must be either bounded by 1 and 3, or NA</span></span>
+<span></span>
+<span><span class="co"># Dimension values that are not whole numbers will cause an error</span></span>
+<span><span class="va">EQ5D5L_surveys</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1.5</span></span>
+<span><span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
+<span>    <span class="va">EQ5D5L_surveys</span>,</span>
+<span>    mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
+<span>    self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
+<span>    usual <span class="op">=</span> <span class="st">"usual"</span>,</span>
+<span>    pain <span class="op">=</span> <span class="st">"pain"</span>,</span>
+<span>    anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span>
+<span>    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span>
+<span>    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span>
+<span>    vas <span class="op">=</span> <span class="st">"vas"</span>,</span>
+<span>    time_index <span class="op">=</span> <span class="st">"time_index"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in validate_eq5d(out, version): Dimension values must be whole numbers or NA</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="available-value-sets">Available value sets<a class="anchor" aria-label="anchor" href="#available-value-sets"></a>
 </h3>

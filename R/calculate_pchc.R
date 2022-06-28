@@ -44,12 +44,10 @@
 calculate_pchc <- function(pre, post, no.problems = TRUE, by.dimension = FALSE) {
 
     # check inputs
-    stopifnot(
-        "`pre` must be an EQ5D object" = inherits(pre, "EQ5D"),
-        "`post` must be an EQ5D object" = inherits(post, "EQ5D"),
-        .is_bool(no.problems),
-        .is_bool(by.dimension)
-    )
+    pre <- .assert_class(pre, "EQ5D")
+    post <- .assert_class(post, "EQ5D")
+    no.problems <- .assert_bool(no.problems)
+    by.dimension <- .assert_bool(by.dimension)
 
     # get eq5d version - also acts as an input check class of pre and post
     version_pre <- .get_version(pre)

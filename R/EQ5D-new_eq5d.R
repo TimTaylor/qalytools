@@ -227,15 +227,15 @@ validate_eq5d <- function(x, version) {
 
     version    <- match.arg(version, c("3L", "5L", "Y"))
 
-    resp       <- .assert_scalar_chr(attr(x, "respondentID"))
-    surv       <- .assert_scalar_chr(attr(x, "surveyID"))
-    time_index <- .assert_scalar_chr(attr(x, "time_index"))
-    mobility   <- .assert_scalar_chr(attr(x, "mobility"))
-    self_care  <- .assert_scalar_chr(attr(x, "self_care"))
-    usual      <- .assert_scalar_chr(attr(x, "usual"))
-    pain       <- .assert_scalar_chr(attr(x, "pain"))
-    anxiety    <- .assert_scalar_chr(attr(x, "anxiety"))
-    vas        <- .assert_scalar_chr(attr(x, "vas"))
+    resp       <- .assert_scalar_character(attr(x, "respondentID"))
+    surv       <- .assert_scalar_character(attr(x, "surveyID"))
+    time_index <- .assert_scalar_character(attr(x, "time_index"))
+    mobility   <- .assert_scalar_character(attr(x, "mobility"))
+    self_care  <- .assert_scalar_character(attr(x, "self_care"))
+    usual      <- .assert_scalar_character(attr(x, "usual"))
+    pain       <- .assert_scalar_character(attr(x, "pain"))
+    anxiety    <- .assert_scalar_character(attr(x, "anxiety"))
+    vas        <- .assert_scalar_character(attr(x, "vas"))
 
     # pull our number of levels
     n <- if (version == "5L") 5L else 3L
@@ -341,18 +341,16 @@ validate_eq5dy <- function(x) {
 ) {
 
     # only check class of inputs at this stage
-    stopifnot(
-        is.data.frame(x),
-        .is_scalar_character(respondentID),
-        .is_scalar_character(surveyID),
-        .is_scalar_character(time_index),
-        .is_scalar_character(mobility),
-        .is_scalar_character(self_care),
-        .is_scalar_character(usual),
-        .is_scalar_character(pain),
-        .is_scalar_character(anxiety),
-        .is_scalar_character(vas)
-    )
+    x <- .assert_data_frame(x)
+    respondentID <- .assert_scalar_character(respondentID)
+    surveyID <- .assert_scalar_character(surveyID)
+    time_index <- .assert_scalar_character(time_index)
+    mobility <- .assert_scalar_character(mobility)
+    self_care <- .assert_scalar_character(self_care)
+    usual <- .assert_scalar_character(usual)
+    pain <- .assert_scalar_character(pain)
+    anxiety <- .assert_scalar_character(anxiety)
+    vas <- .assert_scalar_character(vas)
 
     structure(
         x,

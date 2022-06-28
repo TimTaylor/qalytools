@@ -58,9 +58,7 @@ available_valuesets.default <- function(x, ...) {
     if (missing(x) && !...length()) {
         return(.valuesets())
     }
-
-    cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    .class_not_implemented(x)
 }
 
 # -------------------------------------------------------------------------

@@ -1,7 +1,9 @@
 test_that("calculate_pchc errors correctly", {
 
+    dat3 <- eq5d3l_example
+
     dat3 <- as_eq5d3l(
-        eq5d3l_example,
+        dat3,
         respondentID = "respondentID",
         surveyID = "surveyID",
         time_index = "time",
@@ -14,8 +16,9 @@ test_that("calculate_pchc errors correctly", {
         drop = FALSE
     )
 
+    dat5 <- EQ5D5L_surveys
     dat5 <- as_eq5d5l(
-        EQ5D5L_surveys,
+        dat5,
         respondentID = "respondentID",
         surveyID = "surveyID",
         time_index = "time_index",

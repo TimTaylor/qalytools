@@ -1,4 +1,4 @@
-dat <- eq5d3l_example
+dat <- copy(eq5d3l_example)
 data.table::setnames(
     dat,
     old = c("MO", "SC", "UA", "PD", "AD", "time"),

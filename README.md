@@ -25,7 +25,7 @@ across multiple surveys.
 The development version of the package can be installed via:
 
 ``` r
-    repos <- c(getOption("repos"), "https://timtaylor.r-universe.dev")
+    repos <- c("https://timtaylor.r-universe.dev", getOption("repos"))
     install.packages("surveyTools", repos = repos)
 ```
 

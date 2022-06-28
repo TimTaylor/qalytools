@@ -99,7 +99,7 @@
 #'
 #' data("EQ5D5L_surveys")
 #' dat <- EQ5D5L_surveys
-#' dat$survey <- factor(dat$survey)
+#' dat$surveyID <- factor(dat$surveyID)
 #'
 #' res <- new_eq5d5l(dat,
 #'     respondentID = "respondentID",
@@ -272,7 +272,6 @@ validate_eq5d <- function(x, version) {
     cols_present <- cols %in% names_x
     if (!all(cols_present)) {
         missing <- cols[!cols_present]
-        missing <- paste(sQuote(missing), collapse = ", ")
         cli_abort(
             c(
                 "Not all dimensions specified are present in {.var x}",

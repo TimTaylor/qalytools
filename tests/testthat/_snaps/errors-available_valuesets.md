@@ -1,6 +1,6 @@
 # errors are correct
 
-    Not implemented for class [function].
+    Not implemented for [function] objects.
 
 ---
 

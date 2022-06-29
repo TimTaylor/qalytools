@@ -15,11 +15,9 @@ test_that("calculate_qalys errors correctly", {
     )
 
     u <- calculate_utility(dat, type = "VT", country = "Denmark")
-
     expect_snapshot_error(calculate_qalys(mtcars, type = "VT", country = "Denmark"))
     expect_snapshot_error(calculate_qalys(dat, baseline_survey=1, type = "VT", country = "Denmark"))
     expect_snapshot_error(calculate_qalys(u, baseline_survey=1, type = "VT", country = "Denmark"))
     expect_snapshot_error(calculate_qalys(dat, baseline_survey="bob", type = "VT", country = "Denmark"))
-
 
 })

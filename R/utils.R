@@ -56,7 +56,7 @@
 # function to use in default s3 methods with no implementation
 .class_not_implemented <- function(x) {
     cls <- paste(class(x), collapse = ", ")
-    msg <- sprintf("Not implemented for class [%s].", cls)
+    msg <- sprintf("Not implemented for [%s] objects.", cls)
     call <- sys.call(-1)
     stop(simpleError(msg, call = call[1]))
 }

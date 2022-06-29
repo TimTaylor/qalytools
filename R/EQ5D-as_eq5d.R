@@ -376,7 +376,7 @@ as_eq5dy.data.frame <- function(
     # check surveyID input (most checks actually occur within fun below)
     stopifnot(length(surveyID) == 1L)
 
-    # if surveyID is a factor convert to character and provide message to use
+    # if surveyID is a character convert to factor and provide message to use
     # as warning at end. We delay the message in case the function errors for
     # other reasons first as this can get a little confusing for users.
     msg <- NULL

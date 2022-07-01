@@ -1,5 +1,6 @@
 test_that("validate_eq5d works", {
     dat <- EQ5D5L_surveys
+    dat$surveyID <- as.factor(dat$surveyID)
     class(dat) <- "data.frame"
 
     expect_snapshot_error(

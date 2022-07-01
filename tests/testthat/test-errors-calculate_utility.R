@@ -1,4 +1,5 @@
 test_that("calculate_utility errors correctly", {
+    EQ5D5L_surveys$surveyID <- as.factor(EQ5D5L_surveys$surveyID)
     dat <- as_eq5d5l(
         EQ5D5L_surveys,
         respondentID = "respondentID",

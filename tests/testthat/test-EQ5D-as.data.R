@@ -1,5 +1,6 @@
 test_that("as_data.frame works", {
     dat <- EQ5D5L_surveys
+    dat$surveyID <- as.factor(dat$surveyID)
     class(dat) <- "data.frame"
     out <- as_eq5d5l(
         dat,

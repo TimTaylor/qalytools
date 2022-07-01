@@ -17,6 +17,7 @@ test_that("calculate_pchc errors correctly", {
     )
 
     dat5 <- EQ5D5L_surveys
+    dat5$surveyID <- as.factor(dat5$surveyID)
     dat5 <- as_eq5d5l(
         dat5,
         respondentID = "respondentID",

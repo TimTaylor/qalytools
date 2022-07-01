@@ -75,9 +75,16 @@ EQ5D5L_surveys <- out[chosen, on="respondentID"]
 # Ensure vas is integer between 0 and 100
 EQ5D5L_surveys[, vas := round(vas * 100)]
 
+# make surveyID nicer for examples
+EQ5D5L_surveys[, surveyID := sprintf("survey%02d", surveyID)]
+
+# Add a dummy variable
+EQ5D5L_surveys[, dummy:=sample(c(TRUE, FALSE), size = .N, replace=TRUE)]
+
 # save output
 setDF(EQ5D5L_surveys)
 class(EQ5D5L_surveys) <- c("tbl", "data.frame")
+
 write.csv(
     EQ5D5L_surveys,
     file = file.path("data-raw", "EQ5D5L_surveys.csv"),

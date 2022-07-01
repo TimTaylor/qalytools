@@ -1,5 +1,5 @@
 dat <- EQ5D5L_surveys
-dat <- transform(dat, surveyID = factor(surveyID, levels = 1:10, ordered = TRUE))
+dat <- transform(dat, surveyID = as.factor(surveyID))
 out <- as_eq5d5l(
     dat,
     surveyID = "surveyID",
@@ -90,7 +90,7 @@ test_that("Adding incorrect values to an EQ5D5L object will error", {
 
 test_that("calculate_utility works as expected (non-DSU type)", {
     # matches eq5d direct calculation
-    dat <- subset(out, surveyID=="1")
+    dat <- subset(out, surveyID=="survey01")
     tmp <- calculate_utility(dat, type = "VT", country = c("Germany", "France"))
 
     # correct class
@@ -118,7 +118,7 @@ test_that("calculate_utility works as expected (non-DSU type)", {
 
 test_that("calculate_utility works as expected (DSU type)", {
     # matches eq5d direct calculation
-    dat <- subset(out, surveyID=="1")
+    dat <- subset(out, surveyID=="survey01")
     tmp <- calculate_utility(dat, type = "DSU", country = "UK", age = "age", sex = "sex")
 
     # correct class

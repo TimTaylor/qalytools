@@ -9,7 +9,7 @@ download.file(
 )
 
 dat <- readxl::read_xlsx(f)
-dat$surveyID <- 1
+dat$surveyID <- factor("survey01")
 dat$respondentID <- 1:nrow(dat)
 score <- eq5d::eq5d(dat,version = "3L", type = "TTO", country="UK")
 dat$vas <- abs(score + rnorm(length(score), sd = 0.1))

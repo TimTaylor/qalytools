@@ -284,14 +284,14 @@ validate_eq5d <- function(x, version) {
         stop("Dimension values must be whole numbers")
     }
 
-    # check that the data is bounded correctly or na
-    if (!all(is.na(dat) | (dat >= 1 & dat <= n))) {
-        stop(sprintf("Dimensions  must be either bounded by 1 and %d, or NA", n))
-    }
-
     # check that the data is whole numbers or na
     if (!(all(.is_whole(dat) | is.na(dat)))) {
         stop("Dimension values must be whole numbers or NA")
+    }
+
+    # check that the data is bounded correctly or na
+    if (!all(is.na(dat) | (dat >= 1 & dat <= n))) {
+        stop(sprintf("Dimensions  must be either bounded by 1 and %d, or NA", n))
     }
 
     invisible(x)

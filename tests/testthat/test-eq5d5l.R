@@ -44,7 +44,7 @@ test_that("as_eq5d5l works", {
     expect_named(
         out,
         c("surveyID", "respondentID", "mobility", "self_care", "usual",
-          "pain", "anxiety", "vas", "time_index", "sex", "age"),
+          "pain", "anxiety", "vas", "time_index", "sex", "age", "dummy"),
         ignore.order = TRUE
     )
 })
@@ -60,7 +60,10 @@ test_that("EQ5D5L maintain and drop class appropriately", {
     expect_false("EQ5D5L" %in% class(out[3,3,drop=TRUE]))
 
     # renaming maintains class and stores attributes
-    tmp <- out[,-(3:4)]
+    tmp <- out
+    tmp$sex <- NULL
+    tmp$age <- NULL
+    tmp$dummy <- NULL
     names(tmp) <- sprintf("nm%d", seq_along(tmp))
     expect_s3_class(tmp, "EQ5D5L")
     expect_named(

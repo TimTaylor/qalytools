@@ -268,7 +268,7 @@ subset(qalys, .qaly=="loss_vs_fullhealth")
 
 ### Comparison to a baseline
 
-`calculate_qaly()` also allows us to calculate the loss from a specified
+`calculate_qalys()` also allows us to calculate the loss from a specified
 baseline in one of two ways. Firstly, a character string `baseline_survey`
 argument can be placed which matches a survey present in the utility data. If
 the argument is passed as such then the utility values from the specified survey
@@ -298,11 +298,11 @@ calculate_utility(dat, type = "VT", country = c("Denmark", "France")) |>
     subset(.qaly == "loss_vs_baseline")
 ```
 
-Alternatively the `baseline_survey` argument can be specified as a data frame with a
-column corresponding to the respondentID and another representing the associated
-utility. Optionally columns corresponding to the utility country and utility
-type can be included to allow more granular comparisons. Note that for this
-specification of baseline, it is **not** included in the unadjusted, raw,
+Alternatively the `baseline_survey` argument can be specified as a data frame
+with a column corresponding to the respondentID and another representing the
+associated utility. Optionally columns corresponding to the utility country and
+utility type can be included to allow more granular comparisons. Note that for
+this specification of baseline, it is **not** included in the unadjusted, raw,
 calculation.
 
 ```{r}

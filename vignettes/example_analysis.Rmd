@@ -1,104 +1,334 @@
 ---
-title: "Example analysis"
+title: "Example EQ-5D analysis using the surveyTools package"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example analysis}
+  %\VignetteIndexEntry{Example EQ-5D analysis using the surveyTools package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: references.bib
 ---
 
 ```{r, include = FALSE}
+options(dplyr.summarise.inform = FALSE)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.align = "center",
+  fig.width = 8,
+  fig.height = 5
 )
+
+library(tidyverse)
+theme_set(theme_bw())
 ```
 
-## Introduction
+This vignette will show a way to analyse EQ-5D data using statistical models. The goal is to calculate the utility values, based on longitudinal EQ-5D data, identify explanatory variables and calculate the QALY loss. As a basis we use the survey included in the package. The survey includes the age of the participants. For the analysis we group the participants by age ($[20,40), [40,60), [60,+)$). This is common practice in this field, because health outcomes are generally highly dependent on the age of the participants.
 
-Lorem ipsum dolor sit amet, mollis gravida dictum mauris enim. Ut, vel cum,
-commodo nulla at. Sed arcu euismod adipiscing, ut. In fames maximus mus nunc
-velit mus sed ut primis et. Lorem vestibulum sed eu sit dolor risus. A, tempus
-ac dui nullam, ut, est et sed quis. Nec eros. Varius condimentum ut ligula
-vel vitae parturient erat diam. At convallis. Pharetra interdum diam congue
-scelerisque et nisi egestas id pharetra. Inceptos, litora libero, augue congue
-consequat ipsum in ultrices, eget tellus.
+```{r thedata}
+library(surveyTools)
+dat <- surveyTools::EQ5D5L_surveys |>
+  dplyr::mutate(surveyID = factor(surveyID)) |>
+  # Split population into age groups
+  dplyr::mutate(AgeGroup = cut(age, c(20, 40, 60, Inf), right = F))
 
-Amet, donec urna luctus cursus varius ante. Ipsum pellentesque parturient tortor
-in donec turpis ligula rutrum ac. Augue auctor cursus justo litora placerat est
-montes sed! Torquent velit a tincidunt. Fermentum conubia laoreet. Porta eu sed,
-lobortis consectetur hendrerit eget, mauris nulla cum justo. Lorem per rutrum
-cras inceptos tempus et amet sit quis aenean diam. Torquent non felis sodales
-scelerisque, pharetra mi rutrum.
+dat |>
+  dplyr::select(respondentID, surveyID, mobility, self_care,
+                usual, pain, anxiety, AgeGroup, sex) |>
+  dplyr::arrange(surveyID, respondentID) |>
+  head() |>
+  knitr::kable(caption = "Data excerpt")
+```
 
-## Overview of data
+Next we calculate the utility values based on the EQ-5D survey.
 
-Consectetur libero morbi nisl sapien. At a lorem imperdiet id. Proin suspendisse
-purus sapien aliquam sed ac ante eu pellentesque. Et massa tempus sed diam
-aenean, quis augue. Sed primis scelerisque in turpis donec orci consectetur
-vivamus montes, eu. Et elementum. Amet proin augue quisque vitae dui sed sed
-primis sed. Ac sed purus mauris a blandit. In elementum tempor lacinia in vitae
-cras a dictumst, nisi odio. Blandit potenti donec.
+```{r loaddata}
+input_dat <- as_eq5d5l(
+    dat,
+    mobility = "mobility",
+    self_care = "self_care",
+    usual = "usual",
+    pain = "pain",
+    anxiety = "anxiety",
+    respondentID = "respondentID",
+    surveyID = "surveyID",
+    time_index = "time_index",
+    vas = "vas"
+) |>
+  add_utility(dat, type = "DSU", country = "UK", age = "age", sex = "sex")
+```
 
-Eget ultricies in. Lectus nec ridiculus lobortis nunc dis. Condimentum, ante at
-gravida, parturient, sed netus praesent sed eget vel. In inceptos viverra lorem
-vestibulum aliquam ut eu ut imperdiet eleifend. Dictumst cras fusce egestas
-pellentesque sociis. Placerat vestibulum imperdiet sed, duis ipsum. Cum mollis
-non facilisis facilisis non, viverra a vehicula. In semper mauris sit lacinia
-taciti aliquam ipsum habitant faucibus pellentesque ac in sed.
+We will be using a mixed effect model to fit to the data. The model is defined as `value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup + sex:AgeGroup`. This means that we assume each respondent to have a random effect as well as a random interaction between the first survey after symptoms (acute). Other explanatory variables are the survey, sex and age group (and the interaction between sex and age group). This model was chosen based on our knowledge of the data. For your own dataset it is recommended to choose your own model. For example, by exploring multiple models and choosing the best model (using standard model comparison methods).
 
-## Descriptive analysis
+To fit our mixed effect model we use the `lme4` package. While the utility value is truncated at 1, it has been shown that assuming a normal distribution and performing a non parametric bootstrap is a valid simplification [@pull_analysis_2010]. We will explore a more complex approach later in this vignette.
 
-Ut et aenean aptent vestibulum metus auctor non. Vel, pellentesque aptent mi
-penatibus sit ex. Tincidunt dui ut aliquam non, fermentum quisque at ligula
-justo. Faucibus ipsum ut sed dui tellus. Nibh augue fermentum metus sed sed
-accumsan egestas dui. Id nec lectus nascetur, cursus nascetur purus. Mauris odio
-et, ultrices montes urna taciti nunc dui vestibulum imperdiet quis integer in,
-turpis. Aliquam, ac ut, tincidunt at tempus eu mattis condimentum nisl. Faucibus
-quam egestas magna amet amet sed id ut, quisque.
+```{r lmerModel, fig.cap = "Comparing the modelled utility values with the utility values in the model. Utility values were calculated from a EQ5D5L survey using the DSU method."}
+# Label the acute period of the disease
+input_dat |>
+  dplyr::mutate(acute = surveyID == "survey02") -> dat
 
-## Modelling of utilities
+# Define the model
+model <- .value ~ (1 + acute | respondentID) +
+  surveyID + sex + AgeGroup + sex:AgeGroup
+lme4::lmer(model, data = dat) -> fit2
 
-Nibh turpis et, iaculis mus habitant egestas penatibus odio. Turpis lacus
-scelerisque nulla condimentum, aliquam ut dignissim ullamcorper sed habitant. In
-sapien erat viverra cras metus egestas in. Enim, phasellus a a ante nibh, nibh.
-Eleifend justo per sit risus dolor. Non odio, non mauris porttitor interdum
-aenean, dapibus luctus amet, sem venenatis. Est amet mauris interdum ridiculus
-tristique morbi et vitae. Congue accumsan a iaculis, ut mauris non inceptos,
-nisi dignissim. Neque est sit elementum lobortis, sed sed et. Tortor, blandit
-sociosqu suspendisse consectetur neque sociosqu eros phasellus tincidunt lorem.
-Non egestas, cursus potenti, ultricies interdum, quam egestas. Ut, fringilla
-augue in, vehicula et nam, nunc.
+# Compare predictions to the actual value
+dat |>
+  dplyr::mutate(Model = predict(fit2)) |>
+  dplyr::rename(Actual = .value) |>
+  tidyr::gather(type, value, Actual, Model) -> plot_dat
 
-Torquent, pellentesque metus, morbi senectus magna consectetur at id lorem et.
-Quis, efficitur commodo commodo eu eget. Ut nunc. Tempor nec habitant, ut ornare
-suspendisse in et ut. Risus id lacinia blandit vestibulum dui vehicula, cubilia
-sed, sed. Non in, lacus turpis potenti elit. In dolor sit fermentum purus
-viverra. Vitae velit, lacus. Et mattis praesent eros turpis nisl amet metus.
-Laoreet litora nec aenean euismod sagittis. Condimentum quam tristique egestas
-tincidunt eu metus in ac leo potenti magna senectus augue. In in nibh auctor
-maximus sed tortor cubilia sodales. Mauris volutpat justo risus diam aliquam at
-libero. Nisi cum sollicitudin felis senectus conubia.
+ggplot(plot_dat) +
+  geom_line(aes(x = surveyID, y = value, group = respondentID, colour = sex),
+            alpha = 0.1) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  facet_grid(. ~ type)
+```
 
-## Final Analysis
+The get estimates of the uncertainty around the model we rely on a non parametric bootstrap. For this bootstrap we resample (with replacement) from our respondents and fit the model to the resampled data.
 
-Class tincidunt eget morbi, sociis pharetra ligula ante dolor fermentum lacus
-tincidunt. Elit, at semper donec. Urna mollis sem ipsum turpis morbi risus
-pulvinar. Laoreet leo vel praesent tristique non. Sed porttitor ac orci, cursus
-montes quis ut. Rhoncus, integer conubia nibh risus vehicula sollicitudin magna.
-Amet mattis sodales faucibus vulputate, porttitor vel mattis quis in. Ligula
-faucibus molestie varius, fringilla habitasse primis ut. Massa magna eget ex
-quam, metus aliquet viverra, euismod nec, dignissim nulla torquent? Et sit
-luctus cras est et rutrum nec quis. Ut ultricies consequat habitasse nostra
-conubia et tempor venenatis, iaculis lacus netus. Volutpat tincidunt tortor
-viverra fames platea augue quis. Mollis, potenti in nisi gravida.
+```{r bootstrap}
+set.seed(1)
+# Using 100 samples for illustrative purposes.
+# For full analysis you should use >1000
+nboot <- 100
 
-## Conclusion
+dat |>
+  dplyr::select(respondentID) |>
+  dplyr::distinct() -> respondents_dat
 
-Nunc augue scelerisque habitasse mi, eros sit, mollis. Risus primis ad vitae
-tellus sociosqu quis, auctor ut vel nostra. Vestibulum morbi ut tempor justo
-nibh convallis adipiscing nibh ut! Platea suscipit sed vestibulum in eu vitae,
-conubia pharetra. Tincidunt, eget massa mauris laoreet, vel, quam ut sodales
-iaculis. Et magnis ut, sed libero at quis vitae. Sed ridiculus, id platea ligula
-cubilia taciti inceptos, habitant nibh tempor sed cubilia, lorem. Nisl feugiat
-dapibus conubia nulla ut aenean et.
+seq(1, nboot) |>
+  purrr::map(purrr::quietly(function(np_id) {
+    # Sample the respondents to include in this bootstrap and
+    # give them an unique id (boot_respondent_id)
+    respondents_dat |>
+      dplyr::sample_n(nboot, replace = T) |>
+      dplyr::mutate(boot_respondent_id = dplyr::row_number()) |>
+      dplyr::left_join(dat, by = "respondentID") -> boot_dat
+
+    lme4::lmer(.value ~ (1 + acute | boot_respondent_id) + surveyID + sex +
+               AgeGroup + sex:AgeGroup, data = boot_dat) -> fit
+    list(model = fit, np = as.numeric(np_id), data = boot_dat)
+})) |> 
+  purrr::keep(function(lst0) length(lst0$warnings) == 0) -> models
+```
+
+Using the bootstrapped models we can generate a figure with the explanatory variables. This shows that (as expected) survey 2 had the worst outcomes. Survey 3, 4 and 5 also had significantly worse outcomes than survey 1, but respondents returned to base line levels of health from survey 6 onwards. We did not find a significant correlation between age and sex with their utility values, except for 60 and over year old males, who experienced lower utility than the other groups.
+
+```{r coefficients, fig.cap = "Coefficients of the statistical model. Uncertainty was captured by fitting the model to bootstrapped data. The blue colour highlights coefficients that were significant."}
+# Gather coefficients from the bootstrapped models
+models |> purrr::imap(function(model, np_id) {
+    summary(model$result$model)$coefficients |>
+      tibble::as_tibble(rownames = "id") |>
+      dplyr::mutate(np = np_id)
+    }) |>
+  dplyr::bind_rows() -> coeff_dat
+
+coeff_dat |>
+  dplyr::group_by(id) |>
+  dplyr::summarise(quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
+                   value = quantile(Estimate, quant),
+                   Significant = all(value < 0) || all(value > 0)
+                   ) |>
+  dplyr::ungroup() |>
+  tidyr::spread(quant, value) |>
+  # Cleanup names of the coefficients
+  dplyr::mutate(idname = stringr::str_replace(id, "(sex|surveyID)", "")) |>
+  dplyr::filter(idname != "(Intercept)") -> plot_dat
+
+
+ggplot(data = plot_dat) +
+  geom_linerange(aes(x = idname, ymin = `0.025`, ymax = `0.975`,
+                     colour = Significant), size = 1) +
+  geom_linerange(aes(x = idname, ymin = `0.25`, ymax = `0.75`,
+                     colour = Significant), size = 2) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+        axis.title.x = element_blank(),
+        legend.position = "none")
+```
+
+Finally, we use the model to generate utility values and calculate the QALY loss by age group. QALY loss compared to full health does increase with age, but when compared to the baseline health (survey 1) it stayed relatively stable.
+
+```{r qaly}
+# Calculate the QALY values for the different bootstrapped models
+models |>
+  purrr::imap(function(lst0, np_id) {
+  lst0$result$data |>
+    dplyr::mutate(pvalue = predict(lst0$result$model)) |>
+    # Convert to utility
+    surveyTools::new_utility(respondentID = "boot_respondent_id",
+                             surveyID = "surveyID",
+                             time_index = "time_index",
+                             country = ".utility_country",
+                             type = ".utility_type",
+                             value = "pvalue") |>
+    surveyTools::validate_utility() |>
+    # Calculate the qaly for based on the utility values
+    surveyTools::calculate_qalys(baseline_survey = "survey01") |>
+    dplyr::mutate(np = as.numeric(np_id)) |>
+    dplyr::left_join(lst0$result$data |>
+                     dplyr::select(boot_respondent_id, AgeGroup, sex) |>
+                     dplyr::distinct(), by = "boot_respondent_id")
+}) |> dplyr::bind_rows() -> qaly_dat
+```
+
+```{r qalyFig, fig.cap = "QALY values based on the model. The cross is the mean QALY based on the data. The uncertainty represents the uncertainty in the mean QALY loss according to the model"}
+qaly_dat |>
+  dplyr::group_by(.qaly, AgeGroup, np) |>
+  dplyr::summarise(value = mean(.value)) |>
+  dplyr::group_by(.qaly, AgeGroup) |>
+  dplyr::summarise(quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
+                   value = quantile(value, quant)) |>
+  dplyr::ungroup() |>
+  tidyr::spread(quant, value) |>
+  dplyr::filter(.qaly != "raw") -> plot_dat
+
+# Include qalys calculated from the raw data
+input_dat |>
+  surveyTools::calculate_qalys(baseline_survey = "survey01") |>
+  dplyr::filter(.qaly != "raw") |>
+  dplyr::left_join(dat |>
+    dplyr::select(respondentID, AgeGroup, sex) |>
+    dplyr::distinct()) |>
+  dplyr::group_by(AgeGroup, .qaly) |>
+  dplyr::summarise(mean = mean(.value)) |>
+  dplyr::ungroup() -> dat0
+
+ggplot(data = plot_dat) +
+  geom_linerange(aes(x = AgeGroup, ymin = `0.025`, ymax = `0.975`,
+                     colour = .qaly, group = .qaly),
+                 position = position_dodge2(0.5)) +
+  geom_linerange(aes(x = AgeGroup, ymin = `0.25`, ymax = `0.75`,
+                     colour = .qaly, group = .qaly),
+                 position = position_dodge2(0.5),
+                 size = 2) +
+  geom_point(data = dat0, aes(x = AgeGroup, y = mean, group = .qaly),
+                 position = position_dodge2(0.5), size = 3,
+                 shape = 4) +
+  expand_limits(y = 0)
+```
+
+## Using a Bayesian approach with a hurdle model
+
+The analysis above makes the simplifying assumption that utility values are normally distributed. While it has been shown that this assumption tends to lead to similar results as more complex models, here we wanted to show a method that does not make that assumption. This method relies on the `brms` package to fit the model. The `brms` package uses a Bayesian approach, so an additional benefit of this approach is that the bootstrap is not needed anymore. A downside is that fitting such a model takes a lot longer, which also makes it more costly to run a model comparison.
+
+To fit the model we convert the utility value to a value that ranges 0 and above ($x = 1 - \text{utility}$) and we assume that the converted value follows a hurdle gamma distribution. The hurdle is needed, because in health data many people tend to report full health (utility value of 1). A full explanation of hurdle models is outside the scope of this vignette, but some good discussion can be found [here](https://www.andrewheiss.com/blog/2022/05/09/hurdle-lognormal-gaussian-brms/).
+
+```{r brmsanalysis}
+# Use multiple cores for brms
+options(mc.cores = 4)
+library(brms)
+input_dat |>
+  dplyr::mutate(acute = surveyID == "survey02", x = 1 - .value) -> dat
+
+brm(bf(x ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup +
+       sex:AgeGroup,
+# For simplicitely we use the same explanatory variables for the hurdle
+# except for the age sex interaction
+       hu ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup),
+    data = dat, family = hurdle_gamma(), iter = 750) -> hbrm_model
+
+# Draw posterior samples to use in qaly calculation
+brms::posterior_predict(hbrm_model, ndraws = 1000, newdata = dat) ->
+  posterior_dat
+
+# For each posterior sample, calculate the qaly loss
+purrr::map(seq_len(nrow(posterior_dat)), function(np_id) {
+  dat |> dplyr::mutate(pvalue = 1 - posterior_dat[as.numeric(np_id), ]) |>
+    surveyTools::new_utility(respondentID = "respondentID",
+                             surveyID = "surveyID",
+                             time_index = "time_index",
+                             country = ".utility_country",
+                             type = ".utility_type",
+                             value = "pvalue") |>
+    surveyTools::validate_utility() |>
+    surveyTools::calculate_qalys(baseline_survey = "survey01") |>
+    dplyr::mutate(np = as.numeric(np_id))
+}) |> dplyr::bind_rows() |>
+    dplyr::left_join(dat |>
+      dplyr::select(respondentID, AgeGroup, sex) |>
+      dplyr::distinct()) -> qaly_dat
+```
+
+```{r hurdleModel, fig.cap = "Comparing the modelled utility values, using the hurdle model, with the utility values in the model. Utility values were calculated from a EQ5D5L survey using the DSU method."}
+# For comparison, plot posterior using one posterior sample
+dat |> dplyr::mutate(pvalue = 1 - posterior_dat[1, ]) |>
+  surveyTools::new_utility(respondentID = "respondentID",
+                           surveyID = "surveyID",
+                           time_index = "time_index",
+                           country = ".utility_country",
+                           type = ".utility_type",
+                           value = "pvalue") |>
+  surveyTools::validate_utility() -> dat0
+
+dat0 |>
+  dplyr::rename(Actual = .value, Model = pvalue) |>
+  tidyr::gather(type, value, Actual, Model) -> plot_dat
+
+ggplot(plot_dat) +
+  geom_line(aes(x = surveyID, y = value, group = respondentID,
+                colour = sex), alpha = 0.1) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  facet_grid(. ~ type)
+```
+
+Next, we look at the coefficients for this model. The results also include the coefficients for the hurdle (hu) part of the model, but those are not significant. Similar to previous results survey 2 had the worst outcomes. Survey 3, 4 and 5 also had significantly worse outcomes than survey 1, but respondents returned to base line levels of health from survey 6 onwards. In contrast, to the simpler model this analysis does find find a significant correlation between age and sex with their utility values, which might be due to the increased power of this model. Note that because we transformed our utility variable, the sign of these are the opposite of the previous results.
+
+```{r coefficientsHurdle, fig.cap = "Coefficients of hurdle model. Uncertainty was captured by fitting the model to bootstrapped data. The blue colour highlights coefficients that were significant. Note that because we transformed our utility variable, the sign of these are the opposite of the previous results."}
+fixef(hbrm_model, probs = c(0.025, 0.25, 0.5, 0.75, 0.975)) -> dat0
+dat0 |>
+  as_tibble() |>
+  dplyr::mutate(idname = factor(rownames(dat0), levels = rownames(dat0))) |>
+  dplyr::mutate(Significant = (`Q2.5` < 0 & `Q97.5` < 0) |
+                (`Q2.5` > 0 & `Q97.5` > 0), model = stringr::str_detect(idname, "hu_")) |>
+  dplyr::filter(!stringr::str_detect(idname, "Intercept")) -> plot_dat
+
+ggplot(data = plot_dat) +
+  geom_linerange(aes(x = idname, ymin = `Q2.5`, ymax = `Q97.5`,
+                     colour = Significant), size = 1) +
+  geom_linerange(aes(x = idname, ymin = `Q25`, ymax = `Q75`,
+                     colour = Significant), size = 2) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+        axis.title.x = element_blank(),
+        legend.position = "none") +
+  facet_wrap(model ~ ., scales = "free")
+```
+
+```{r qalyFigHurdle, fig.cap = "QALY values based on the hurdle model. The cross is the mean QALY based on the data. The uncertainty represents the uncertainty in the mean QALY loss according to the model"}
+qaly_dat |>
+  dplyr::group_by(.qaly, AgeGroup, np) |>
+  dplyr::summarise(value = mean(.value)) |>
+  dplyr::group_by(.qaly, AgeGroup) |>
+  dplyr::summarise(quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
+                   value = quantile(value, quant)) |>
+  dplyr::ungroup() |>
+  tidyr::spread(quant, value) |>
+  dplyr::filter(.qaly != "raw") -> plot_dat
+
+# Include qalys calculated from the raw data
+input_dat |>
+  surveyTools::calculate_qalys(baseline_survey = "survey01") |>
+  dplyr::filter(.qaly != "raw") |>
+  dplyr::left_join(dat |>
+    dplyr::select(respondentID, AgeGroup, sex) |>
+    dplyr::distinct()) |>
+  dplyr::group_by(AgeGroup, .qaly) |>
+  dplyr::summarise(mean = mean(.value)) |>
+  dplyr::ungroup() -> dat0
+
+ggplot(data = plot_dat) +
+  geom_linerange(aes(x = AgeGroup, ymin = `0.025`, ymax = `0.975`,
+                     colour = .qaly, group = .qaly),
+                 position = position_dodge2(0.5)) +
+  geom_linerange(aes(x = AgeGroup, ymin = `0.25`, ymax = `0.75`,
+                     colour = .qaly, group = .qaly),
+                 position = position_dodge2(0.5),
+                 size = 2) +
+  geom_point(data = dat0, aes(x = AgeGroup, y = mean, group = .qaly),
+                 position = position_dodge2(0.5), size = 3,
+                 shape = 4) +
+  expand_limits(y = 0)
+```
+
+# References
+

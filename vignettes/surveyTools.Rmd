@@ -104,7 +104,7 @@ an ordered factor prior to call `as_eq5d5l()`.
 
 ```{r}
 dat <- EQ5D5L_surveys
-dat$surveyID <- ordered(dat$surveyID, levels = 1:10)
+dat$surveyID <- as.factor(dat$surveyID)
 
 dat <- as_eq5d5l(
     dat,
@@ -280,7 +280,7 @@ raw, unadjusted calculation, prior to the calculation of loss.
 data("EQ5D5L_surveys")
 dat <- 
     EQ5D5L_surveys |> 
-    transform(surveyID = factor(surveyID, levels = 1:10)) |> 
+    transform(surveyID = as.factor(surveyID)) |> 
     as_eq5d5l(
         mobility = "mobility",
         self_care = "self_care",
@@ -294,7 +294,7 @@ dat <-
     )
 
 calculate_utility(dat, type = "VT", country = c("Denmark", "France")) |> 
-    calculate_qalys(baseline_survey = "1") |> 
+    calculate_qalys(baseline_survey = "survey01") |> 
     subset(.qaly == "loss_vs_baseline")
 ```
 
@@ -306,7 +306,7 @@ this specification of baseline, it is **not** included in the unadjusted, raw,
 calculation.
 
 ```{r}
-split_dat <- split(dat, dat$surveyID=="1")
+split_dat <- split(dat, dat$surveyID=="survey01")
 surveys <- split_dat[[1]]
 baseline <- split_dat[[2]]
 utility_dat <- calculate_utility(surveys,

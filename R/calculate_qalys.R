@@ -44,7 +44,8 @@
 #' @param country `[character]` Value set countries to use.
 #'
 #' @param units [`character`] The units of the `time_index` column of `x`. Can
-#' be one of "days", "weeks", "months", "quarters" or "years".
+#' be one of "days", "weeks", "months", "quarters" or "years". Note that the
+#' output will always be a QALY (i.e years) irrespective of the unit input.
 #'
 #' @param baseline_survey (optional) Either a `character` string specifying the
 #' surveyID, to use as a baseline or a data frame. If a data frame, it must have
@@ -97,8 +98,7 @@ calculate_qalys <- function(x, ...) {
 #' @rdname calculate_qalys
 #' @export
 calculate_qalys.default <- function(x, ...) {
-    cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    .class_not_implemented(x)
 }
 
 # -------------------------------------------------------------------------
@@ -117,7 +117,9 @@ calculate_qalys.EQ5D <- function(
 
     # TODO - think about baseline checks
     if (!is.null(baseline_survey)) {
-        stopifnot(.is_scalar_character(baseline_survey) || is.data.frame(baseline_survey))
+        if (!(.is_scalar_character(baseline_survey) || is.data.frame(baseline_survey))) {
+            stop("If specified, `baseline_survey` must be a string or data frame.")
+        }
     }
 
     # calculate_utility does other input checking
@@ -147,7 +149,9 @@ calculate_qalys.utility <- function(
 
     # check baseline values
     if (!is.null(baseline_survey)) {
-        stopifnot(.is_scalar_character(baseline_survey) || is.data.frame(baseline_survey))
+        if (!(.is_scalar_character(baseline_survey) || is.data.frame(baseline_survey))) {
+            stop("If specified, `baseline_survey` must be a string or data frame.")
+        }
     }
 
     # strip attributes and convert to data.table

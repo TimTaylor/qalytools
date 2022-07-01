@@ -88,8 +88,7 @@ calculate_utility <- function(x, type, country, ...) {
 #' @rdname calculate_utility
 #' @export
 calculate_utility.default <- function(x, type, country, ...) {
-    cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    .class_not_implemented(x)
 }
 
 
@@ -172,8 +171,7 @@ add_utility <- function(x, type, country, ...) {
 #' @rdname calculate_utility
 #' @export
 add_utility.default <- function(x, type, country, ...) {
-    cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    .class_not_implemented(x)
 }
 
 # -------------------------------------------------------------------------
@@ -249,6 +247,7 @@ add_utility.EQ5DY <- function(
     sex_dat <- x[sex]
 
     # check input types
+    type <- .assert_character(type)
     stopifnot(is.character(type), is.character(country))
 
     # Recycle type and country inputs and check against available value sets
@@ -257,9 +256,9 @@ add_utility.EQ5DY <- function(
     } else if (length(country) == 1L && length(type) > 1L) {
         country <- rep_len(type, length(type))
     } else if (length(type) != length(country)) {
-        stop("lengths of `type` and `country` are not compatible", call. = FALSE)
+        stop("lengths of `type` and `country` are not compatible.")
     } else if (!length(type) || !length(country)) {
-        stop("`type` and `country` must have length greater than 0", call. = FALSE)
+        stop("`type` and `country` must have length greater than 0.")
     }
 
     # create data frame of combinations
@@ -330,14 +329,13 @@ add_utility.EQ5DY <- function(
     if (type == "DSU") {
 
         # check character vectors of length 1
-        if (is.null(age)) {
-            stop("Please specify the `age` variable.", call. = FALSE)
-        }
-        if (is.null(sex)) {
-            stop("Please specify the `sex` variable.", call. = FALSE)
-        }
-        age <- .assert_scalar_chr(age)
-        sex <- .assert_scalar_chr(sex)
+        stopifnot(
+            "For 'DSU' you must specify the `age` variable." = !is.null(age),
+            "For 'DSU' you must specify the `sex` variable." = !is.null(sex)
+        )
+
+        age <- .assert_scalar_character(age)
+        sex <- .assert_scalar_character(sex)
 
         # ensure present in data frame
         nms <- names(scores)
@@ -346,8 +344,7 @@ add_utility.EQ5DY <- function(
             v <- vars[i]
             if (!v %in% nms) {
                 stop(
-                    sprintf("`%s` variable (%s) not present in `x`", names(v), sQuote(v)),
-                    call. = FALSE
+                    sprintf("`%s` variable (%s) not present in `x`", names(v), sQuote(v))
                 )
             }
         }
@@ -355,10 +352,7 @@ add_utility.EQ5DY <- function(
         # check valid values
         ages <- .subset2(scores, age)
         if (!is.numeric(ages)) {
-            stop(
-                "`age` variable in `x` should be a numeric vector",
-                call. = FALSE
-            )
+            stop("`age` variable in `x` should be a numeric vector")
         }
         if (length(which(ages < 18 | ages > 100))) {
             warning("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.")
@@ -367,7 +361,7 @@ add_utility.EQ5DY <- function(
         # check valid values
         sexes <- .subset2(scores, sex)
         if (!is.character(sexes)) {
-            stop("`sex` variable in `x` should be a character vector", call. = FALSE)
+            stop("`sex` variable in `x` should be a character vector")
         }
         sexes <- tolower(sexes)
         if (any(!sexes %in% c("male", "m", "female", "f", NA_character_))) {

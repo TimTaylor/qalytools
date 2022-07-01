@@ -41,5 +41,6 @@
 #'   \item{anxiety}{Anxiety/depression dimension}
 #'   \item{vas}{VAS score}
 #'   \item{time_index}{Relative time within survey framework}
+#'   \item{dummy}{Random roolean variable}
 #' }
 "EQ5D5L_surveys"

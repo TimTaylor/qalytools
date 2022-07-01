@@ -100,8 +100,7 @@ as_eq5d5l <- function(x, ...) {
 #' @rdname as_eq5d
 #' @export
 as_eq5d5l.default <- function(x, ...) {
-    cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    .class_not_implemented(x)
 }
 
 # -------------------------------------------------------------------------
@@ -190,8 +189,7 @@ as_eq5d3l <- function(x, ...) {
 #' @rdname as_eq5d
 #' @export
 as_eq5d3l.default <- function(x, ...) {
-    cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    .class_not_implemented(x)
 }
 
 # -------------------------------------------------------------------------
@@ -267,8 +265,7 @@ as_eq5dy <- function(x, ...) {
 #' @rdname as_eq5d
 #' @export
 as_eq5dy.default <- function(x, ...) {
-    cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    .class_not_implemented(x)
 }
 
 
@@ -372,14 +369,14 @@ as_eq5dy.data.frame <- function(
     if (missing(time_index)) {
         time_index <- ".time_index"
         if (time_index %in% names(x))
-            stop("Unable to allocate a `time_index` column. Attempted to use '.time_index' as a variable name but this was already present in `x`. Please explicitly state a value for `time_index` or rename '.time_index'", call. = FALSE)
+            stop("Unable to allocate a `time_index` column. Attempted to use '.time_index' as a variable name but this was already present in `x`. Please explicitly state a value for `time_index` or rename '.time_index'")
         x[time_index] <- NA_integer_
     }
 
     # check surveyID input (most checks actually occur within fun below)
     stopifnot(length(surveyID) == 1L)
 
-    # if surveyID is a factor convert to character and provide message to use
+    # if surveyID is a character convert to factor and provide message to use
     # as warning at end. We delay the message in case the function errors for
     # other reasons first as this can get a little confusing for users.
     msg <- NULL
@@ -430,7 +427,7 @@ as_eq5dy.data.frame <- function(
 
     # print character to factor message from earlier if it exists
     if (!is.null(msg)) {
-        warning(msg, call. = FALSE)
+        warning(msg)
     }
     out
 }

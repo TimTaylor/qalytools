@@ -101,12 +101,12 @@ validate_utility <- function(xx) {
     }
 
     # pull out relevant variables and check lengths
-    respondentID <- .assert_scalar_chr(attr(xx, "respondentID"))
-    surveyID <- .assert_scalar_chr(attr(xx, "surveyID"))
-    time_index <- .assert_scalar_chr(attr(xx, "time_index"))
-    country <- .assert_scalar_chr(attr(xx, "country"))
-    type <- .assert_scalar_chr(attr(xx, "type"))
-    value <- .assert_scalar_chr(attr(xx, "value"))
+    respondentID <- .assert_scalar_character(attr(xx, "respondentID"))
+    surveyID <- .assert_scalar_character(attr(xx, "surveyID"))
+    time_index <- .assert_scalar_character(attr(xx, "time_index"))
+    country <- .assert_scalar_character(attr(xx, "country"))
+    type <- .assert_scalar_character(attr(xx, "type"))
+    value <- .assert_scalar_character(attr(xx, "value"))
 
     # check columns presence
     names_x <- names(xx)

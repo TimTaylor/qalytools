@@ -55,7 +55,8 @@ EQ5D5L values accounting for both age and sex.
 \item{country}{\verb{[character]} Value set countries to use.}
 
 \item{units}{\code{\link{character}} The units of the \code{time_index} column of \code{x}. Can
-be one of "days", "weeks", "months", "quarters" or "years".}
+be one of "days", "weeks", "months", "quarters" or "years". Note that the
+output will always be a QALY (i.e years) irrespective of the unit input.}
 
 \item{baseline_survey}{(optional) Either a \code{character} string specifying the
 surveyID, to use as a baseline or a data frame. If a data frame, it must have

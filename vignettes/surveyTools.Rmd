@@ -104,7 +104,7 @@ an ordered factor prior to call `as_eq5d5l()`.
 
 ```{r}
 dat <- EQ5D5L_surveys
-dat$surveyID <- ordered(dat$surveyID, levels = 1:10)
+dat$surveyID <- as.factor(dat$surveyID)
 
 dat <- as_eq5d5l(
     dat,
@@ -140,13 +140,9 @@ summary(dat, tidy = TRUE)
 If we try and coerce an object that does not meet the required criteria, the
 function will error with an informative message.
 
-```{r}
+```{r, error=TRUE}
 # Incorrect bounds for dimension values will cause an error
-try(as_eq5d3l(EQ5D5L_surveys))
-
-# Dimension values that are not whole numbers will cause an error
-EQ5D5L_surveys[1,5] <- 1.5
-try(as_eq5d5l(
+as_eq5d3l(
     EQ5D5L_surveys,
     mobility = "mobility",
     self_care = "self_care",
@@ -157,7 +153,22 @@ try(as_eq5d5l(
     surveyID = "surveyID",
     vas = "vas",
     time_index = "time_index"
-))
+)
+
+# Dimension values that are not whole numbers will cause an error
+EQ5D5L_surveys[1,5] <- 1.5
+as_eq5d5l(
+    EQ5D5L_surveys,
+    mobility = "mobility",
+    self_care = "self_care",
+    usual = "usual",
+    pain = "pain",
+    anxiety = "anxiety",
+    respondentID = "respondentID",
+    surveyID = "surveyID",
+    vas = "vas",
+    time_index = "time_index"
+)
 ```
 
 ### Available value sets
@@ -257,7 +268,7 @@ subset(qalys, .qaly=="loss_vs_fullhealth")
 
 ### Comparison to a baseline
 
-`calculate_qaly()` also allows us to calculate the loss from a specified
+`calculate_qalys()` also allows us to calculate the loss from a specified
 baseline in one of two ways. Firstly, a character string `baseline_survey`
 argument can be placed which matches a survey present in the utility data. If
 the argument is passed as such then the utility values from the specified survey
@@ -269,7 +280,7 @@ raw, unadjusted calculation, prior to the calculation of loss.
 data("EQ5D5L_surveys")
 dat <- 
     EQ5D5L_surveys |> 
-    transform(surveyID = factor(surveyID, levels = 1:10)) |> 
+    transform(surveyID = as.factor(surveyID)) |> 
     as_eq5d5l(
         mobility = "mobility",
         self_care = "self_care",
@@ -283,19 +294,19 @@ dat <-
     )
 
 calculate_utility(dat, type = "VT", country = c("Denmark", "France")) |> 
-    calculate_qalys(baseline_survey = "1") |> 
+    calculate_qalys(baseline_survey = "survey01") |> 
     subset(.qaly == "loss_vs_baseline")
 ```
 
-Alternatively the `baseline_survey` argument can be specified as a data frame with a
-column corresponding to the respondentID and another representing the associated
-utility. Optionally columns corresponding to the utility country and utility
-type can be included to allow more granular comparisons. Note that for this
-specification of baseline, it is **not** included in the unadjusted, raw,
+Alternatively the `baseline_survey` argument can be specified as a data frame
+with a column corresponding to the respondentID and another representing the
+associated utility. Optionally columns corresponding to the utility country and
+utility type can be included to allow more granular comparisons. Note that for
+this specification of baseline, it is **not** included in the unadjusted, raw,
 calculation.
 
 ```{r}
-split_dat <- split(dat, dat$surveyID=="1")
+split_dat <- split(dat, dat$surveyID=="survey01")
 surveys <- split_dat[[1]]
 baseline <- split_dat[[2]]
 utility_dat <- calculate_utility(surveys,

@@ -18,6 +18,7 @@ A data frame with 10000 rows and 11 variables:
 \item{anxiety}{Anxiety/depression dimension}
 \item{vas}{VAS score}
 \item{time_index}{Relative time within survey framework}
+\item{dummy}{Random roolean variable}
 }
 }
 \usage{

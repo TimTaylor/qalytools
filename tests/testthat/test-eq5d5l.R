@@ -1,5 +1,5 @@
 dat <- EQ5D5L_surveys
-dat <- transform(dat, surveyID = factor(surveyID, levels = 1:10, ordered = TRUE))
+dat <- transform(dat, surveyID = as.factor(surveyID))
 out <- as_eq5d5l(
     dat,
     surveyID = "surveyID",
@@ -44,7 +44,7 @@ test_that("as_eq5d5l works", {
     expect_named(
         out,
         c("surveyID", "respondentID", "mobility", "self_care", "usual",
-          "pain", "anxiety", "vas", "time_index", "sex", "age"),
+          "pain", "anxiety", "vas", "time_index", "sex", "age", "dummy"),
         ignore.order = TRUE
     )
 })
@@ -60,7 +60,10 @@ test_that("EQ5D5L maintain and drop class appropriately", {
     expect_false("EQ5D5L" %in% class(out[3,3,drop=TRUE]))
 
     # renaming maintains class and stores attributes
-    tmp <- out[,-(3:4)]
+    tmp <- out
+    tmp$sex <- NULL
+    tmp$age <- NULL
+    tmp$dummy <- NULL
     names(tmp) <- sprintf("nm%d", seq_along(tmp))
     expect_s3_class(tmp, "EQ5D5L")
     expect_named(
@@ -90,7 +93,7 @@ test_that("Adding incorrect values to an EQ5D5L object will error", {
 
 test_that("calculate_utility works as expected (non-DSU type)", {
     # matches eq5d direct calculation
-    dat <- subset(out, surveyID=="1")
+    dat <- subset(out, surveyID=="survey01")
     tmp <- calculate_utility(dat, type = "VT", country = c("Germany", "France"))
 
     # correct class
@@ -118,7 +121,7 @@ test_that("calculate_utility works as expected (non-DSU type)", {
 
 test_that("calculate_utility works as expected (DSU type)", {
     # matches eq5d direct calculation
-    dat <- subset(out, surveyID=="1")
+    dat <- subset(out, surveyID=="survey01")
     tmp <- calculate_utility(dat, type = "DSU", country = "UK", age = "age", sex = "sex")
 
     # correct class

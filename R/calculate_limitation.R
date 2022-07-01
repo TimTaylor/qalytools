@@ -40,8 +40,7 @@ calculate_limitation <- function(x, ...) {
 #' @rdname calculate_limitation
 #' @export
 calculate_limitation.default <- function(x, ...) {
-    cls <- paste(class(x), collapse = ", ")
-    stop(sprintf("Not implemented for class [%s].", cls), call. = FALSE)
+    .class_not_implemented(x)
 }
 
 # -------------------------------------------------------------------------

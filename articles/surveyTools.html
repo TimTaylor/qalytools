@@ -236,8 +236,8 @@
 <span><span class="co"># Example EQ5D5L data </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">EQ5D5L_surveys</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Classes 'tbl' and 'data.frame':  10000 obs. of  11 variables:</span></span>
-<span><span class="co">#&gt;  $ surveyID    : num  1 2 3 4 5 6 7 8 9 10 ...</span></span>
+<span><span class="co">#&gt; Classes 'tbl' and 'data.frame':  10000 obs. of  12 variables:</span></span>
+<span><span class="co">#&gt;  $ surveyID    : chr  "survey01" "survey02" "survey03" "survey04" ...</span></span>
 <span><span class="co">#&gt;  $ respondentID: int  1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ sex         : chr  "Female" "Female" "Female" "Female" ...</span></span>
 <span><span class="co">#&gt;  $ age         : int  25 25 25 25 25 25 25 25 25 25 ...</span></span>
@@ -247,11 +247,12 @@
 <span><span class="co">#&gt;  $ pain        : int  1 4 1 4 3 2 1 2 3 2 ...</span></span>
 <span><span class="co">#&gt;  $ anxiety     : int  1 3 3 1 1 1 2 1 3 1 ...</span></span>
 <span><span class="co">#&gt;  $ time_index  : num  30 60 90 120 150 180 210 240 270 300 ...</span></span>
-<span><span class="co">#&gt;  $ vas         : num  87 13 60 68 77 81 86 85 76 85 ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ vas         : num  87 13 60 68 77 81 86 85 76 85 ...</span></span>
+<span><span class="co">#&gt;  $ dummy       : logi  FALSE FALSE TRUE FALSE TRUE TRUE ...</span></span></code></pre></div>
 <p>Before coercing our data to an EQ5D5L object we must ensure that our surveys have an explicit ordering. We do this by converting the <code>surveyID</code> variable to an ordered factor prior to call <code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">EQ5D5L_surveys</span></span>
-<span><span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">ordered</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span>, levels <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
 <span>    <span class="va">dat</span>,</span>
@@ -267,24 +268,25 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dat</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># EQ-5D-5L: 10,000 x 11</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># EQ-5D-5L: 10,000 x 12</span></span></span>
 <span><span class="co">#&gt;    surveyID respondentID sex      age mobility self_care usual  pain anxiety</span></span>
-<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1                   1 Female    25        3         2     2     1       1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2                   1 Female    25        5         2     4     4       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3                   1 Female    25        3         2     4     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 4                   1 Female    25        1         1     1     4       1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 5                   1 Female    25        2         1     3     3       1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 6                   1 Female    25        2         1     3     2       1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 7                   1 Female    25        1         2     1     1       2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 8                   1 Female    25        2         1     2     2       1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 9                   1 Female    25        2         1     1     3       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 10                  1 Female    25        3         1     1     2       1</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 9,990 more rows, and 2 more variables: time_index &lt;dbl&gt;, vas &lt;dbl&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> survey01            1 Female    25        3         2     2     1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> survey02            1 Female    25        5         2     4     4       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> survey03            1 Female    25        3         2     4     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> survey04            1 Female    25        1         1     1     4       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> survey05            1 Female    25        2         1     3     3       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> survey06            1 Female    25        2         1     3     2       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> survey07            1 Female    25        1         2     1     1       2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> survey08            1 Female    25        2         1     2     2       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> survey09            1 Female    25        2         1     1     3       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> survey10            1 Female    25        3         1     1     2       1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 9,990 more rows, and 3 more variables: time_index &lt;dbl&gt;, vas &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   dummy &lt;lgl&gt;</span></span></span></code></pre></div>
 <p>To obtain a quick overview of the data we can call <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>. By default this returns the output as a list of data frames, showing frequency counts and proportions, split by <code>surveyID</code></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $`1`</span></span>
+<span><span class="co">#&gt; $survey01</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A data frame: 6 × 6</span></span></span>
 <span><span class="co">#&gt;   value mobility self_care usual  pain anxiety</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -295,7 +297,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     5       29        49    47     4      17</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    <span style="color: #BB0000;">NA</span>        0         0     0     0       0</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $`2`</span></span>
+<span><span class="co">#&gt; $survey02</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A data frame: 6 × 6</span></span></span>
 <span><span class="co">#&gt;   value mobility self_care usual  pain anxiety</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -311,16 +313,16 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A data frame: 300 × 4</span></span></span>
 <span><span class="co">#&gt;    surveyID dimension value count</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1        mobility      1   414</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1        mobility      2   243</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1        mobility      3   262</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1        mobility      4    52</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1        mobility      5    29</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1        mobility     <span style="color: #BB0000;">NA</span>     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1        self_care     1   432</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1        self_care     2   259</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1        self_care     3   206</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1        self_care     4    54</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> survey01 mobility      1   414</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> survey01 mobility      2   243</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> survey01 mobility      3   262</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> survey01 mobility      4    52</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> survey01 mobility      5    29</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> survey01 mobility     <span style="color: #BB0000;">NA</span>     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> survey01 self_care     1   432</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> survey01 self_care     2   259</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> survey01 self_care     3   206</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> survey01 self_care     4    54</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 290 more rows</span></span></span></code></pre></div>
 <p>If we try and coerce an object that does not meet the required criteria, the function will error with an informative message.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -406,17 +408,17 @@
 <span><span class="fu"><a href="../reference/calculate_utility.html">calculate_utility</a></span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="va">vs_dat</span><span class="op">$</span><span class="va">Type</span>, country <span class="op">=</span> <span class="va">vs_dat</span><span class="op">$</span><span class="va">Country</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A data frame: 70,000 × 6</span></span></span>
 <span><span class="co">#&gt;    respondentID surveyID time_index .utility_country .utility_type .value</span></span>
-<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>            1 1                30 England          VT             0.824</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>            1 2                60 England          VT             0.134</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>            1 3                90 England          VT             0.608</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>            1 4               120 England          VT             0.724</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            1 5               150 England          VT             0.795</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            1 6               180 England          VT             0.816</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>            1 7               210 England          VT             0.872</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>            1 8               240 England          VT             0.829</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            1 9               270 England          VT             0.754</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            1 10              300 England          VT             0.861</span></span>
+<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>            1 survey01         30 England          VT             0.824</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>            1 survey02         60 England          VT             0.134</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>            1 survey03         90 England          VT             0.608</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>            1 survey04        120 England          VT             0.724</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            1 survey05        150 England          VT             0.795</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            1 survey06        180 England          VT             0.816</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>            1 survey07        210 England          VT             0.872</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>            1 survey08        240 England          VT             0.829</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            1 survey09        270 England          VT             0.754</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            1 survey10        300 England          VT             0.861</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 69,990 more rows</span></span></span>
 <span></span>
 <span><span class="co"># Example 2 - cross walk comparison</span></span>
@@ -486,13 +488,13 @@
 <div class="section level3">
 <h3 id="comparison-to-a-baseline">Comparison to a baseline<a class="anchor" aria-label="anchor" href="#comparison-to-a-baseline"></a>
 </h3>
-<p><code>calculate_qaly()</code> also allows us to calculate the loss from a specified baseline in one of two ways. Firstly, a character string <code>baseline_survey</code> argument can be placed which matches a survey present in the utility data. If the argument is passed as such then the utility values from the specified survey are used to calculate the loss. Note that the survey is still included in the raw, unadjusted calculation, prior to the calculation of loss.</p>
+<p><code><a href="../reference/calculate_qalys.html">calculate_qalys()</a></code> also allows us to calculate the loss from a specified baseline in one of two ways. Firstly, a character string <code>baseline_survey</code> argument can be placed which matches a survey present in the utility data. If the argument is passed as such then the utility values from the specified survey are used to calculate the loss. Note that the survey is still included in the raw, unadjusted calculation, prior to the calculation of loss.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reload the example data and combine with some baseline measurements</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> </span>
 <span>    <span class="va">EQ5D5L_surveys</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/transform.html" class="external-link">transform</a></span><span class="op">(</span>surveyID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">surveyID</span>, levels <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/transform.html" class="external-link">transform</a></span><span class="op">(</span>surveyID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">surveyID</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
 <span>        mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
 <span>        self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
@@ -506,7 +508,7 @@
 <span>    <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/calculate_utility.html">calculate_utility</a></span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Denmark"</span>, <span class="st">"France"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span>baseline_survey <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span>baseline_survey <span class="op">=</span> <span class="st">"survey01"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">==</span> <span class="st">"loss_vs_baseline"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A data frame: 2,000 × 5</span></span></span>
 <span><span class="co">#&gt;    respondentID .utility_country .utility_type .qaly             .value</span></span>
@@ -524,7 +526,7 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 1,990 more rows</span></span></span></code></pre></div>
 <p>Alternatively the <code>baseline_survey</code> argument can be specified as a data frame with a column corresponding to the respondentID and another representing the associated utility. Optionally columns corresponding to the utility country and utility type can be included to allow more granular comparisons. Note that for this specification of baseline, it is <strong>not</strong> included in the unadjusted, raw, calculation.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">split_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span><span class="op">==</span><span class="st">"1"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">split_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span><span class="op">==</span><span class="st">"survey01"</span><span class="op">)</span></span>
 <span><span class="va">surveys</span> <span class="op">&lt;-</span> <span class="va">split_dat</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">baseline</span> <span class="op">&lt;-</span> <span class="va">split_dat</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">utility_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_utility.html">calculate_utility</a></span><span class="op">(</span><span class="va">surveys</span>,</span>
@@ -560,16 +562,16 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A data frame: 50 × 3</span></span></span>
 <span><span class="co">#&gt;    surveyID dimension without_limitation</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1        mobility               0.414</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2        mobility               0.185</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3        mobility               0.356</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 4        mobility               0.373</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 5        mobility               0.349</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 6        mobility               0.397</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 7        mobility               0.421</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 8        mobility               0.422</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 9        mobility               0.433</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 10       mobility               0.414</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> survey01 mobility               0.414</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> survey02 mobility               0.185</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> survey03 mobility               0.356</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> survey04 mobility               0.373</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> survey05 mobility               0.349</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> survey06 mobility               0.397</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> survey07 mobility               0.421</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> survey08 mobility               0.422</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> survey09 mobility               0.433</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> survey10 mobility               0.414</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 40 more rows</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">limitation</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">surveyID</span>, y <span class="op">=</span> <span class="va">without_limitation</span>, group <span class="op">=</span> <span class="va">dimension</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>

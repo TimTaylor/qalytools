@@ -44,7 +44,8 @@
 #' @param country `[character]` Value set countries to use.
 #'
 #' @param units [`character`] The units of the `time_index` column of `x`. Can
-#' be one of "days", "weeks", "months", "quarters" or "years".
+#' be one of "days", "weeks", "months", "quarters" or "years". Note that the
+#' output will always be a QALY (i.e years) irrespective of the unit input.
 #'
 #' @param baseline_survey (optional) Either a `character` string specifying the
 #' surveyID, to use as a baseline or a data frame. If a data frame, it must have

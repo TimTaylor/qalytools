@@ -7,12 +7,154 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# TODO
+
+- [ ] What should we do about convergence warnings in mixed effect model 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.align = "center",
+  fig.width = 8,
+  fig.height = 5
 )
 ```
+
+```{r data}
+library(tidyverse)
+library(surveyTools)
+dat <- surveyTools::EQ5D5L_surveys |>
+  dplyr::mutate(surveyID = factor(surveyID))
+
+dat <- as_eq5d5l(
+    dat,
+    mobility = "mobility",
+    self_care = "self_care",
+    usual = "usual",
+    pain = "pain",
+    anxiety = "anxiety",
+    respondentID = "respondentID",
+    surveyID = "surveyID",
+    vas = "vas"
+)
+
+add_utility(dat, type = "DSU", country = "UK", age = "age", sex = "sex") -> dat
+```
+
+<!-- Should we go into acute, like in the main article? -->
+
+- Reference to using normal distribution from Frank's paper
+
+```{r mixedModel}
+lme4::lmer(.value ~ (1 | respondentID) + surveyID + sex + age, data = dat) -> fit
+
+# Compare predictions to the actual value
+dat |>
+  dplyr::mutate(predict = predict(fit)) |>
+  dplyr::rename(actual = .value) |>
+  tidyr::gather(type, value, actual, predict) -> plot_dat
+
+ggplot(plot_dat) +
+  geom_line(aes(x = surveyID, y = value, group = respondentID), alpha = 0.1) +
+  facet_grid(type ~ .) -> gg
+#ggsave(gg, file = "fig.png")
+gg
+```
+
+```{r additionalParameter}
+dat |>
+  dplyr::mutate(acute = surveyID %in% c(2)) -> dat
+model <- .value ~ (1 + acute | respondentID) + surveyID + sex + age + sex:age
+lme4::lmer(model, data = dat) -> fit2
+
+# Compare predictions to the actual value
+dat |>
+  dplyr::mutate(predict = predict(fit2)) |>
+  dplyr::rename(actual = .value) |>
+  tidyr::gather(type, value, actual, predict) -> plot_dat
+
+ggplot(plot_dat) +
+  geom_line(aes(x = surveyID, y = value, group = respondentID), alpha = 0.1) +
+  facet_grid(type ~ .) -> gg
+#ggsave(gg, file = "fig.png")
+gg
+```
+
+
+```{r bootstrap}
+set.seed(1)
+dat |>
+  dplyr::select(respondentID) |>
+  dplyr::distinct() -> respondents_dat
+
+#seq(1, 1000) |> purrr::map(function(np_id) {
+seq(1, 1000) |> 
+  purrr::map(purrr::quietly(function(np_id) {
+    respondents_dat |>
+      dplyr::sample_n(1000, replace = T) |>
+      dplyr::left_join(dat, by = "respondentID") -> boot_dat
+
+    lme4::lmer(model, data = boot_dat) -> fit
+    list(model = fit, np = as.numeric(np_id))
+})) |> 
+  purrr::keep(function(lst0) length(lst0$warnings) == 0) -> models
+
+models |> purrr::imap(function(model, np_id) {
+    summary(model$result$model)$coefficients |>
+      tibble::as_tibble(rownames = "id") |>
+      dplyr::mutate(np = np_id)
+    }) |> 
+  dplyr::bind_rows() -> coeff_dat
+
+coeff_dat |>
+  dplyr::group_by(id) |>
+  dplyr::summarise(quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
+                   value = quantile(Estimate, quant),
+                   sig = all(value < 0) || all(value > 0)
+                   ) |>
+  tidyr::spread(quant, value) |>
+  dplyr::ungroup() -> table_dat
+```
+
+```{r qaly}
+# Bootstrap the qalys
+# Baseline and full health
+```
+
+
+# Playground below
+
+```{r beta_distribution_on_utility, eval = F}
+library(brms)
+dat |>
+  dplyr::mutate(acute = surveyID %in% c(2), v = 1 - .value) -> dat
+#brm(bf(v ~ (1 + acute | respondentID) + surveyID + sex + age + sex:age), data = dat, family = Gamma) -> fitgamma
+brm(bf(v ~ (1 + acute | respondentID) + surveyID + sex + age + sex:age), data = dat, family = lognormal) -> fitlnorm
+qs::qsave(fitlnorm, "~/Downloads/fitlnorm.qs")
+```
+
+
+```{r explore_zero_inflated_bin, eval = F}
+# All dimensions
+
+c("usual", "mobility", "self_care", "pain", "anxiety") -> dimensions
+
+dimensions |> purrr::map(function(nm) {
+  dat |>
+    dplyr::mutate(x = dat[[nm]] - 1) -> df
+
+  brm(bf(x | trials(4) ~ sex + age + surveyID + (1|respondentID),
+         zi ~ surveyID + (1|respondentID)), data = df,
+      family = zero_inflated_binomial) -> fit
+  list(data = df, model = fit)
+}) -> lst
+#df
+#posterior_predict(brms_fit, ndraws = 10, newdata = as.data.frame(df))
+qs::qsave(lst, "~/Downloads/brms_fit.qs")
+```
+
+
 
 ## Introduction
 

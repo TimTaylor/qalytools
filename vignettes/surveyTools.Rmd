@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-***surveyTools*** provides a simple and intuitive user interface for the
+*surveyTools* provides a simple and intuitive user interface for the
 analysis of [EQ-5D](https://euroqol.org/eq-5d-instruments) surveys. It builds
 upon the [eq5d package](https://cran.r-project.org/package=eq5d) to facilitate
 the calculation of QALY values and other related metrics across multiple
@@ -50,7 +50,30 @@ response in one of the dimensions) via `calculate_limitation()`.
 
 ## The EQ5D object class
 
-Table: Example data
+We define an `EQ5D` object as a table containing data in long format that meets
+the following criteria:
+
+-   It contains columns that represent dimensions from the EQ5D survey
+specification as well as a column representing the Visual Analogue Score
+(columns 'mobility', 'self_care', 'usual', 'pain', 'anxiety' and 'vas' in the
+example table below)
+
+-   Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L
+and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys
+
+-   It contains a column that acts as a unique respondent identifier
+(`respondentID`) and another that identifying different surveys over time 
+(`surveyID). Together these should uniquely identify a response (i.e. no
+combination of these should be duplicated within the given data frame).
+
+-   It contains a column that provides the relative time (e.g. days/weeks) of a
+response within the survey framework ('time_index').
+
+In *surveyTools* we implement these objects as a data frame subclass and
+provide functionality to coerce input to this representation via functions
+`as_eq5d3l()`, `as_eq5d5l()` and `as_eq5dy()`.
+
+Table: Example of an EQ5D5L object
 
 | surveyID| respondentID| time_index| mobility| self_care| usual| pain| anxiety| vas|sex    | age|
 |--------:|------------:|----------:|--------:|---------:|-----:|----:|-------:|---:|:------|---:|
@@ -63,28 +86,7 @@ Table: Example data
 |        1|            6|         30|        1|         3|     2|    1|       1|  83|Male   |  59|
 |        .|            .|         . |        .|         .|     .|    .|       .|   .|.      |   .|
 
-We define an `EQ5D` object as a table containing data in long format that meets
-the following, additional, criteria:
 
--   It contains columns that represent dimensions from the EQ5D survey
-specification as well as a column representing the Visual Analogue Score
-(columns 'mobility', 'self_care', 'usual', 'pain', 'anxiety' and 'vas' in the
-example data above)
-
--   Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L
-and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys
-
--   It contains a column that acts as a unique respondent identifier
-('respondentID') and another that identifies different surveys over time
-('surveyID'). Together these should uniquely identify a response and no
-combination of these should be duplicated within the data frame.
-
--   It contains a column that provides the relative time (e.g. days/weeks) of a
-response within the survey framework ('time_index').
-
-In *{surveyTools}* we implement these objects as a data frame subclass and
-provide functionality for users to coerce input to this representation via the
-`as_eq5d3l()`, `as_eq5d5l()` and `as_eq5dy()` functions.
 
 
 ## Usage
@@ -212,6 +214,10 @@ identical(vs, available_valuesets("EQ5D5L"))
 identical(vs, available_valuesets("EQ-5D-5L"))
 ```
 
+For further details about the available value sets please consult the
+documentation of the wrapped package via
+`vignette(topic = "eq5d", package = "eq5d")`.
+
 ### Calculating utility values
 
 To calculate the utility values we call `calculate_utility` on our EQ5D object
@@ -253,8 +259,8 @@ ggplot(util, aes(x = surveyID, y = .value, fill = fill)) +
 
 Quality of life years can be calculated directly from utility values. By
 default, two different metrics are provided. Firstly, a "raw" value which is
-simply the area under the utility curve appropriately scaled and, secondly, a
-value which represents the loss from full health.
+simply the scaled area under the utility curve and, secondly, a value which
+represents the loss from full health.
 
 ```{r}
 qalys <- 

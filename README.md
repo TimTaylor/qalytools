@@ -7,20 +7,15 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-<br> <span style="color:red"> ***This package is currently under active
-development. The code has yet been reviewed and is likely to change over
-the following months. We recommend it is not used for analysis for the
-time being.*** </span>
+# surveyTools
 
-# Overview
-
-***surveyTools*** provides a simple and intuitive user interface for the
+*surveyTools* provides a simple and intuitive user interface for the
 analysis of [EQ-5D](https://euroqol.org/eq-5d-instruments) surveys. It
 builds upon the [eq5d package](https://cran.r-project.org/package=eq5d)
-to facilitate the calculation of QALY values and other related metrics
+to facilitate the calculation of QALY values, and other related metrics,
 across multiple surveys.
 
-# Installation
+## Installation
 
 The development version of the package can be installed via:
 
@@ -29,7 +24,7 @@ The development version of the package can be installed via:
     install.packages("surveyTools", repos = repos)
 ```
 
-# Guidance
+## Guidance
 
 Once installed the best way to familiarise yourself with the package is
 to view the included documentation:

@@ -82,7 +82,7 @@
 
     
     
-<p><strong><em>surveyTools</em></strong> provides a simple and intuitive user interface for the analysis of <a href="https://euroqol.org/eq-5d-instruments" class="external-link">EQ-5D</a> surveys. It builds upon the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d package</a> to facilitate the calculation of QALY values and other related metrics across multiple surveys.</p>
+<p><em>surveyTools</em> provides a simple and intuitive user interface for the analysis of <a href="https://euroqol.org/eq-5d-instruments" class="external-link">EQ-5D</a> surveys. It builds upon the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d package</a> to facilitate the calculation of QALY values and other related metrics across multiple surveys.</p>
 <p>The package provides a range of functions:</p>
 <ul>
 <li>Constructors (and validators) for EQ5D data frame subclasses (EQ5D3L, EQ5D5L and EQ5D): <code><a href="../reference/new_eq5d.html">new_eq5d3l()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5d3l()</a></code>), <code><a href="../reference/new_eq5d.html">new_eq5d5l()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5d5l()</a></code>) and <code><a href="../reference/new_eq5d.html">new_eq5dy()</a></code> (<code><a href="../reference/new_eq5d.html">validate_eq5dy()</a></code>).</li>
@@ -95,8 +95,16 @@
 <div class="section level2">
 <h2 id="the-eq5d-object-class">The EQ5D object class<a class="anchor" aria-label="anchor" href="#the-eq5d-object-class"></a>
 </h2>
+<p>We define an <code>EQ5D</code> object as a table containing data in long format that meets the following criteria:</p>
+<ul>
+<li><p>It contains columns that represent dimensions from the EQ5D survey specification as well as a column representing the Visual Analogue Score (columns ‘mobility’, ‘self_care’, ‘usual’, ‘pain’, ‘anxiety’ and ‘vas’ in the example table below)</p></li>
+<li><p>Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys</p></li>
+<li><p>It contains a column that acts as a unique respondent identifier (<code>respondentID</code>) and another that identifying different surveys over time (`surveyID). Together these should uniquely identify a response (i.e. no combination of these should be duplicated within the given data frame).</p></li>
+<li><p>It contains a column that provides the relative time (e.g. days/weeks) of a response within the survey framework (‘time_index’).</p></li>
+</ul>
+<p>In <em>surveyTools</em> we implement these objects as a data frame subclass and provide functionality to coerce input to this representation via functions <code><a href="../reference/as_eq5d.html">as_eq5d3l()</a></code>, <code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="../reference/as_eq5d.html">as_eq5dy()</a></code>.</p>
 <table class="table">
-<caption>Example data</caption>
+<caption>Example of an EQ5D5L object</caption>
 <thead><tr class="header">
 <th align="right">surveyID</th>
 <th align="right">respondentID</th>
@@ -217,14 +225,6 @@
 </tr>
 </tbody>
 </table>
-<p>We define an <code>EQ5D</code> object as a table containing data in long format that meets the following, additional, criteria:</p>
-<ul>
-<li><p>It contains columns that represent dimensions from the EQ5D survey specification as well as a column representing the Visual Analogue Score (columns ‘mobility’, ‘self_care’, ‘usual’, ‘pain’, ‘anxiety’ and ‘vas’ in the example data above)</p></li>
-<li><p>Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys</p></li>
-<li><p>It contains a column that acts as a unique respondent identifier (‘respondentID’) and another that identifies different surveys over time (‘surveyID’). Together these should uniquely identify a response and no combination of these should be duplicated within the data frame.</p></li>
-<li><p>It contains a column that provides the relative time (e.g. days/weeks) of a response within the survey framework (‘time_index’).</p></li>
-</ul>
-<p>In <em>{surveyTools}</em> we implement these objects as a data frame subclass and provide functionality for users to coerce input to this representation via the <code><a href="../reference/as_eq5d.html">as_eq5d3l()</a></code>, <code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="../reference/as_eq5d.html">as_eq5dy()</a></code> functions.</p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -396,6 +396,7 @@
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">vs</span>, <span class="fu"><a href="../reference/available_valuesets.html">available_valuesets</a></span><span class="op">(</span><span class="st">"EQ-5D-5L"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>For further details about the available value sets please consult the documentation of the wrapped package via <code><a href="https://cran.rstudio.com/web/packages/eq5d/vignettes/eq5d.html" class="external-link">vignette(topic = "eq5d", package = "eq5d")</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="calculating-utility-values">Calculating utility values<a class="anchor" aria-label="anchor" href="#calculating-utility-values"></a>
@@ -447,7 +448,7 @@
 <div class="section level3">
 <h3 id="qaly-calculations">QALY calculations<a class="anchor" aria-label="anchor" href="#qaly-calculations"></a>
 </h3>
-<p>Quality of life years can be calculated directly from utility values. By default, two different metrics are provided. Firstly, a “raw” value which is simply the area under the utility curve appropriately scaled and, secondly, a value which represents the loss from full health.</p>
+<p>Quality of life years can be calculated directly from utility values. By default, two different metrics are provided. Firstly, a “raw” value which is simply the scaled area under the utility curve and, secondly, a value which represents the loss from full health.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qalys</span> <span class="op">&lt;-</span> </span>
 <span>    <span class="va">dat</span> <span class="op">|&gt;</span> </span>

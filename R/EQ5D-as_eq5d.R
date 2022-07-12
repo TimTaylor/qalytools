@@ -15,8 +15,6 @@
 #'     another that identifies different surveys over time. Together these
 #'     should uniquely identify a response and no combination of these should
 #'     be duplicated within the data frame.
-#'   - Finally, it contains a column that provides the relative time of a
-#'     response within the survey framework.
 #'
 #' EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
 #' with the additional restriction  that the corresponding dimension columns in
@@ -37,9 +35,6 @@
 #'
 #' A character variable in `x` will be accepted but converted, with
 #' warning, via `as.factor()`.
-#'
-#' @param time_index `[character]` Name of variable in `x` representing the
-#' relative time within the survey framework.
 #'
 #' If the variable does not exist within `x` it will be created and set to
 #' `NA_integer`.
@@ -77,7 +72,6 @@
 #'     eq5d3l_example,
 #'     respondentID = "respondentID",
 #'     surveyID = "surveyID",
-#'     time_index = "time",
 #'     mobility = "MO",
 #'     self_care = "SC",
 #'     usual = "UA",
@@ -110,7 +104,6 @@ as_eq5d5l.tbl_df <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -131,7 +124,6 @@ as_eq5d5l.data.table <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -152,7 +144,6 @@ as_eq5d5l.data.frame <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -166,7 +157,6 @@ as_eq5d5l.data.frame <- function(
         x = x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         mobility = mobility,
         self_care = self_care,
         usual = usual,
@@ -199,7 +189,6 @@ as_eq5d3l.tbl_df <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -228,7 +217,6 @@ as_eq5d3l.data.frame <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -242,7 +230,6 @@ as_eq5d3l.data.frame <- function(
         x = x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         mobility = mobility,
         self_care = self_care,
         usual = usual,
@@ -276,7 +263,6 @@ as_eq5dy.tbl_df <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -297,7 +283,6 @@ as_eq5dy.data.table <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -318,7 +303,6 @@ as_eq5dy.data.frame <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -332,7 +316,6 @@ as_eq5dy.data.frame <- function(
         x = x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         mobility = mobility,
         self_care = self_care,
         usual = usual,
@@ -354,7 +337,6 @@ as_eq5dy.data.frame <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -364,14 +346,6 @@ as_eq5dy.data.frame <- function(
     drop,
     version
 ) {
-
-    # ensure we have a time_index even if non-specified
-    if (missing(time_index)) {
-        time_index <- ".time_index"
-        if (time_index %in% names(x))
-            stop("Unable to allocate a `time_index` column. Attempted to use '.time_index' as a variable name but this was already present in `x`. Please explicitly state a value for `time_index` or rename '.time_index'")
-        x[time_index] <- NA_integer_
-    }
 
     # check surveyID input (most checks actually occur within fun below)
     stopifnot(length(surveyID) == 1L)
@@ -395,7 +369,7 @@ as_eq5dy.data.frame <- function(
 
     # optionally drop extra columns
     if (isTRUE(drop)) {
-        x <- x[, c(respondentID, surveyID, time_index, mobility, self_care, usual, pain, anxiety, vas)]
+        x <- x[, c(respondentID, surveyID, mobility, self_care, usual, pain, anxiety, vas)]
     }
 
     # call and validate the output
@@ -403,7 +377,6 @@ as_eq5dy.data.frame <- function(
         x = x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         mobility = mobility,
         self_care = self_care,
         usual = usual,

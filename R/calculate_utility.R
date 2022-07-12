@@ -68,7 +68,6 @@
 #'     eq5d3l_example,
 #'     respondentID = "respondentID",
 #'     surveyID = "surveyID",
-#'     time_index = "time",
 #'     mobility = "MO",
 #'     self_care = "SC",
 #'     usual = "UA",
@@ -279,15 +278,12 @@ add_utility.EQ5DY <- function(
     # pull out and replicate respondents/surveyId for each combination
     resp <- attr(x, "respondentID")
     surv <- attr(x, "surveyID")
-    ti <- attr(x, "time_index")
 
     r <- .subset2(x, resp)
     s <- .subset2(x, surv)
-    t <- .subset2(x, ti)
 
     r <- r[rep.int(seq_along(r), nrow(combos))]
     s <- s[rep.int(seq_along(s), nrow(combos))]
-    t <- t[rep.int(seq_along(t), nrow(combos))]
 
     # match names required for the eq5d function
     class(x) <- "data.frame"
@@ -304,12 +300,12 @@ add_utility.EQ5DY <- function(
     )
 
     # combine with respondent and survey IDs
-    tmp <- cbind(r, s, t, rbindlist(tmp))
-    setnames(tmp, old = 1:3, new = c(resp, surv, ti))
+    tmp <- cbind(r, s, rbindlist(tmp))
+    setnames(tmp, old = 1:3, new = c(resp, surv))
     setDF(tmp)
 
     if (isFALSE(drop)) {
-        tmp <- merge(tmp, original, by = c(resp, surv, ti), all.x = TRUE)
+        tmp <- merge(tmp, original, by = c(resp, surv), all.x = TRUE)
     }
 
     # construct utility and return
@@ -317,7 +313,6 @@ add_utility.EQ5DY <- function(
         x = tmp,
         respondentID = resp,
         surveyID = surv,
-        time_index = ti,
         country = ".utility_country",
         type = ".utility_type",
         value = ".value"

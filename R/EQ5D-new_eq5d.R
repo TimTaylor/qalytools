@@ -17,8 +17,6 @@
 #'     another that identifies different surveys over time. Together these
 #'     should uniquely identify a response and no combination should be
 #'     duplicated within the data frame.
-#'   - Finally, it contains a column that provides the relative time of a
-#'     response within the survey framework.
 #'
 #' EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
 #' with the additional restriction  that the corresponding dimension columns in
@@ -29,21 +27,21 @@
 #'
 #' new_eq5d3l(
 #'     x,
-#'     respondentID, surveyID, time_index,
+#'     respondentID, surveyID,
 #'     mobility, self_care, usual, pain, anxiety,
 #'     vas
 #' )
 #'
 #' new_eq5d3l(
 #'     x,
-#'     respondentID, surveyID, time_index,
+#'     respondentID, surveyID,
 #'     mobility, self_care, usual, pain, anxiety,
 #'     vas
 #' )
 #'
 #' new_eq5dy(
 #'     x,
-#'     respondentID, surveyID, time_index,
+#'     respondentID, surveyID,
 #'     mobility, self_care, usual, pain, anxiety,
 #'     vas
 #' )
@@ -67,9 +65,6 @@
 #' To avoid ambiguity the specified variable must be either numeric or a
 #' factor (in which case the  order will be taken as that given  by the factor
 #' levels).
-#'
-#' @param time_index `[character]` Name of variable in `x` representing the
-#' relative time within the survey framework.
 #'
 #' @param mobility `[character]` Name of the 'mobility' dimension in `x`.
 #'
@@ -109,8 +104,7 @@
 #'     usual = "usual",
 #'     pain = "pain",
 #'     anxiety = "anxiety",
-#'     vas = "vas",
-#'     time_index = "time_index"
+#'     vas = "vas"
 #' )
 #'
 #' validate_eq5d(res, version = "5L")
@@ -130,7 +124,6 @@ new_eq5d3l <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -142,7 +135,6 @@ new_eq5d3l <- function(
         x = x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         mobility = mobility,
         self_care = self_care,
         usual = usual,
@@ -161,7 +153,6 @@ new_eq5d5l <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -173,7 +164,6 @@ new_eq5d5l <- function(
         x = x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         mobility = mobility,
         self_care = self_care,
         usual = usual,
@@ -192,7 +182,6 @@ new_eq5dy <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -204,7 +193,6 @@ new_eq5dy <- function(
         x = x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         mobility = mobility,
         self_care = self_care,
         usual = usual,
@@ -229,7 +217,6 @@ validate_eq5d <- function(x, version) {
 
     resp       <- .assert_scalar_character(attr(x, "respondentID"))
     surv       <- .assert_scalar_character(attr(x, "surveyID"))
-    time_index <- .assert_scalar_character(attr(x, "time_index"))
     mobility   <- .assert_scalar_character(attr(x, "mobility"))
     self_care  <- .assert_scalar_character(attr(x, "self_care"))
     usual      <- .assert_scalar_character(attr(x, "usual"))
@@ -240,9 +227,9 @@ validate_eq5d <- function(x, version) {
     # pull our number of levels
     n <- if (version == "5L") 5L else 3L
 
-    # check presence of responseID, surveyID, time_index and vas
+    # check presence of responseID, surveyID and vas
     names_x <- names(x)
-    vars <- c(respondentID = resp, surveyID = surv, time_index = time_index, vas = vas)
+    vars <- c(respondentID = resp, surveyID = surv, vas = vas)
     for (i in seq_along(vars)) {
         v <- vars[i]
         if (!v %in% names_x) {
@@ -330,7 +317,6 @@ validate_eq5dy <- function(x) {
     x,
     respondentID,
     surveyID,
-    time_index,
     mobility,
     self_care,
     usual,
@@ -344,7 +330,6 @@ validate_eq5dy <- function(x) {
     x <- .assert_data_frame(x)
     respondentID <- .assert_scalar_character(respondentID)
     surveyID <- .assert_scalar_character(surveyID)
-    time_index <- .assert_scalar_character(time_index)
     mobility <- .assert_scalar_character(mobility)
     self_care <- .assert_scalar_character(self_care)
     usual <- .assert_scalar_character(usual)
@@ -356,7 +341,6 @@ validate_eq5dy <- function(x) {
         x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         mobility = mobility,
         self_care = self_care,
         usual = usual,

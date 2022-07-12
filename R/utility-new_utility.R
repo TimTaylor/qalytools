@@ -10,8 +10,6 @@
 #'
 #'   - It contains a column that acts as a unique respondent identifier and
 #'     another that identifies different surveys over time.
-#'   - It contains a column that provides the relative time of a response within
-#'     the survey framework.
 #'   - It contains additional columns that represent the country, type and value
 #'     of a utility that has previously been calculated.
 #'   - Together, Each combination of respondent identifier, survey identifier,
@@ -35,9 +33,6 @@
 #' be either numeric or a factor (in which case the order will be taken as that
 #' given by the factor levels).
 #'
-#' @param time_index `[character]` Name of variable in `x` representing the
-#' relative time within the survey framework.
-#'
 #' @param country `[character]` Name of variable in `x` representing the utility
 #' country.
 #'
@@ -58,7 +53,6 @@ new_utility <- function(
     x,
     respondentID,
     surveyID,
-    time_index,
     country,
     type,
     value
@@ -69,7 +63,6 @@ new_utility <- function(
         is.data.frame(x),
         .is_scalar_character(respondentID),
         .is_scalar_character(surveyID),
-        .is_scalar_character(time_index),
         .is_scalar_character(country),
         .is_scalar_character(type),
         .is_scalar_character(value)
@@ -82,7 +75,6 @@ new_utility <- function(
         x,
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         country = country,
         type = type,
         value = value,
@@ -103,7 +95,6 @@ validate_utility <- function(xx) {
     # pull out relevant variables and check lengths
     respondentID <- .assert_scalar_character(attr(xx, "respondentID"))
     surveyID <- .assert_scalar_character(attr(xx, "surveyID"))
-    time_index <- .assert_scalar_character(attr(xx, "time_index"))
     country <- .assert_scalar_character(attr(xx, "country"))
     type <- .assert_scalar_character(attr(xx, "type"))
     value <- .assert_scalar_character(attr(xx, "value"))
@@ -113,7 +104,6 @@ validate_utility <- function(xx) {
     vars <- c(
         respondentID = respondentID,
         surveyID = surveyID,
-        time_index = time_index,
         country = country,
         type = type,
         value = value

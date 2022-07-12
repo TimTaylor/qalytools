@@ -23,7 +23,7 @@
 # -------------------------------------------------------------------------
 #' @export
 `names<-.utility` <- function(x, value) {
-    meta <- c("respondentID", "surveyID", "time_index", "country", "type", "value")
+    meta <- c("respondentID", "surveyID", "country", "type", "value")
 
     current_names <- names(x)
     for (v in meta) {
@@ -50,7 +50,6 @@
     vars <- c(
         surveyID = attr(to, "surveyID"),
         respondentID = attr(to, "respondentID"),
-        time_index = attr(to, "time_index"),
         country = attr(to, "country"),
         type = attr(to, "type"),
         value = attr(to, "value")

@@ -47,7 +47,7 @@
 #' @export
 `names<-.EQ5D` <- function(x, value) {
     meta <- c(
-        "respondentID", "surveyID", "time_index", "mobility",
+        "respondentID", "surveyID", "mobility",
         "self_care", "usual", "pain", "anxiety", "vas"
     )
 
@@ -105,7 +105,6 @@ rbind.EQ5D <- function(..., deparse.level = 1) {
     vars <- c(
         surveyID = attr(to, "surveyID"),
         respondentID = attr(to, "respondentID"),
-        time_index = attr(to, "time_index"),
         vas = attr(to, "vas")
     )
 

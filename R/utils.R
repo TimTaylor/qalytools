@@ -61,12 +61,6 @@
     stop(simpleError(msg, call = call[1]))
 }
 
-# function to bubble errors up a level
-.stop_bubble_up <- function(msg) {
-    call = sys.call(-2L)
-    stop(simpleError(msg, call = call[1]))
-}
-
 
 # return the version of an eq5d object
 .get_version <- function(x) {

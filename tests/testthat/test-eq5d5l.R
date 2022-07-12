@@ -9,7 +9,6 @@ out <- as_eq5d5l(
     usual = "usual",
     pain = "pain",
     anxiety = "anxiety",
-    time_index = "time_index",
     vas = "vas"
 )
 
@@ -28,7 +27,6 @@ test_that("as_eq5d5l works", {
     # attributes are as expected
     expect_identical(attr(out, "surveyID"), "surveyID")
     expect_identical(attr(out, "respondentID"), "respondentID")
-    expect_identical(attr(out, "time_index"), "time_index")
     expect_identical(attr(out, "mobility"), "mobility")
     expect_identical(attr(out, "self_care"), "self_care")
     expect_identical(attr(out, "usual"), "usual")
@@ -64,13 +62,13 @@ test_that("EQ5D5L maintain and drop class appropriately", {
     tmp$sex <- NULL
     tmp$age <- NULL
     tmp$dummy <- NULL
+    tmp$time_index <- NULL
     names(tmp) <- sprintf("nm%d", seq_along(tmp))
     expect_s3_class(tmp, "EQ5D5L")
     expect_named(
         tmp,
         c( attr(tmp, "surveyID"),
            attr(tmp, "respondentID"),
-           attr(tmp, "time_index"),
            attr(tmp, "mobility"),
            attr(tmp, "self_care"),
            attr(tmp, "usual"),
@@ -115,7 +113,7 @@ test_that("calculate_utility works as expected (non-DSU type)", {
     # correct columns
     expect_named(
         tmp,
-        c("respondentID", "surveyID", "time_index", ".utility_country", ".utility_type", ".value")
+        c("respondentID", "surveyID", ".utility_country", ".utility_type", ".value")
     )
 })
 
@@ -147,7 +145,7 @@ test_that("calculate_utility works as expected (DSU type)", {
     # correct columns
     expect_named(
         tmp,
-        c("respondentID", "surveyID", "time_index", ".utility_country", ".utility_type", ".value")
+        c("respondentID", "surveyID", ".utility_country", ".utility_type", ".value")
     )
 
 })

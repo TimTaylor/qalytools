@@ -265,8 +265,8 @@ represents the loss from full health.
 ```{r}
 qalys <- 
     dat |> 
-    calculate_utility(type = "VT", country = c("Denmark", "France")) |> 
-    calculate_qalys()
+    add_utility(type = "VT", country = c("Denmark", "France")) |> 
+    calculate_qalys(time_index = "time_index")
 
 subset(qalys, .qaly=="raw")
 subset(qalys, .qaly=="loss_vs_fullhealth")
@@ -295,12 +295,11 @@ dat <-
         anxiety = "anxiety",
         respondentID = "respondentID",
         surveyID = "surveyID",
-        vas = "vas",
-        time_index = "time_index"
+        vas = "vas"
     )
 
-calculate_utility(dat, type = "VT", country = c("Denmark", "France")) |> 
-    calculate_qalys(baseline_survey = "survey01") |> 
+add_utility(dat, type = "VT", country = c("Denmark", "France")) |> 
+    calculate_qalys(baseline_survey = "survey01", time_index = "time_index") |> 
     subset(.qaly == "loss_vs_baseline")
 ```
 
@@ -315,15 +314,17 @@ calculation.
 split_dat <- split(dat, dat$surveyID=="survey01")
 surveys <- split_dat[[1]]
 baseline <- split_dat[[2]]
-utility_dat <- calculate_utility(surveys,
-                                 type = "VT",
-                                 country = c("Denmark", "France"))
+utility_dat <- add_utility(
+    surveys,
+    type = "VT",
+    country = c("Denmark", "France")
+)
 baseline_utility <- 
     baseline |> 
-    calculate_utility(type = "VT", country = c("Denmark", "France")) |> 
+    add_utility(type = "VT", country = c("Denmark", "France")) |> 
     subset(select=c(respondentID,.utility_country,.utility_type,.value))
 
-calculate_qalys(utility_dat, baseline_survey = baseline_utility) |> 
+calculate_qalys(utility_dat, baseline_survey = baseline_utility, time_index = "time_index") |> 
     subset(.qaly == "loss_vs_baseline")
 ```
 

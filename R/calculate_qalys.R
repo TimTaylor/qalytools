@@ -23,6 +23,9 @@
 #'
 #' @param x An \R object.
 #'
+#' @param time_index `[character]` Name of variable in x representing the
+#' relative time within the survey framework.
+#'
 #' @param type `[character]` Method type(s) used for calculating the value sets.
 #'
 #' For EQ5D3L inputs this can be:
@@ -84,10 +87,13 @@
 #'     usual = "usual",
 #'     pain = "pain",
 #'     anxiety = "anxiety",
-#'     time_index = "time_index",
 #'     vas = "vas"
 #' )
-#' calculate_qalys(dat, type = "VT", country = c("Denmark", "France"))
+#' calculate_qalys(
+#'     dat,
+#'     time_index = "time_index",
+#'     type = "VT", country = c("Denmark", "France")
+#' )
 #'
 #' @export
 calculate_qalys <- function(x, ...) {
@@ -106,27 +112,35 @@ calculate_qalys.default <- function(x, ...) {
 #' @export
 calculate_qalys.EQ5D <- function(
     x,
+    time_index,
     type,
     country,
     units = c("days", "weeks", "months", "quarters", "years"),
     baseline_survey = NULL,
     ...
 ) {
-    # check units input
+    # check units input (calculate utility and calculate_qalys do rest)
     units <- match.arg(units)
 
-    # TODO - think about baseline checks
-    if (!is.null(baseline_survey)) {
-        if (!(.is_scalar_character(baseline_survey) || is.data.frame(baseline_survey))) {
-            stop("If specified, `baseline_survey` must be a string or data frame.")
-        }
+    # check time_index
+    if (missing(time_index)) {
+        stop("`time_index` argument is missing.")
+    }
+    time_index <- .assert_scalar_character(time_index)
+    if (!time_index %in% names(x)) {
+        stop(sprintf("`time_index` variable (%s) not present in `x`", time_index))
     }
 
     # calculate_utility does other input checking
-    tmp <- calculate_utility(x, type = type, country = country)
+    tmp <- add_utility(x, type = type, country = country)
 
     # now use the utilities method
-    calculate_qalys.utility(tmp, units = units, baseline_survey = baseline_survey)
+    calculate_qalys.utility(
+        tmp,
+        time_index = time_index,
+        units = units,
+        baseline_survey = baseline_survey
+    )
 }
 
 # -------------------------------------------------------------------------
@@ -134,6 +148,7 @@ calculate_qalys.EQ5D <- function(
 #' @export
 calculate_qalys.utility <- function(
     x,
+    time_index,
     units = c("days", "weeks", "months", "quarters", "years"),
     baseline_survey = NULL,
     ...
@@ -146,6 +161,15 @@ calculate_qalys.utility <- function(
 
     # check units input
     units <- match.arg(units)
+
+    # check time_index
+    if (missing(time_index)) {
+        stop("`time_index` argument is missing.")
+    }
+    time_index <- .assert_scalar_character(time_index)
+    if (!time_index %in% names(x)) {
+        stop(sprintf("`time_index` variable (%s) not present in `x`", time_index))
+    }
 
     # check baseline values
     if (!is.null(baseline_survey)) {
@@ -162,7 +186,7 @@ calculate_qalys.utility <- function(
     utype <- attr(x, "type")
     ucountry <- attr(x, "country")
     uvalue <- attr(x, "value")
-    t <- attr(x, "time_index")
+    t <- time_index
     cols <- c(resp, utype, ucountry)
 
     # calculate time difference for later

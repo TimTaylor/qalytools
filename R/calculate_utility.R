@@ -37,7 +37,7 @@
 #' @param country `[character]` Value set countries to use.
 #'
 #' @param drop `[logical]` If TRUE (default), only columns corresponding to the
-#' surveyID, respondentID and time_index are kept from the input `x`.
+#' surveyID and respondentID are kept from the input `x`.
 #'
 #' @param age `[character]` Column in `x` representing the age, in years, of the
 #' respondent. Only used if `type = "DSU"`.
@@ -73,8 +73,7 @@
 #'     usual = "UA",
 #'     pain = "PD",
 #'     anxiety = "AD",
-#'     vas = "vas",
-#'     drop = FALSE
+#'     vas = "vas"
 #' )
 #' calculate_utility(dat, type = "TTO", country = c("UK", "Germany"))
 #'
@@ -301,7 +300,7 @@ add_utility.EQ5DY <- function(
 
     # combine with respondent and survey IDs
     tmp <- cbind(r, s, rbindlist(tmp))
-    setnames(tmp, old = 1:3, new = c(resp, surv))
+    setnames(tmp, old = 1:2, new = c(resp, surv))
     setDF(tmp)
 
     if (isFALSE(drop)) {

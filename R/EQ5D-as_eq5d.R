@@ -52,9 +52,6 @@
 #'
 #' @param vas `[character]` Name of the 'visual analogue score' variable in `x`.
 #'
-#' @param drop `[logical]` Should additional columns, not specified by
-#' arguments, be dropped.
-#'
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @return
@@ -110,7 +107,6 @@ as_eq5d5l.tbl_df <- function(
     pain,
     anxiety,
     vas,
-    drop = FALSE,
     ...
 ) {
     x <- as.data.frame(x)
@@ -130,7 +126,6 @@ as_eq5d5l.data.table <- function(
     pain,
     anxiety,
     vas,
-    drop = FALSE,
     ...
 ) {
     x <- as.data.frame(x)
@@ -150,7 +145,6 @@ as_eq5d5l.data.frame <- function(
     pain,
     anxiety,
     vas,
-    drop = FALSE,
     ...
 ) {
     .as_eq5d(
@@ -163,7 +157,6 @@ as_eq5d5l.data.frame <- function(
         pain = pain,
         anxiety = anxiety,
         vas = vas,
-        drop = drop,
         version = "5L"
     )
 }
@@ -195,7 +188,6 @@ as_eq5d3l.tbl_df <- function(
     pain,
     anxiety,
     vas,
-    drop = FALSE,
     ...
 ) {
     x <- as.data.frame(x)
@@ -223,7 +215,6 @@ as_eq5d3l.data.frame <- function(
     pain,
     anxiety,
     vas,
-    drop = FALSE,
     ...
 ) {
     .as_eq5d(
@@ -236,7 +227,6 @@ as_eq5d3l.data.frame <- function(
         pain = pain,
         anxiety = anxiety,
         vas = vas,
-        drop = drop,
         version = "3L"
     )
 }
@@ -269,7 +259,6 @@ as_eq5dy.tbl_df <- function(
     pain,
     anxiety,
     vas,
-    drop = FALSE,
     ...
 ) {
     x <- as.data.frame(x)
@@ -289,7 +278,6 @@ as_eq5dy.data.table <- function(
     pain,
     anxiety,
     vas,
-    drop = FALSE,
     ...
 ) {
     x <- as.data.frame(x)
@@ -309,7 +297,6 @@ as_eq5dy.data.frame <- function(
     pain,
     anxiety,
     vas,
-    drop = FALSE,
     ...
 ) {
     .as_eq5d(
@@ -322,7 +309,6 @@ as_eq5dy.data.frame <- function(
         pain = pain,
         anxiety = anxiety,
         vas = vas,
-        drop = drop,
         version = "Y"
     )
 }
@@ -343,7 +329,6 @@ as_eq5dy.data.frame <- function(
     pain,
     anxiety,
     vas,
-    drop,
     version
 ) {
 
@@ -366,11 +351,6 @@ as_eq5dy.data.frame <- function(
         "Y" = new_eq5dy,
         stop("Something has gone wrong - please let the developers know")
     )
-
-    # optionally drop extra columns
-    if (isTRUE(drop)) {
-        x <- x[, c(respondentID, surveyID, mobility, self_care, usual, pain, anxiety, vas)]
-    }
 
     # call and validate the output
     out <- fun(

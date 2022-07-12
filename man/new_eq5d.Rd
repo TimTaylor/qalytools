@@ -13,21 +13,21 @@
 \usage{
 new_eq5d3l(
     x,
-    respondentID, surveyID, time_index,
+    respondentID, surveyID,
     mobility, self_care, usual, pain, anxiety,
     vas
 )
 
 new_eq5d3l(
     x,
-    respondentID, surveyID, time_index,
+    respondentID, surveyID,
     mobility, self_care, usual, pain, anxiety,
     vas
 )
 
 new_eq5dy(
     x,
-    respondentID, surveyID, time_index,
+    respondentID, surveyID,
     mobility, self_care, usual, pain, anxiety,
     vas
 )
@@ -52,9 +52,6 @@ identifies surveys over time.
 To avoid ambiguity the specified variable must be either numeric or a
 factor (in which case the  order will be taken as that given  by the factor
 levels).}
-
-\item{time_index}{\verb{[character]} Name of variable in \code{x} representing the
-relative time within the survey framework.}
 
 \item{mobility}{\verb{[character]} Name of the 'mobility' dimension in \code{x}.}
 
@@ -90,8 +87,6 @@ specification as well as a column representing the Visual Analogue Score.
 another that identifies different surveys over time. Together these
 should uniquely identify a response and no combination should be
 duplicated within the data frame.
-\item Finally, it contains a column that provides the relative time of a
-response within the survey framework.
 }
 
 EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
@@ -114,8 +109,7 @@ res <- new_eq5d5l(dat,
     usual = "usual",
     pain = "pain",
     anxiety = "anxiety",
-    vas = "vas",
-    time_index = "time_index"
+    vas = "vas"
 )
 
 validate_eq5d(res, version = "5L")

@@ -27,14 +27,12 @@ as_eq5d5l(x, ...)
   x,
   respondentID,
   surveyID,
-  time_index,
   mobility,
   self_care,
   usual,
   pain,
   anxiety,
   vas,
-  drop = FALSE,
   ...
 )
 
@@ -42,14 +40,12 @@ as_eq5d5l(x, ...)
   x,
   respondentID,
   surveyID,
-  time_index,
   mobility,
   self_care,
   usual,
   pain,
   anxiety,
   vas,
-  drop = FALSE,
   ...
 )
 
@@ -57,14 +53,12 @@ as_eq5d5l(x, ...)
   x,
   respondentID,
   surveyID,
-  time_index,
   mobility,
   self_care,
   usual,
   pain,
   anxiety,
   vas,
-  drop = FALSE,
   ...
 )
 
@@ -76,14 +70,12 @@ as_eq5d3l(x, ...)
   x,
   respondentID,
   surveyID,
-  time_index,
   mobility,
   self_care,
   usual,
   pain,
   anxiety,
   vas,
-  drop = FALSE,
   ...
 )
 
@@ -93,14 +85,12 @@ as_eq5d3l(x, ...)
   x,
   respondentID,
   surveyID,
-  time_index,
   mobility,
   self_care,
   usual,
   pain,
   anxiety,
   vas,
-  drop = FALSE,
   ...
 )
 
@@ -112,14 +102,12 @@ as_eq5dy(x, ...)
   x,
   respondentID,
   surveyID,
-  time_index,
   mobility,
   self_care,
   usual,
   pain,
   anxiety,
   vas,
-  drop = FALSE,
   ...
 )
 
@@ -127,14 +115,12 @@ as_eq5dy(x, ...)
   x,
   respondentID,
   surveyID,
-  time_index,
   mobility,
   self_care,
   usual,
   pain,
   anxiety,
   vas,
-  drop = FALSE,
   ...
 )
 
@@ -142,14 +128,12 @@ as_eq5dy(x, ...)
   x,
   respondentID,
   surveyID,
-  time_index,
   mobility,
   self_care,
   usual,
   pain,
   anxiety,
   vas,
-  drop = FALSE,
   ...
 )
 }
@@ -169,10 +153,7 @@ factor (in which case the order will be taken as that given by the factor
 levels).
 
 A character variable in \code{x} will be accepted but converted, with
-warning, via \code{as.factor()}.}
-
-\item{time_index}{\verb{[character]} Name of variable in \code{x} representing the
-relative time within the survey framework.
+warning, via \code{as.factor()}.
 
 If the variable does not exist within \code{x} it will be created and set to
 \code{NA_integer}.}
@@ -189,9 +170,6 @@ If the variable does not exist within \code{x} it will be created and set to
 \code{x}.}
 
 \item{vas}{\verb{[character]} Name of the 'visual analogue score' variable in \code{x}.}
-
-\item{drop}{\verb{[logical]} Should additional columns, not specified by
-arguments, be dropped.}
 }
 \value{
 An EQ5D5L, EQ5D3L or EQ5DY object.
@@ -209,8 +187,6 @@ specification as well as a column representing the Visual Analogue Score.
 another that identifies different surveys over time. Together these
 should uniquely identify a response and no combination of these should
 be duplicated within the data frame.
-\item Finally, it contains a column that provides the relative time of a
-response within the survey framework.
 }
 
 EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
@@ -226,7 +202,6 @@ as_eq5d3l(
     eq5d3l_example,
     respondentID = "respondentID",
     surveyID = "surveyID",
-    time_index = "time",
     mobility = "MO",
     self_care = "SC",
     usual = "UA",

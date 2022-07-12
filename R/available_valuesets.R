@@ -35,7 +35,6 @@
 #'     eq5d3l_example,
 #'     respondentID = "respondentID",
 #'     surveyID = "surveyID",
-#'     time_index = "time",
 #'     mobility = "MO",
 #'     self_care = "SC",
 #'     usual = "UA",

@@ -13,20 +13,7 @@ out <- as_eq5d3l(dat,
                  usual = "usual",
                  pain = "pain",
                  anxiety = "anxiety",
-                 vas = "vas",
-                 time_index = "time_index")
-
-out_dropped <- as_eq5d3l(dat,
-                         respondentID = "respondentID",
-                         surveyID = "surveyID",
-                         mobility = "mobility",
-                         self_care = "self_care",
-                         usual = "usual",
-                         pain = "pain",
-                         anxiety = "anxiety",
-                         vas = "vas",
-                         time_index = "time_index",
-                         drop = TRUE)
+                 vas = "vas")
 
 test_that("as_eq5d3l works", {
 
@@ -43,7 +30,6 @@ test_that("as_eq5d3l works", {
     # attributes are as expected
     expect_identical(attr(out, "surveyID"), "surveyID")
     expect_identical(attr(out, "respondentID"), "respondentID")
-    expect_identical(attr(out, "time_index"), "time_index")
     expect_identical(attr(out, "mobility"), "mobility")
     expect_identical(attr(out, "self_care"), "self_care")
     expect_identical(attr(out, "usual"), "usual")
@@ -63,16 +49,9 @@ test_that("as_eq5d3l works", {
         ignore.order = TRUE
     )
 
-    expect_named(
-        out_dropped,
-        c("surveyID", "respondentID", "mobility", "self_care", "usual",
-          "pain", "anxiety", "vas", "time_index"),
-        ignore.order = TRUE
-    )
-
 })
 
-test_that("EQ5D3L maintain and drop class appropriately", {
+test_that("EQ5D3L maintains class and names appropriately", {
 
     # row selection maintains class
     expect_s3_class(out[1:10,], "EQ5D3L")
@@ -84,14 +63,14 @@ test_that("EQ5D3L maintain and drop class appropriately", {
     expect_false("EQ5D3L" %in% class(out[3,3,drop=TRUE]))
 
     # renaming maintains class and stores attributes
-    tmp <- out_dropped
+    tmp <- out
+    tmp$Group <- tmp$time_index <- NULL
     names(tmp) <- sprintf("nm%d", seq_along(tmp))
     expect_s3_class(tmp, "EQ5D3L")
     expect_named(
         tmp,
         c( attr(tmp, "surveyID"),
            attr(tmp, "respondentID"),
-           attr(tmp, "time_index"),
            attr(tmp, "mobility"),
            attr(tmp, "self_care"),
            attr(tmp, "usual"),
@@ -132,7 +111,7 @@ test_that("calculate_utility works as expected", {
     # correct columns
     expect_named(
         tmp,
-        c("respondentID", "surveyID", "time_index", ".utility_country", ".utility_type", ".value")
+        c("respondentID", "surveyID", ".utility_country", ".utility_type", ".value")
     )
 
 })

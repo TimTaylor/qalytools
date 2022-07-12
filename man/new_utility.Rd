@@ -5,7 +5,7 @@
 \alias{validate_utility}
 \title{Utility constructor and validator}
 \usage{
-new_utility(x, respondentID, surveyID, time_index, country, type, value)
+new_utility(x, respondentID, surveyID, country, type, value)
 
 validate_utility(xx)
 }
@@ -19,9 +19,6 @@ variable in \code{x} that uniquely identifies respondents.}
 identifies surveys over time. To avoid ambiguity the specified variable must
 be either numeric or a factor (in which case the order will be taken as that
 given by the factor levels).}
-
-\item{time_index}{\verb{[character]} Name of variable in \code{x} representing the
-relative time within the survey framework.}
 
 \item{country}{\verb{[character]} Name of variable in \code{x} representing the utility
 country.}
@@ -45,8 +42,6 @@ A utility object contains is an object that meets the following criteria:
 \itemize{
 \item It contains a column that acts as a unique respondent identifier and
 another that identifies different surveys over time.
-\item It contains a column that provides the relative time of a response within
-the survey framework.
 \item It contains additional columns that represent the country, type and value
 of a utility that has previously been calculated.
 \item Together, Each combination of respondent identifier, survey identifier,

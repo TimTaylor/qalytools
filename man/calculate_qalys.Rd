@@ -13,6 +13,7 @@ calculate_qalys(x, ...)
 
 \method{calculate_qalys}{EQ5D}(
   x,
+  time_index,
   type,
   country,
   units = c("days", "weeks", "months", "quarters", "years"),
@@ -22,6 +23,7 @@ calculate_qalys(x, ...)
 
 \method{calculate_qalys}{utility}(
   x,
+  time_index,
   units = c("days", "weeks", "months", "quarters", "years"),
   baseline_survey = NULL,
   ...
@@ -31,6 +33,9 @@ calculate_qalys(x, ...)
 \item{x}{An \R object.}
 
 \item{...}{Further arguments passed to or from other methods.}
+
+\item{time_index}{\verb{[character]} Name of variable in x representing the
+relative time within the survey framework.}
 
 \item{type}{\verb{[character]} Method type(s) used for calculating the value sets.
 
@@ -111,9 +116,12 @@ dat <- as_eq5d5l(
     usual = "usual",
     pain = "pain",
     anxiety = "anxiety",
-    time_index = "time_index",
     vas = "vas"
 )
-calculate_qalys(dat, type = "VT", country = c("Denmark", "France"))
+calculate_qalys(
+    dat,
+    time_index = "time_index",
+    type = "VT", country = c("Denmark", "France")
+)
 
 }

@@ -85,7 +85,7 @@ EQ5D5L values accounting for both age and sex.
 \item{...}{Further arguments passed to or from other methods.}
 
 \item{drop}{\verb{[logical]} If TRUE (default), only columns corresponding to the
-surveyID, respondentID and time_index are kept from the input \code{x}.}
+surveyID and respondentID are kept from the input \code{x}.}
 
 \item{age}{\verb{[character]} Column in \code{x} representing the age, in years, of the
 respondent. Only used if \code{type = "DSU"}.}
@@ -122,14 +122,12 @@ dat <- as_eq5d3l(
     eq5d3l_example,
     respondentID = "respondentID",
     surveyID = "surveyID",
-    time_index = "time",
     mobility = "MO",
     self_care = "SC",
     usual = "UA",
     pain = "PD",
     anxiety = "AD",
-    vas = "vas",
-    drop = FALSE
+    vas = "vas"
 )
 calculate_utility(dat, type = "TTO", country = c("UK", "Germany"))
 

@@ -39,8 +39,8 @@ dat |>
   dplyr::mutate(max_value = rbeta_mu(dplyr::n(), mu, 25)) -> dat0
 
 
-male_survey_mu <- c(0.95, 0.2, 0.85, 0.9, 0.9, rep(0.95, 5))
-female_survey_mu <- c(0.95, 0.3, 0.75, 0.8, 0.9, rep(0.95, 5))
+male_survey_mu <- c(1.0, 0.2, 0.85, 0.9, 0.9, rep(0.99, 5))
+female_survey_mu <- c(1.0, 0.3, 0.75, 0.8, 0.9, rep(0.99, 5))
 survey_phi <- c(100, 10, 70, rep(100, 7))
 
 seq(1, nsurveys) |> purrr::map(function(survey_id) {
@@ -63,9 +63,14 @@ dat <- as.data.table(survey_data)
 x=1:5
 possible <- CJ(MO=x,SC=x,UA=x,PD=x,AD=x)
 possible[,value:=eq5d(possible, "5L", "VT", "England")]
+setorder(possible, value)
 
 # match our synthetic data to get the nearest dimensions based on the utility value
-out <- possible[dat, on = "value", roll = "nearest"]
+out <- possible[dat, on = "value", roll = -Inf]
+tmp <- out[out[, .I[which.max(value)],by=id]$V1]
+tmp[, survey:=1]
+out <- out[survey!=1]
+out <- rbind(tmp,out)
 out <- out[,.(surveyID=survey,respondentID=id,sex,age,mobility=MO,self_care=SC,usual=UA,pain=PD,anxiety=AD,time_index=30*survey, vas=vas)]
 
 # pick n unique IDs

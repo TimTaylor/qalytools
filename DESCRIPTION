@@ -22,7 +22,10 @@ Imports:
     stats,
     utils,
     pillar,
-    dplyr
+    dplyr,
+    cli,
+    rlang,
+    vctrs
 Depends: 
     R (>= 3.5.0)
 Suggests: 

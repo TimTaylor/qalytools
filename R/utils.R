@@ -8,48 +8,70 @@
     is.character(x) && length(x) == 1
 }
 
-# assert character is length 1 (returns input invisibly or errors)
-.assert_scalar_character <- function(x, label = deparse(substitute(x)), call = sys.call(-1)) {
-    if (!(is.character(x) && length(x) == 1)) {
-        msg <- sprintf("`%s` must be a character vector of length 1.", label)
-        stop(simpleError(msg, call))
+# assert character and length 1 (returns invisibly or errors)
+# uses cli and vec_assert for nice error messages
+# additional branches alleviate the overhead of vec_assert when an error won't be triggered
+.assert_scalar_character <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+    if (missing(x)) {
+        cli::cli_abort("argument {.arg {arg}} is missing, with no default", call = call)
     }
+
+    if (!(is.character(x) && length(x) == 1L)) {
+        vctrs::vec_assert(x, ptype = "character", size = 1L, arg = arg, call = call)
+    }
+
     invisible(x)
 }
 
-# assert character (returns input invisibly or errors)
-.assert_character <- function(x, label = deparse(substitute(x)), call = sys.call(-1)) {
-    if (!is.character(x)) {
-        msg <- sprintf("`%s` must be a character vector.", label)
-        stop(simpleError(msg, call))
+# assert character (returns invisibly or errors)
+# uses cli and vec_assert for nice error messages
+# additional branches alleviate the overhead of vec_assert when an error won't be triggered
+.assert_character <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    if (missing(x)) {
+        cli::cli_abort("argument {.arg {arg}} is missing, with no default", call = call)
     }
+
+    if (!is.character(x)) {
+        vctrs::vec_assert(x, ptype = "character", arg = arg, call = call)
+    }
+
     invisible(x)
 }
 
 # assert bool (returns input invisibly or errors)
-.assert_bool <- function(x, label = deparse(substitute(x)), call = sys.call(-1)) {
-    if (!(is.logical(x) && length(x) == 1L && !is.na(x))) {
-        msg <- sprintf("`%s` must be TRUE or FALSE.", label)
-        stop(simpleError(msg, call))
+.assert_bool <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    if (missing(x)) {
+        cli::cli_abort("argument {.arg {arg}} is missing, with no default", call = call)
     }
+
+    if (!(is.logical(x) && length(x) == 1L && !is.na(x))) {
+        cli::cli_abort("{.arg {arg}} must be TRUE or FALSE", call = call)
+
+    }
+
     invisible(x)
 }
 
 # assert data frame (returns input invisibly or errors)
-.assert_data_frame <- function(x, label = deparse(substitute(x)), call = sys.call(-1)) {
-    if (!is.data.frame(x)) {
-        msg <- sprintf("`%s` must be a data frame.", label)
-        stop(simpleError(msg, call))
+.assert_data_frame <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    if (missing(x)) {
+        cli::cli_abort("argument {.arg {arg}} is missing, with no default", call = call)
     }
+
+    if (!is.data.frame(x)) {
+        cli::cli_abort("{.arg {arg}} must be a data frame", call = call)
+    }
+
     invisible(x)
 }
 
 # assert class (returns input invisibly or errors)
-.assert_class <- function(x, class, label = deparse(substitute(x)), call = sys.call(-1)) {
+.assert_class <- function(x, class, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
     if (!inherits(x, class)) {
-        msg <- sprintf("`%s` must have class %s.", label, class)
-        stop(simpleError(msg, call))
+        cli::cli_abort("{.arg {arg}} must have class {.cls {class}}", call = call)
     }
+
     invisible(x)
 }
 

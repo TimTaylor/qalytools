@@ -1,4 +1,4 @@
 # calculate_limitations errors correctly
 
-    Not implemented for [character] objects.
+    Not implemented for <character> objects.
 

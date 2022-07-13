@@ -233,14 +233,18 @@ validate_eq5d <- function(x, version) {
     for (i in seq_along(vars)) {
         v <- vars[i]
         if (!v %in% names_x) {
-            stop(sprintf("`%s` variable (%s) not present in `x`", names(v), sQuote(v)))
+            cli_abort(
+                "{.arg {names(v)}} variable ({.val {sQuote(v)}}) not present in {.arg x}."
+            )
         }
     }
 
     # check surveyID is either numeric or an ordered factor
     s <- .subset2(x, surv)
     if (!(is.factor(s) || is.numeric(s))) {
-        stop(sprintf("`surveyID` variable (%s) must be numeric or an ordered factor", sQuote(surv)))
+        cli_abort(
+            "{.arg surveyID} variable ({.val {surv}}) must be numeric or an ordered factor."
+        )
     }
 
     # check presence of dimension variables in data
@@ -249,10 +253,10 @@ validate_eq5d <- function(x, version) {
     if (!all(cols_present)) {
         missing <- cols[!cols_present]
         missing <- paste(sQuote(missing), collapse = ", ")
-        stop(
-            "Not all dimensions specified are present in `x`\n",
-            sprintf(" - The following columns cannot be found: %s", missing)
-        )
+        cli_abort(c(
+            "Not all dimensions specified are present in {.arg x}",
+            ">" = "The following columns cannot be found: {missing}"
+        ))
     }
 
     # convert to data.frame to avoid slow .eq5d_can_reconstruct checks
@@ -262,23 +266,23 @@ validate_eq5d <- function(x, version) {
     # check unique combinations of survey and respondent ID
     combos <- dat[, c(resp, surv)]
     if (anyDuplicated(combos)) {
-        stop("`respondentID` / `surveyID` combinations cannot be duplicated")
+        cli_abort("{.arg respondentID} / {.arg surveyID} combinations cannot be duplicated")
     }
 
     # check dimensions data is numeric
     dat <- dat[, cols]
     if (!all(vapply(dat, is.numeric, logical(1)))) {
-        stop("Dimension values must be whole numbers")
+        cli_abort("Dimension values must be whole numbers")
     }
 
     # check that the data is whole numbers or na
     if (!(all(.is_whole(dat) | is.na(dat)))) {
-        stop("Dimension values must be whole numbers or NA")
+        cli_abort("Dimension values must be whole numbers or NA")
     }
 
     # check that the data is bounded correctly or na
     if (!all(is.na(dat) | (dat >= 1 & dat <= n))) {
-        stop(sprintf("Dimensions  must be either bounded by 1 and %d, or NA", n))
+        cli_abort("Dimensions  must be either bounded by 1 and {n}, or NA")
     }
 
     invisible(x)

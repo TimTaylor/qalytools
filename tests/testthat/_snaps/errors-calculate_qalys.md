@@ -1,6 +1,6 @@
 # calculate_qalys errors correctly
 
-    Not implemented for [data.frame] objects.
+    Not implemented for <data.frame> objects.
 
 ---
 

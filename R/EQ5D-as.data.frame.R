@@ -22,10 +22,10 @@
 #' @export
 as.data.frame.EQ5D <- function(x, row.names, optional, ...) {
     if (!missing(row.names)) {
-        warning("`row.names` argument will be ignored")
+        cli::cli_warn("{.arg row.names} argument will be ignored.")
     }
     if (!missing(optional)) {
-        warning("`optional` argument will be ignored")
+        cli::cli_warn("{.arg optional} argument will be ignored.")
     }
     list2DF(c(x))
 }
@@ -53,7 +53,7 @@ as.data.frame.EQ5D <- function(x, row.names, optional, ...) {
 #' @export
 as.data.table.EQ5D <- function(x, keep.rownames, ...) {
     if (!missing(keep.rownames)) {
-        warning("`keep.rownames` argument will be ignored")
+        cli::cli_warn("{.arg keep.rownames} argument will be ignored.")
     }
     out <- setDT(c(x))
     out

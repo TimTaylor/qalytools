@@ -1,18 +1,18 @@
 # calculate_pchc errors correctly
 
-    `pre` must have class <EQ5D>
+    `pre` must have class <EQ5D>.
 
 ---
 
-    `post` must have class <EQ5D>
+    `post` must have class <EQ5D>.
 
 ---
 
-    `no.problems` must be TRUE or FALSE
+    `no.problems` must be TRUE or FALSE.
 
 ---
 
-    `by.dimension` must be TRUE or FALSE
+    `by.dimension` must be TRUE or FALSE.
 
 ---
 

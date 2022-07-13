@@ -1,15 +1,15 @@
 # validate_eq5d works
 
-    `respondentID` variable ('TEST') not present in `x`
+    `respondentID` variable ("'TEST'") not present in `x`.
 
 ---
 
-    `surveyID` variable ('surveyID') must be numeric or an ordered factor
+    `surveyID` variable ("surveyID") must be numeric or an ordered factor.
 
 ---
 
     Not all dimensions specified are present in `x`
-     - The following columns cannot be found: 'TEST'
+    > The following columns cannot be found: 'TEST'
 
 ---
 
@@ -25,5 +25,5 @@
 
 ---
 
-    Dimensions  must be either bounded by 1 and 5, or NA
+    Dimensions must be either bounded by 1 and 5, or NA
 

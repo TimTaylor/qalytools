@@ -58,17 +58,15 @@ new_utility <- function(
     value
 ) {
 
-    # minimal input checks
-    stopifnot(
-        is.data.frame(x),
-        .is_scalar_character(respondentID),
-        .is_scalar_character(surveyID),
-        .is_scalar_character(country),
-        .is_scalar_character(type),
-        .is_scalar_character(value)
-    )
+    # only check class of inputs at this stage
+    x <- .assert_data_frame(x)
+    respondentID <- .assert_scalar_character(respondentID)
+    surveyID <- .assert_scalar_character(surveyID)
+    country <- .assert_scalar_character(country)
+    type <- .assert_scalar_character(type)
+    value <- .assert_scalar_character(value)
 
-    # tbl for nice-printing if tidyverse loaded!
+    # tbl for nice-printing
     # https://pillar.r-lib.org/#custom-table-classes
 
     structure(
@@ -89,7 +87,7 @@ validate_utility <- function(xx) {
 
     # Error if not passed an utility object
     if (!inherits(xx, "utility")) {
-        stop("`xx` must be of class 'utility'")
+        cli_abort("{.arg xx} must be of class {.cls utility}")
     }
 
     # pull out relevant variables and check lengths
@@ -111,25 +109,31 @@ validate_utility <- function(xx) {
     for (i in seq_along(vars)) {
         v <- vars[i]
         if (!v %in% names_x) {
-            stop(sprintf("`%s` variable (%s) not present in `xx`", names(v), sQuote(v)))
+            cli_abort(
+                "{.arg {names(v)}} variable ({.val {sQuote(v)}}) not present in {.arg xx}."
+            )
         }
     }
 
     # check surveyID is either numeric or an ordered factor
     s <- .subset2(xx, surveyID)
     if (!(is.factor(s) || is.numeric(s))) {
-        stop(sprintf("`surveyID` variable (%s) must be numeric or an ordered factor", sQuote(surveyID)))
+        cli_abort(
+            "{.arg surveyID} variable ({.val {surveyID}}) must be numeric or an ordered factor."
+        )
     }
 
     # check unique combinations of survey, respondent ID, country and type
     combos <- xx[, c(respondentID, surveyID, country, type)]
     if (anyDuplicated(combos)) {
-        stop("`respondentID`, `surveyID`, `country` and `type` combinations should not be duplicated")
+        cli_abort(
+            "{.arg respondentID}, {.arg surveyID}, {.arg country} and {.arg type} combinations should not be duplicated."
+        )
     }
 
     # check value data is numeric
     if (!is.numeric(.subset2(xx, value))) {
-        stop("`value` column must be numeric")
+        cli_abort("{.arg value} column must be numeric.")
     }
 
     invisible(xx)

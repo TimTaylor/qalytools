@@ -349,7 +349,7 @@ as_eq5dy.data.frame <- function(
         "5L" = new_eq5d5l,
         "3L" = new_eq5d3l,
         "Y" = new_eq5dy,
-        stop("Something has gone wrong - please let the developers know")
+        cli_abort("Something has gone wrong - please let the developers know")
     )
 
     # call and validate the output
@@ -380,7 +380,7 @@ as_eq5dy.data.frame <- function(
 
     # print character to factor message from earlier if it exists
     if (!is.null(msg)) {
-        warning(msg)
+        cli::cli_warn(msg)
     }
     out
 }

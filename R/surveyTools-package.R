@@ -33,6 +33,8 @@
 #' @importFrom stats setNames
 #' @importFrom utils stack head tail
 #' @importFrom eq5d eq5d pchc valuesets
+#' @importFrom cli cli_abort
+#' @importFrom vctrs vec_assert
 #' @importFrom pillar tbl_sum
 #' @import data.table
 #' @keywords internal

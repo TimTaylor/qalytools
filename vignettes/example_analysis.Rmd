@@ -212,7 +212,7 @@ ggplot(data = plot_dat) +
 
 The analysis above makes the simplifying assumption that utility values are normally distributed. While it has been shown that this assumption tends to lead to similar results as more complex models, here we wanted to show a method that does not make that assumption. This method relies on the `brms` package to fit the model. The `brms` package uses a Bayesian approach, so an additional benefit of this approach is that the bootstrap is not needed anymore. A downside is that fitting such a model takes a lot longer, which also makes it more costly to run a model comparison.
 
-To fit the model we convert the utility value to a value that ranges 0 and above ($x = 1 - \text{utility}$) and we assume that the converted value follows a hurdle lognormal distribution. The hurdle is needed, because in health data many people tend to report full health (utility value of 1). A full explanation of hurdle models is outside the scope of this vignette, but some good discussion can be found [here](https://www.andrewheiss.com/blog/2022/05/09/hurdle-lognormal-gaussian-brms/).
+To fit the model we convert the utility value to a value that ranges 0 and above ($x = 1 - \text{utility}$) and we assume that the converted value follows a hurdle gamma distribution. The hurdle is needed, because in health data many people tend to report full health (utility value of 1). A full explanation of hurdle models is outside the scope of this vignette, but some good discussion can be found [here](https://www.andrewheiss.com/blog/2022/05/09/hurdle-lognormal-gaussian-brms/).
 
 ```{r brmsanalysis}
 # Use multiple cores for brms
@@ -226,7 +226,7 @@ brm(bf(x ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup +
 # For simplicitely we use the same explanatory variables for the hurdle
 # except for the age sex interaction
        hu ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup),
-    data = dat, family = hurdle_gamma()) -> hbrm_model
+    data = dat, family = hurdle_gamma(), iter = 750) -> hbrm_model
 
 # Draw posterior samples to use in qaly calculation
 brms::posterior_predict(hbrm_model, ndraws = 1000, newdata = dat) ->

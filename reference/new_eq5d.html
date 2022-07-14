@@ -13,8 +13,6 @@ It contains a column that acts as a unique respondent identifier and
 another that identifies different surveys over time. Together these
 should uniquely identify a response and no combination should be
 duplicated within the data frame.
-Finally, it contains a column that provides the relative time of a
-response within the survey framework.
 
 
 EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
@@ -36,8 +34,6 @@ It contains a column that acts as a unique respondent identifier and
 another that identifies different surveys over time. Together these
 should uniquely identify a response and no combination should be
 duplicated within the data frame.
-Finally, it contains a column that provides the relative time of a
-response within the survey framework.
 
 
 EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
@@ -114,8 +110,6 @@ specification as well as a column representing the Visual Analogue Score.</p></l
 another that identifies different surveys over time. Together these
 should uniquely identify a response and no combination should be
 duplicated within the data frame.</p></li>
-<li><p>Finally, it contains a column that provides the relative time of a
-response within the survey framework.</p></li>
 </ul><p>EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
 with the additional restriction  that the corresponding dimension columns in
 <code>x</code> are either NA or whole numbers bounded below by 1 and above by 3 or 5
@@ -128,21 +122,21 @@ with the additional restriction  that the corresponding dimension columns in
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">new_eq5d3l</span><span class="op">(</span></span>
 <span>    <span class="va">x</span>,</span>
-<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,</span>
+<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>,</span>
 <span>    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,</span>
 <span>    <span class="va">vas</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">new_eq5d3l</span><span class="op">(</span></span>
 <span>    <span class="va">x</span>,</span>
-<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,</span>
+<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>,</span>
 <span>    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,</span>
 <span>    <span class="va">vas</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">new_eq5dy</span><span class="op">(</span></span>
 <span>    <span class="va">x</span>,</span>
-<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>, <span class="va">time_index</span>,</span>
+<span>    <span class="va">respondentID</span>, <span class="va">surveyID</span>,</span>
 <span>    <span class="va">mobility</span>, <span class="va">self_care</span>, <span class="va">usual</span>, <span class="va">pain</span>, <span class="va">anxiety</span>,</span>
 <span>    <span class="va">vas</span></span>
 <span><span class="op">)</span></span>
@@ -173,11 +167,6 @@ identifies surveys over time.</p>
 <p>To avoid ambiguity the specified variable must be either numeric or a
 factor (in which case the  order will be taken as that given  by the factor
 levels).</p></dd>
-
-
-<dt>time_index</dt>
-<dd><p><code>[character]</code> Name of variable in <code>x</code> representing the
-relative time within the survey framework.</p></dd>
 
 
 <dt>mobility</dt>
@@ -236,18 +225,17 @@ validation functions).</p>
 <span class="r-in"><span>    usual <span class="op">=</span> <span class="st">"usual"</span>,</span></span>
 <span class="r-in"><span>    pain <span class="op">=</span> <span class="st">"pain"</span>,</span></span>
 <span class="r-in"><span>    anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span></span>
-<span class="r-in"><span>    vas <span class="op">=</span> <span class="st">"vas"</span>,</span></span>
-<span class="r-in"><span>    time_index <span class="op">=</span> <span class="st">"time_index"</span></span></span>
+<span class="r-in"><span>    vas <span class="op">=</span> <span class="st">"vas"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">validate_eq5d</span><span class="op">(</span><span class="va">res</span>, version <span class="op">=</span> <span class="st">"5L"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">validate_eq5d5l</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">validate_eq5d3l</span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in validate_eq5d(x, version = "3L") : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Dimensions  must be either bounded by 1 and 3, or NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Dimensions must be either bounded by 1 and 3, or NA</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">validate_eq5d</span><span class="op">(</span><span class="va">res</span>, version <span class="op">=</span> <span class="st">"3L"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in validate_eq5d(res, version = "3L") : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Dimensions  must be either bounded by 1 and 3, or NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Dimensions must be either bounded by 1 and 3, or NA</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

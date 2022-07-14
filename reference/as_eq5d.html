@@ -11,8 +11,6 @@ It contains a column that acts as a unique respondent identifier and
 another that identifies different surveys over time. Together these
 should uniquely identify a response and no combination of these should
 be duplicated within the data frame.
-Finally, it contains a column that provides the relative time of a
-response within the survey framework.
 
 
 EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
@@ -32,8 +30,6 @@ It contains a column that acts as a unique respondent identifier and
 another that identifies different surveys over time. Together these
 should uniquely identify a response and no combination of these should
 be duplicated within the data frame.
-Finally, it contains a column that provides the relative time of a
-response within the survey framework.
 
 
 EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
@@ -108,8 +104,6 @@ specification as well as a column representing the Visual Analogue Score.</p></l
 another that identifies different surveys over time. Together these
 should uniquely identify a response and no combination of these should
 be duplicated within the data frame.</p></li>
-<li><p>Finally, it contains a column that provides the relative time of a
-response within the survey framework.</p></li>
 </ul><p>EQ5D3L, EQ5D5L and EQ5DY objects are defined as a subclass of EQ5D objects
 with the additional restriction  that the corresponding dimension columns in
 <code>x</code> are either NA or whole numbers bounded below by 1 and above by 3 or 5
@@ -130,14 +124,12 @@ with the additional restriction  that the corresponding dimension columns in
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">respondentID</span>,</span>
 <span>  <span class="va">surveyID</span>,</span>
-<span>  <span class="va">time_index</span>,</span>
 <span>  <span class="va">mobility</span>,</span>
 <span>  <span class="va">self_care</span>,</span>
 <span>  <span class="va">usual</span>,</span>
 <span>  <span class="va">pain</span>,</span>
 <span>  <span class="va">anxiety</span>,</span>
 <span>  <span class="va">vas</span>,</span>
-<span>  drop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -146,14 +138,12 @@ with the additional restriction  that the corresponding dimension columns in
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">respondentID</span>,</span>
 <span>  <span class="va">surveyID</span>,</span>
-<span>  <span class="va">time_index</span>,</span>
 <span>  <span class="va">mobility</span>,</span>
 <span>  <span class="va">self_care</span>,</span>
 <span>  <span class="va">usual</span>,</span>
 <span>  <span class="va">pain</span>,</span>
 <span>  <span class="va">anxiety</span>,</span>
 <span>  <span class="va">vas</span>,</span>
-<span>  drop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -162,14 +152,12 @@ with the additional restriction  that the corresponding dimension columns in
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">respondentID</span>,</span>
 <span>  <span class="va">surveyID</span>,</span>
-<span>  <span class="va">time_index</span>,</span>
 <span>  <span class="va">mobility</span>,</span>
 <span>  <span class="va">self_care</span>,</span>
 <span>  <span class="va">usual</span>,</span>
 <span>  <span class="va">pain</span>,</span>
 <span>  <span class="va">anxiety</span>,</span>
 <span>  <span class="va">vas</span>,</span>
-<span>  drop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -183,14 +171,12 @@ with the additional restriction  that the corresponding dimension columns in
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">respondentID</span>,</span>
 <span>  <span class="va">surveyID</span>,</span>
-<span>  <span class="va">time_index</span>,</span>
 <span>  <span class="va">mobility</span>,</span>
 <span>  <span class="va">self_care</span>,</span>
 <span>  <span class="va">usual</span>,</span>
 <span>  <span class="va">pain</span>,</span>
 <span>  <span class="va">anxiety</span>,</span>
 <span>  <span class="va">vas</span>,</span>
-<span>  drop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -202,14 +188,12 @@ with the additional restriction  that the corresponding dimension columns in
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">respondentID</span>,</span>
 <span>  <span class="va">surveyID</span>,</span>
-<span>  <span class="va">time_index</span>,</span>
 <span>  <span class="va">mobility</span>,</span>
 <span>  <span class="va">self_care</span>,</span>
 <span>  <span class="va">usual</span>,</span>
 <span>  <span class="va">pain</span>,</span>
 <span>  <span class="va">anxiety</span>,</span>
 <span>  <span class="va">vas</span>,</span>
-<span>  drop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -223,14 +207,12 @@ with the additional restriction  that the corresponding dimension columns in
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">respondentID</span>,</span>
 <span>  <span class="va">surveyID</span>,</span>
-<span>  <span class="va">time_index</span>,</span>
 <span>  <span class="va">mobility</span>,</span>
 <span>  <span class="va">self_care</span>,</span>
 <span>  <span class="va">usual</span>,</span>
 <span>  <span class="va">pain</span>,</span>
 <span>  <span class="va">anxiety</span>,</span>
 <span>  <span class="va">vas</span>,</span>
-<span>  drop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -239,14 +221,12 @@ with the additional restriction  that the corresponding dimension columns in
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">respondentID</span>,</span>
 <span>  <span class="va">surveyID</span>,</span>
-<span>  <span class="va">time_index</span>,</span>
 <span>  <span class="va">mobility</span>,</span>
 <span>  <span class="va">self_care</span>,</span>
 <span>  <span class="va">usual</span>,</span>
 <span>  <span class="va">pain</span>,</span>
 <span>  <span class="va">anxiety</span>,</span>
 <span>  <span class="va">vas</span>,</span>
-<span>  drop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -255,14 +235,12 @@ with the additional restriction  that the corresponding dimension columns in
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">respondentID</span>,</span>
 <span>  <span class="va">surveyID</span>,</span>
-<span>  <span class="va">time_index</span>,</span>
 <span>  <span class="va">mobility</span>,</span>
 <span>  <span class="va">self_care</span>,</span>
 <span>  <span class="va">usual</span>,</span>
 <span>  <span class="va">pain</span>,</span>
 <span>  <span class="va">anxiety</span>,</span>
 <span>  <span class="va">vas</span>,</span>
-<span>  drop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -289,12 +267,7 @@ surveys over time.</p>
 factor (in which case the order will be taken as that given by the factor
 levels).</p>
 <p>A character variable in <code>x</code> will be accepted but converted, with
-warning, via <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor()</a></code>.</p></dd>
-
-
-<dt>time_index</dt>
-<dd><p><code>[character]</code> Name of variable in <code>x</code> representing the
-relative time within the survey framework.</p>
+warning, via <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor()</a></code>.</p>
 <p>If the variable does not exist within <code>x</code> it will be created and set to
 <code>NA_integer</code>.</p></dd>
 
@@ -323,11 +296,6 @@ relative time within the survey framework.</p>
 <dt>vas</dt>
 <dd><p><code>[character]</code> Name of the 'visual analogue score' variable in <code>x</code>.</p></dd>
 
-
-<dt>drop</dt>
-<dd><p><code>[logical]</code> Should additional columns, not specified by
-arguments, be dropped.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -348,7 +316,6 @@ arguments, be dropped.</p></dd>
 <span class="r-in"><span>    <span class="va">eq5d3l_example</span>,</span></span>
 <span class="r-in"><span>    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span></span>
 <span class="r-in"><span>    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span></span>
-<span class="r-in"><span>    time_index <span class="op">=</span> <span class="st">"time"</span>,</span></span>
 <span class="r-in"><span>    mobility <span class="op">=</span> <span class="st">"MO"</span>,</span></span>
 <span class="r-in"><span>    self_care <span class="op">=</span> <span class="st">"SC"</span>,</span></span>
 <span class="r-in"><span>    usual <span class="op">=</span> <span class="st">"UA"</span>,</span></span>

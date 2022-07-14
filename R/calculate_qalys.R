@@ -1,5 +1,3 @@
-#' @title
-#'
 #' Calculate quality of life years
 #'
 #' @description

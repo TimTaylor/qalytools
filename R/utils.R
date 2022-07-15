@@ -133,3 +133,6 @@
     rownames(x) <- NULL
     setNames(cbind(rnms, x), c(var, nms))
 }
+
+# Need to this to remove a note in R CMD check
+.check_hack <- function() rlang::caller_arg

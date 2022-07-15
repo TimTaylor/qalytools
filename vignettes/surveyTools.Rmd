@@ -1,8 +1,8 @@
 ---
-title: "surveyTools"
+title: "qalytools"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{surveyTools}
+  %\VignetteIndexEntry{qalytools}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -21,10 +21,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-*surveyTools* provides a simple and intuitive user interface for the
+*qalytools* provides a simple and intuitive user interface for the
 analysis of [EQ-5D](https://euroqol.org/eq-5d-instruments) surveys. It builds
 upon the [eq5d package](https://cran.r-project.org/package=eq5d) to facilitate
-the calculation of QALY values and other related metrics across multiple
+the calculation of QALY metrix and other related values across multiple
 surveys.
 
 The package provides a range of functions:
@@ -69,7 +69,7 @@ combination of these should be duplicated within the given data frame).
 -   It contains a column that provides the relative time (e.g. days/weeks) of a
 response within the survey framework ('time_index').
 
-In *surveyTools* we implement these objects as a data frame subclass and
+In *qalytools* we implement these objects as a data frame subclass and
 provide functionality to coerce input to this representation via functions
 `as_eq5d3l()`, `as_eq5d5l()` and `as_eq5dy()`.
 
@@ -92,7 +92,7 @@ Table: Example of an EQ5D5L object
 ## Usage
 
 ```{r}
-library(surveyTools)
+library(qalytools)
 library(ggplot2)
 
 # Example EQ5D5L data 

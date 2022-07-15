@@ -1,4 +1,4 @@
 library(testthat)
-library(surveyTools)
+library(qalytools)
 
-test_check("surveyTools")
+test_check("qalytools")

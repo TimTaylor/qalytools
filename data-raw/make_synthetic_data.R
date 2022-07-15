@@ -98,7 +98,7 @@ write.csv(
 usethis::use_data(EQ5D5L_surveys, overwrite = TRUE, version = 3)
 
 # checking ----------------------------------------------------------------
-library(surveyTools)
+library(qalytools)
 library(ggplot2)
 
 # calculate utility

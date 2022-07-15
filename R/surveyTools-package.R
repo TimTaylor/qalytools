@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' ***surveyTools*** provides a simple and intuitive user interface for the
+#' ***qalytools*** provides a simple and intuitive user interface for the
 #' analysis of repeated [EQ-5D](https://euroqol.org/eq-5d-instruments) surveys,
 #' facilitating calculation of QALY values and other related metrics.
 #'
@@ -26,7 +26,7 @@
 #' - Easy calculation of responses with a health limitation (i.e. a non-one
 #'   response in one of the dimensions) via `calculate_limitation()`.
 #'
-#' See `vignette("surveyTools")` for an introduction to the main functionality
+#' See `vignette("qalytools")` for an introduction to the main functionality
 #' of the package and `vignette("example_analysis")` for an illustration of how
 #' the package can be used as part of a larger analysis.
 #'

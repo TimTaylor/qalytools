@@ -1,4 +1,4 @@
-Package: surveyTools
+Package: qalytools
 Title: Tools for Analysing EQ5D Surveys
 Version: 0.0.2.9000
 Authors@R: c(person(given = "Crown Copyright", role = c("cph", "fnd")),

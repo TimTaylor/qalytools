@@ -4,8 +4,8 @@ pkgdown_sha: ~
 articles:
   example_analysis: example_analysis.html
   surveyTools: surveyTools.html
-last_built: 2022-07-15T10:24Z
+last_built: 2022-07-15T12:03Z
 urls:
-  reference: https://timtaylor.github.io/surveyTools/reference
-  article: https://timtaylor.github.io/surveyTools/articles
+  reference: https://timtaylor.github.io/qalytools/reference
+  article: https://timtaylor.github.io/qalytools/articles
 

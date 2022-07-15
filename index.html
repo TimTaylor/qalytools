@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="Provides helper functions to calculate various metrics relating
     to the analysis of EQ5D surveys.">
-<title>Tools for Analysing EQ5D Surveys • surveyTools</title>
+<title>Tools for Analysing EQ5D Surveys • qalytools</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -26,7 +26,7 @@
 
     <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
-    <a class="navbar-brand me-2" href="index.html">surveyTools</a>
+    <a class="navbar-brand me-2" href="index.html">qalytools</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
 
@@ -38,15 +38,13 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
-  <a class="nav-link" href="articles/surveyTools.html">Get started</a>
-</li>
-<li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="articles/example_analysis.html">Example analysis</a>
+    <a class="dropdown-item" href="articles/surveyTools.html">qalytools</a>
   </div>
 </li>
 <li class="nav-item">
@@ -74,16 +72,16 @@
   <main id="main" class="col-md-9">
 <p><br><span style="color:red"> <strong><em>This package is currently under active development and the code subject to change.</em></strong> </span></p>
 <div class="section level1">
-<div class="page-header"><h1 id="surveytools">surveyTools<a class="anchor" aria-label="anchor" href="#surveytools"></a>
+<div class="page-header"><h1 id="qalytools">qalytools<a class="anchor" aria-label="anchor" href="#qalytools"></a>
 </h1></div>
-<p><em>surveyTools</em> provides a simple and intuitive user interface for the analysis of <a href="https://euroqol.org/eq-5d-instruments" class="external-link">EQ-5D</a> surveys. It builds upon the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d package</a> to facilitate the calculation of QALY values, and other related metrics, across multiple surveys.</p>
+<p><em>qalytools</em> provides a simple and intuitive user interface for the analysis of <a href="https://euroqol.org/eq-5d-instruments" class="external-link">EQ-5D</a> surveys. It builds upon the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d package</a> to facilitate the calculation of QALY values, and other related metrics, across multiple surveys.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>The development version of the package can be installed via:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>    <span class="va">repos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://timtaylor.r-universe.dev"</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"surveyTools"</span>, repos <span class="op">=</span> <span class="va">repos</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"qalytools"</span>, repos <span class="op">=</span> <span class="va">repos</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="guidance">Guidance<a class="anchor" aria-label="anchor" href="#guidance"></a>
@@ -91,7 +89,7 @@
 <p>Once installed the best way to familiarise yourself with the package is to view the included documentation:</p>
 <ul>
 <li>
-<code><a href="articles/surveyTools.html">vignette("surveyTools")</a></code> provides an introduction to the main functionality of the package.</li>
+<code>vignette("qalytools")</code> provides an introduction to the main functionality of the package.</li>
 <li>
 <code><a href="articles/example_analysis.html">vignette("example_analysis")</a></code> illustrates how to use the package as part of a larger analysis.</li>
 </ul>
@@ -118,7 +116,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing surveyTools</a></li>
+<li><a href="authors.html#citation">Citing qalytools</a></li>
 </ul>
 </div>
 
@@ -133,7 +131,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/TimTaylor/surveyTools/actions" class="external-link pkgdown-devel"><img src="https://github.com/TimTaylor/surveyTools/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/TimTaylor/qalytools/actions" class="external-link pkgdown-devel"><img src="https://github.com/TimTaylor/qalytools/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 </ul>
 </div>

@@ -62,10 +62,6 @@
 #' @param surveyID `[character]` Name of variable in `x` that uniquely
 #' identifies surveys over time.
 #'
-#' To avoid ambiguity the specified variable must be either numeric or a
-#' factor (in which case the  order will be taken as that given  by the factor
-#' levels).
-#'
 #' @param mobility `[character]` Name of the 'mobility' dimension in `x`.
 #'
 #' @param self_care `[character]` Name of the 'self-care' dimension in `x`.
@@ -237,14 +233,6 @@ validate_eq5d <- function(x, version) {
                 "{.arg {names(v)}} variable ({.val {sQuote(v)}}) not present in {.arg x}."
             )
         }
-    }
-
-    # check surveyID is either numeric or an ordered factor
-    s <- .subset2(x, surv)
-    if (!(is.factor(s) || is.numeric(s))) {
-        cli_abort(
-            "{.arg surveyID} variable ({.val {surv}}) must be numeric or an ordered factor."
-        )
     }
 
     # check presence of dimension variables in data

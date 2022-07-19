@@ -146,17 +146,7 @@ as_eq5dy(x, ...)
 identifies respondents.}
 
 \item{surveyID}{\verb{[character]} Name of variable \code{x} that uniquely identifies
-surveys over time.
-
-To avoid ambiguity the specified variable should be either numeric or a
-factor (in which case the order will be taken as that given by the factor
-levels).
-
-A character variable in \code{x} will be accepted but converted, with
-warning, via \code{as.factor()}.
-
-If the variable does not exist within \code{x} it will be created and set to
-\code{NA_integer}.}
+surveys over time.}
 
 \item{mobility}{\verb{[character]} Name of the 'mobility' dimension in \code{x}.}
 

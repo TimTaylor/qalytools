@@ -1,6 +1,5 @@
 test_that("validate_eq5d works", {
     dat <- EQ5D5L_surveys
-    dat$surveyID <- as.factor(dat$surveyID)
     class(dat) <- "data.frame"
 
     expect_snapshot_error(
@@ -32,8 +31,6 @@ test_that("validate_eq5d works", {
         time_index = "time_index",
         drop = FALSE
     )
-    tmp$surveyID <- as.character(tmp$surveyID)
-    expect_snapshot_error(validate_eq5d(tmp, version = "5L"))
 
     expect_snapshot_error(
         out <- as_eq5d5l(
@@ -105,14 +102,5 @@ test_that("validate_eq5d works", {
             drop = FALSE
         )
     )
-
-
-
-
-
-
-
-
-
 
 })

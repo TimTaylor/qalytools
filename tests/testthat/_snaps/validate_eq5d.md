@@ -4,10 +4,6 @@
 
 ---
 
-    `surveyID` variable ("surveyID") must be numeric or an ordered factor.
-
----
-
     Not all dimensions specified are present in `x`
     > The following columns cannot be found: 'TEST'
 

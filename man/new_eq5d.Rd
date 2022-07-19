@@ -47,11 +47,7 @@ validate_eq5dy(x)
 identifies respondents.}
 
 \item{surveyID}{\verb{[character]} Name of variable in \code{x} that uniquely
-identifies surveys over time.
-
-To avoid ambiguity the specified variable must be either numeric or a
-factor (in which case the  order will be taken as that given  by the factor
-levels).}
+identifies surveys over time.}
 
 \item{mobility}{\verb{[character]} Name of the 'mobility' dimension in \code{x}.}
 

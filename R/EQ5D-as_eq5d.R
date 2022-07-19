@@ -29,16 +29,6 @@
 #' @param surveyID `[character]` Name of variable `x` that uniquely identifies
 #' surveys over time.
 #'
-#' To avoid ambiguity the specified variable should be either numeric or a
-#' factor (in which case the order will be taken as that given by the factor
-#' levels).
-#'
-#' A character variable in `x` will be accepted but converted, with
-#' warning, via `as.factor()`.
-#'
-#' If the variable does not exist within `x` it will be created and set to
-#' `NA_integer`.
-#'
 #' @param mobility `[character]` Name of the 'mobility' dimension in `x`.
 #'
 #' @param self_care `[character]` Name of the 'self-care' dimension in `x`.
@@ -332,24 +322,12 @@ as_eq5dy.data.frame <- function(
     version
 ) {
 
-    # check surveyID input (most checks actually occur within fun below)
-    stopifnot(length(surveyID) == 1L)
-
-    # if surveyID is a character convert to factor and provide message to use
-    # as warning at end. We delay the message in case the function errors for
-    # other reasons first as this can get a little confusing for users.
-    msg <- NULL
-    if (is.character(x[[surveyID]])) {
-        x[[surveyID]] <- ordered(x[[surveyID]])
-        msg <- sprintf("`%s` has been converted to an ordered factor with default levels equivalent to `sort(unique(%s))`.", surveyID, surveyID)
-    }
-
     # get the correct function to call
     fun <- switch(version,
         "5L" = new_eq5d5l,
         "3L" = new_eq5d3l,
         "Y" = new_eq5dy,
-        cli_abort("Something has gone wrong - please let the developers know")
+        cli_abort("Something has gone wrong - please let the developers know.")
     )
 
     # call and validate the output
@@ -378,9 +356,5 @@ as_eq5dy.data.frame <- function(
     out[, cols[notint]] <- lapply(.subset(out, cols[notint]), as.integer)
     class(out) <- cls
 
-    # print character to factor message from earlier if it exists
-    if (!is.null(msg)) {
-        cli::cli_warn(msg)
-    }
     out
 }

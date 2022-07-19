@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 *qalytools* provides a simple and intuitive user interface for the
 analysis of [EQ-5D](https://euroqol.org/eq-5d-instruments) surveys. It builds
 upon the [eq5d package](https://cran.r-project.org/package=eq5d) to facilitate
-the calculation of QALY values, and other related metrics, across multiple
+the calculation of QALY metrics, and other related values, across multiple
 surveys.
 
 ## Installation

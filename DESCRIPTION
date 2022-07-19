@@ -29,8 +29,12 @@ Depends:
     R (>= 3.5.0)
 Suggests:
     dplyr,
+    tidyr,
+    stringr,
+    lme4,
     covr,
     ggplot2,
+    purrr,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)

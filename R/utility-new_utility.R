@@ -115,14 +115,6 @@ validate_utility <- function(xx) {
         }
     }
 
-    # check surveyID is either numeric or an ordered factor
-    s <- .subset2(xx, surveyID)
-    if (!(is.factor(s) || is.numeric(s))) {
-        cli_abort(
-            "{.arg surveyID} variable ({.val {surveyID}}) must be numeric or an ordered factor."
-        )
-    }
-
     # check unique combinations of survey, respondent ID, country and type
     combos <- xx[, c(respondentID, surveyID, country, type)]
     if (anyDuplicated(combos)) {

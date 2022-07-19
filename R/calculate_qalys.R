@@ -190,7 +190,7 @@ calculate_qalys.utility <- function(
     timediff <- eval(tmp)
 
     # calculate the area under the curve
-    # order by x before calling .auc as that function expects ordered input
+    # order by t before calling .auc as that function expects ordered input
     setorderv(out, t)
     tmp <- bquote(out[, list(.auc = .auc(x = .(as.name(t)), y = .(as.name(uvalue)))), keyby = cols])
     out <- eval(tmp)

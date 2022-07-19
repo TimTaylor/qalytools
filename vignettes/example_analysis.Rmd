@@ -254,9 +254,119 @@ ggplot2::ggplot(data = plot_dat) +
     ggplot2::expand_limits(y = 0)
 ```
 
-## A better model
+## Using a Bayesian approach with a hurdle model
 
-## An even better model
+The analysis above makes the simplifying assumption that utility values are normally distributed. While it has been shown that this assumption tends to lead to similar results as more complex models, here we wanted to show a method that does not make that assumption. This method relies on the `brms` package to fit the model. The `brms` package uses a Bayesian approach, so an additional benefit of this approach is that the bootstrap is not needed anymore. A downside is that fitting such a model takes a lot longer, which also makes it more costly to run a model comparison.
+
+To fit the model we convert the utility value to a value that ranges 0 and above ($x = 1 - \text{utility}$) and we assume that the converted value follows a hurdle gamma distribution. The hurdle is needed, because in health data many people tend to report full health (utility value of 1). A full explanation of hurdle models is outside the scope of this vignette, but some good discussion can be found [here](https://www.andrewheiss.com/blog/2022/05/09/hurdle-lognormal-gaussian-brms/).
+
+```{r brmsanalysis}
+# Use multiple cores for brms
+options(mc.cores = 4)
+library(brms)
+input_dat |>
+  dplyr::mutate(acute = surveyID == "survey02", x = 1 - .value) -> dat
+brm(bf(x ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup +
+       sex:AgeGroup,
+# For simplicitely we use the same explanatory variables for the hurdle
+# except for the age sex interaction
+       hu ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup),
+    data = dat, family = hurdle_gamma(), iter = 750) -> hbrm_model
+# Draw posterior samples to use in qaly calculation
+brms::posterior_predict(hbrm_model, ndraws = 1000, newdata = dat) ->
+  posterior_dat
+# For each posterior sample, calculate the qaly loss
+purrr::map(seq_len(nrow(posterior_dat)), function(np_id) {
+  dat |> dplyr::mutate(pvalue = 1 - posterior_dat[as.numeric(np_id), ]) |>
+    surveyTools::new_utility(respondentID = "respondentID",
+                             surveyID = "surveyID",
+                             time_index = "time_index",
+                             country = ".utility_country",
+                             type = ".utility_type",
+                             value = "pvalue") |>
+    surveyTools::validate_utility() |>
+    surveyTools::calculate_qalys(baseline_survey = "survey01") |>
+    dplyr::mutate(np = as.numeric(np_id))
+}) |> dplyr::bind_rows() |>
+    dplyr::left_join(dat |>
+      dplyr::select(respondentID, AgeGroup, sex) |>
+      dplyr::distinct()) -> qaly_dat
+```
+
+```{r hurdleModel, fig.cap = "Comparing the modelled utility values, using the hurdle model, with the utility values in the model. Utility values were calculated from a EQ5D5L survey using the DSU method."}
+# For comparison, plot posterior using one posterior sample
+dat |> dplyr::mutate(pvalue = 1 - posterior_dat[1, ]) |>
+  surveyTools::new_utility(respondentID = "respondentID",
+                           surveyID = "surveyID",
+                           time_index = "time_index",
+                           country = ".utility_country",
+                           type = ".utility_type",
+                           value = "pvalue") |>
+  surveyTools::validate_utility() -> dat0
+dat0 |>
+  dplyr::rename(Actual = .value, Model = pvalue) |>
+  tidyr::gather(type, value, Actual, Model) -> plot_dat
+ggplot(plot_dat) +
+  geom_line(aes(x = surveyID, y = value, group = respondentID,
+                colour = sex), alpha = 0.1) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  facet_grid(. ~ type)
+```
+
+Next, we look at the coefficients for this model. The results also include the coefficients for the hurdle (hu) part of the model, but those are not significant. Similar to previous results survey 2 had the worst outcomes. Survey 3, 4 and 5 also had significantly worse outcomes than survey 1, but respondents returned to base line levels of health from survey 6 onwards. In contrast, to the simpler model this analysis does find find a significant correlation between age and sex with their utility values, which might be due to the increased power of this model. Note that because we transformed our utility variable, the sign of these are the opposite of the previous results.
+
+```{r coefficientsHurdle, fig.cap = "Coefficients of hurdle model. Uncertainty was captured by fitting the model to bootstrapped data. The blue colour highlights coefficients that were significant. Note that because we transformed our utility variable, the sign of these are the opposite of the previous results."}
+fixef(hbrm_model, probs = c(0.025, 0.25, 0.5, 0.75, 0.975)) -> dat0
+dat0 |>
+  as_tibble() |>
+  dplyr::mutate(idname = factor(rownames(dat0), levels = rownames(dat0))) |>
+  dplyr::mutate(Significant = (`Q2.5` < 0 & `Q97.5` < 0) |
+                (`Q2.5` > 0 & `Q97.5` > 0), model = stringr::str_detect(idname, "hu_")) |>
+  dplyr::filter(!stringr::str_detect(idname, "Intercept")) -> plot_dat
+ggplot(data = plot_dat) +
+  geom_linerange(aes(x = idname, ymin = `Q2.5`, ymax = `Q97.5`,
+                     colour = Significant), size = 1) +
+  geom_linerange(aes(x = idname, ymin = `Q25`, ymax = `Q75`,
+                     colour = Significant), size = 2) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+        axis.title.x = element_blank(),
+        legend.position = "none") +
+  facet_wrap(model ~ ., scales = "free")
+```
+
+```{r qalyFigHurdle, fig.cap = "QALY values based on the hurdle model. The cross is the mean QALY based on the data. The uncertainty represents the uncertainty in the mean QALY loss according to the model"}
+qaly_dat |>
+  dplyr::group_by(.qaly, AgeGroup, np) |>
+  dplyr::summarise(value = mean(.value)) |>
+  dplyr::group_by(.qaly, AgeGroup) |>
+  dplyr::summarise(quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
+                   value = quantile(value, quant)) |>
+  dplyr::ungroup() |>
+  tidyr::spread(quant, value) |>
+  dplyr::filter(.qaly != "raw") -> plot_dat
+# Include qalys calculated from the raw data
+input_dat |>
+  surveyTools::calculate_qalys(baseline_survey = "survey01") |>
+  dplyr::filter(.qaly != "raw") |>
+  dplyr::left_join(dat |>
+    dplyr::select(respondentID, AgeGroup, sex) |>
+    dplyr::distinct()) |>
+  dplyr::group_by(AgeGroup, .qaly) |>
+  dplyr::summarise(mean = mean(.value)) |>
+  dplyr::ungroup() -> dat0
+ggplot(data = plot_dat) +
+  geom_linerange(aes(x = AgeGroup, ymin = `0.025`, ymax = `0.975`,
+                     colour = .qaly, group = .qaly),
+                 position = position_dodge2(0.5)) +
+  geom_linerange(aes(x = AgeGroup, ymin = `0.25`, ymax = `0.75`,
+                     colour = .qaly, group = .qaly),
+                 position = position_dodge2(0.5),
+                 size = 2) +
+  geom_point(data = dat0, aes(x = AgeGroup, y = mean, group = .qaly),
+                 position = position_dodge2(0.5), size = 3,
+                 shape = 4) +
+  expand_limits(y = 0)
+```
 
 # References
 

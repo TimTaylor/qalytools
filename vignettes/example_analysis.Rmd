@@ -98,8 +98,7 @@ ggplot2::ggplot(plot_dat) +
     ggplot2::facet_grid(. ~ type)
 ```
 
-The get estimates of the uncertainty around the model we rely on a non parametric bootstrap; 
-resampling (with replacement) from our respondents and fitting the model to the resampled data.
+We will use a non parametric bootstrap to calculate the uncertainty in our model. For this bootstrap we resample (with replacement) from our respondents and fit the model to the resampled data.
 
 ```{r bootstrap}
 set.seed(1)
@@ -133,7 +132,8 @@ models <-
     purrr::keep(function(lst0) length(lst0$warnings) == 0)
 ```
 
-Using the bootstrapped models we can generate a figure with the explanatory variables. This shows that (as expected) survey 2 had the worst outcomes. Survey 3, 4 and 5 also had significantly worse outcomes than survey 1, but respondents returned to baseline levels of health from survey 6 onwards. We did not find a significant correlation between age and sex with their utility values, except for 60 and over year old males, who experienced lower utility than the other groups.
+
+Using the bootstrapped models we can capture the uncertainty in the coefficients of our explanatory variables (see figure below). Unsurprisingly, this shows that survey 2 is associated with the lowest utility value. Survey 3, 4 and 5 also had significantly worse outcomes than survey 1, but respondents returned to base line levels of utility from survey 6 onwards. We did not find a significant correlation between age and sex with their utility values, except for 60 and over year old males, who experienced lower utility than the other groups.
 
 ```{r coefficients, fig.cap = "Coefficients of the statistical model. Uncertainty was captured by fitting the model to bootstrapped data. The blue colour highlights coefficients that were significant."}
 # Gather coefficients from the bootstrapped models

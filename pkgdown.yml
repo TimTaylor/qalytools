@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   example_analysis: example_analysis.html
   qalytools: qalytools.html
-last_built: 2022-07-19T13:21Z
+last_built: 2022-07-19T14:33Z
 urls:
   reference: https://timtaylor.github.io/qalytools/reference
   article: https://timtaylor.github.io/qalytools/articles

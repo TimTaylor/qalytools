@@ -152,7 +152,7 @@
 Comparing the modelled utility values with the utility values in the model. Utility values were calculated from a EQ5D5L survey using the DSU method.
 </p>
 </div>
-<p>The get estimates of the uncertainty around the model we rely on a non parametric bootstrap; resampling (with replacement) from our respondents and fitting the model to the resampled data.</p>
+<p>We will use a non parametric bootstrap to calculate the uncertainty in our model. For this bootstrap we resample (with replacement) from our respondents and fit the model to the resampled data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co"># Using 100 samples for illustrative purposes.</span></span>
@@ -183,7 +183,7 @@ Comparing the modelled utility values with the utility values in the model. Util
 <span>        <span class="op">}</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/keep.html" class="external-link">keep</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">lst0</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lst0</span><span class="op">$</span><span class="va">warnings</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
-<p>Using the bootstrapped models we can generate a figure with the explanatory variables. This shows that (as expected) survey 2 had the worst outcomes. Survey 3, 4 and 5 also had significantly worse outcomes than survey 1, but respondents returned to baseline levels of health from survey 6 onwards. We did not find a significant correlation between age and sex with their utility values, except for 60 and over year old males, who experienced lower utility than the other groups.</p>
+<p>Using the bootstrapped models we can capture the uncertainty in the coefficients of our explanatory variables (see figure below). Unsurprisingly, this shows that survey 2 is associated with the lowest utility value. Survey 3, 4 and 5 also had significantly worse outcomes than survey 1, but respondents returned to base line levels of utility from survey 6 onwards. We did not find a significant correlation between age and sex with their utility values, except for 60 and over year old males, who experienced lower utility than the other groups.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Gather coefficients from the bootstrapped models</span></span>
 <span><span class="va">coeff_dat</span> <span class="op">&lt;-</span> </span>

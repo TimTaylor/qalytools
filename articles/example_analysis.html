@@ -71,7 +71,8 @@
 
 
 
-<script src="example_analysis_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>EQ-5D Analysis</h1>
             
@@ -121,7 +122,7 @@
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">qalytools</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_utility.html">add_utility</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"DSU"</span>, country <span class="op">=</span> <span class="st">"UK"</span>, age <span class="op">=</span> <span class="st">"age"</span>, sex <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span></code></pre></div>
 <p>We will be using a mixed effect model to fit the utility values. The model is defined as <code>value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup + sex:AgeGroup</code>. This means that we assume each respondent to have a random effect as well as a random interaction between the first survey after symptoms (acute). Other explanatory variables are the survey, sex and age group (and the interaction between sex and age group). This model was chosen based on our knowledge of the data. For your own dataset it is recommended to choose your own model. For example, by exploring multiple models and choosing the best model (using standard model comparison methods).</p>
-<p>To fit our mixed effect model we use the <code>lme4</code> package. While the utility value is truncated at 1, it has been shown that assuming a normal distribution and performing a non parametric bootstrap is a valid simplification <span class="citation">(Pullenayegum et al., n.d.)</span>. We will explore a more complex approach later in this vignette.</p>
+<p>To fit our mixed effect model we use the <code>lme4</code> package. While the utility value is truncated at 1, it has been shown that assuming a normal distribution and performing a non parametric bootstrap is a valid simplification <span class="citation">(Pullenayegum et al. 2010 Jun-Jul)</span>. We will explore a more complex approach later in this vignette.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Label the acute period of the disease</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">input_dat</span>, acute <span class="op">=</span> <span class="va">surveyID</span> <span class="op">==</span> <span class="st">"survey02"</span><span class="op">)</span></span>
@@ -317,11 +318,11 @@ QALY values based on the model. The cross is the mean QALY based on the data. Th
 </h3>
 </div>
 <div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references">
-<div id="ref-pull_analysis_2010">
-<p>Pullenayegum, Eleanor M., Jean-Eric Tarride, Feng Xie, Ron Goeree, Hertzel C. Gerstein, and Daria O’Reilly. n.d. “Analysis of Health Utility Data When Some Subjects Attain the Upper Bound of 1: Are Tobit and CLAD Models Appropriate?” <em>Value in Health: The Journal of the International Society for Pharmacoeconomics and Outcomes Research</em> 13 (4): 487–94. <a href="https://doi.org/10/b9t4dn" class="external-link">https://doi.org/10/b9t4dn</a>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-pull_analysis_2010" class="csl-entry">
+Pullenayegum, Eleanor M., Jean-Eric Tarride, Feng Xie, Ron Goeree, Hertzel C. Gerstein, and Daria O’Reilly. 2010 Jun-Jul. <span>“Analysis of Health Utility Data When Some Subjects Attain the Upper Bound of 1: Are <span>Tobit</span> and <span>CLAD</span> Models Appropriate?”</span> <em>Value in Health: The Journal of the International Society for Pharmacoeconomics and Outcomes Research</em> 13 (4): 487–94. <a href="https://doi.org/b9t4dn" class="external-link">https://doi.org/b9t4dn</a>.
 </div>
 </div>
 </div>

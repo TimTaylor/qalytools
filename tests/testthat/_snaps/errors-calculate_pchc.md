@@ -8,21 +8,21 @@
 
 ---
 
-    `no.problems` must be TRUE or FALSE.
+    `no.problems` must be boolean (TRUE/FALSE).
 
 ---
 
-    `by.dimension` must be TRUE or FALSE.
+    `by.dimension` must be boolean (TRUE/FALSE).
 
 ---
 
-    `pre` and `post` must be of the same survey type
+    `pre` and `post` must be of the same survey type.
 
 ---
 
-    `pre` must only contain one survey
+    `pre` must only contain one survey.
 
 ---
 
-    `post` must only contain one survey
+    `post` must only contain one survey.
 

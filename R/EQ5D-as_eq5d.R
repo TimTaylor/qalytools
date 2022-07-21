@@ -327,7 +327,7 @@ as_eq5dy.data.frame <- function(
         "5L" = new_eq5d5l,
         "3L" = new_eq5d3l,
         "Y" = new_eq5dy,
-        cli_abort("Something has gone wrong - please let the developers know.")
+        stop("Something has gone wrong - please let the developers know.")
     )
 
     # call and validate the output

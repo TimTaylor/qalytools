@@ -12,9 +12,7 @@ test_that("validate_eq5d works", {
             usual = "usual",
             pain = "pain",
             anxiety = "anxiety",
-            vas = "vas",
-            time_index = "time_index",
-            drop = FALSE
+            vas = "vas"
         )
     )
 
@@ -27,9 +25,7 @@ test_that("validate_eq5d works", {
         usual = "usual",
         pain = "pain",
         anxiety = "anxiety",
-        vas = "vas",
-        time_index = "time_index",
-        drop = FALSE
+        vas = "vas"
     )
 
     expect_snapshot_error(
@@ -42,9 +38,7 @@ test_that("validate_eq5d works", {
             usual = "usual",
             pain = "TEST",
             anxiety = "anxiety",
-            vas = "vas",
-            time_index = "time_index",
-            drop = FALSE
+            vas = "vas"
         )
     )
 
@@ -59,9 +53,7 @@ test_that("validate_eq5d works", {
             usual = "usual",
             pain = "pain",
             anxiety = "anxiety",
-            vas = "vas",
-            time_index = "time_index",
-            drop = FALSE
+            vas = "vas"
         )
     )
 
@@ -77,9 +69,7 @@ test_that("validate_eq5d works", {
             usual = "usual",
             pain = "pain",
             anxiety = "anxiety",
-            vas = "vas",
-            time_index = "time_index",
-            drop = FALSE
+            vas = "vas"
         )
     )
 
@@ -97,9 +87,7 @@ test_that("validate_eq5d works", {
             usual = "usual",
             pain = "pain",
             anxiety = "anxiety",
-            vas = "vas",
-            time_index = "time_index",
-            drop = FALSE
+            vas = "vas"
         )
     )
 

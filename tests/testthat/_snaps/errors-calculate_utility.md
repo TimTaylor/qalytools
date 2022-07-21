@@ -20,9 +20,9 @@
 
 ---
 
-    `sex` variable in `x` should be a character vector
+    `sex` variable in `x` must be a character vector.
 
 ---
 
-    `age` variable in `x` should be a numeric vector
+    `age` variable in `x` must be a numeric vector.
 

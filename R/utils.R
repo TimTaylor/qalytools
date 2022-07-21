@@ -3,87 +3,43 @@
     abs(x - round(x)) < tol
 }
 
-# is character of length 1
-.is_scalar_character <- function(x) {
-    is.character(x) && length(x) == 1
-}
-
-# assert character and length 1 (returns invisibly or errors)
-# uses cli and vec_assert for nice error messages
-# additional branches alleviate the overhead of vec_assert when an error won't be triggered
-.assert_scalar_character <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-
-    if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default", call = call)
-    }
-
-    if (!(is.character(x) && length(x) == 1L)) {
-        vec_assert(x, ptype = "character", size = 1L, arg = arg, call = call)
-    }
-
-    invisible(x)
-}
-
 # assert character (returns invisibly or errors)
-# uses cli and vec_assert for nice error messages
-# additional branches alleviate the overhead of vec_assert when an error won't be triggered
-.assert_character <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+.assert_character <- function(x, arg = deparse(substitute(x)), call = sys.call(-1L)) {
     if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default", call = call)
+        msg <- sprintf("argument `%s` is missing, with no default.", arg)
+        stop(simpleError(msg, call[1L]))
     }
-
     if (!is.character(x)) {
-        vec_assert(x, ptype = "character", arg = arg, call = call)
+        msg <- sprintf("`%s` must be a character vector.", arg)
+        stop(simpleError(msg, call[1L]))
     }
-
-    invisible(x)
-}
-
-# assert bool (returns input invisibly or errors)
-.assert_bool <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
-    }
-
-    if (!(is.logical(x) && length(x) == 1L && !is.na(x))) {
-        cli_abort("{.arg {arg}} must be TRUE or FALSE.", call = call)
-
-    }
-
-    invisible(x)
-}
-
-# assert data frame (returns input invisibly or errors)
-.assert_data_frame <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
-    }
-
-    if (!is.data.frame(x)) {
-        cli_abort("{.arg {arg}} must be a data frame.", call = call)
-    }
-
     invisible(x)
 }
 
 # assert class (returns input invisibly or errors)
-.assert_class <- function(x, class, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    if (!inherits(x, class)) {
-        cli_abort("{.arg {arg}} must have class {.cls {class}}.", call = call)
+.assert_class <- function(x, class, arg = deparse(substitute(x)), call = sys.call(-1L)) {
+    if (missing(x)) {
+        msg <- sprintf("argument `%s` is missing, with no default.", arg)
+        stop(simpleError(msg, call[1L]))
     }
-
+    if (!inherits(x, class)) {
+        msg <- sprintf("`%s` must have class <%s>.", arg, class)
+        stop(simpleError(msg, call[1L]))
+    }
     invisible(x)
 }
 
 # function to use in default s3 methods with no implementation
-.class_not_implemented <- function(x, call = rlang::caller_env()) {
+.class_not_implemented <- function(x, call = sys.call(-1L)) {
     cls <- class(x)
-    cli_abort("Not implemented for {.cls {cls}} objects.")
+    cls <- paste0(cls, collapse = "/")
+    msg <- sprintf("Not implemented for <%s> objects.", cls)
+    stop(simpleError(msg, call[1L]))
 }
 
 
 # return the version of an eq5d object
-.get_version <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+.get_version <- function(x, arg = deparse(substitute(x)), call = sys.call(-1L)) {
     if (inherits(x, "EQ5D5L")) {
         "5L"
     } else if (inherits(x, "EQ5D3L")) {
@@ -91,10 +47,8 @@
     } else if (inherits(x, "EQ5DY")) {
         "Y"
     } else {
-        cli_abort(
-            "{.arg {arg}} must be of class {.cls EQ5D5L}, {.cls EQ5D3L} or {.cls EQ5DY}.",
-            call = call
-        )
+        msg <- sprintf("`%s` must be of class <EQ5D5L>, <EQ5D3L> or <EQ5DY>.", arg)
+        stop(simpleError(msg, call[1L]))
     }
 }
 
@@ -128,11 +82,8 @@
     rnms <- rownames(x)
     nms <- names(x)
     if (var %in% nms) {
-        cli_abort("{.val {var}} is already a column in the input data frame.")
+        stop(sprintf('"%s" is already a column in the input data frame.', var))
     }
     rownames(x) <- NULL
     setNames(cbind(rnms, x), c(var, nms))
 }
-
-# Need to this to remove a note in R CMD check
-.check_hack <- function() rlang::caller_arg

@@ -211,14 +211,14 @@ validate_eq5d <- function(x, version) {
 
     version    <- match.arg(version, c("3L", "5L", "Y"))
 
-    resp       <- .assert_scalar_character(attr(x, "respondentID"))
-    surv       <- .assert_scalar_character(attr(x, "surveyID"))
-    mobility   <- .assert_scalar_character(attr(x, "mobility"))
-    self_care  <- .assert_scalar_character(attr(x, "self_care"))
-    usual      <- .assert_scalar_character(attr(x, "usual"))
-    pain       <- .assert_scalar_character(attr(x, "pain"))
-    anxiety    <- .assert_scalar_character(attr(x, "anxiety"))
-    vas        <- .assert_scalar_character(attr(x, "vas"))
+    resp       <- imp_assert_scalar_chr(attr(x, "respondentID"))
+    surv       <- imp_assert_scalar_chr(attr(x, "surveyID"))
+    mobility   <- imp_assert_scalar_chr(attr(x, "mobility"))
+    self_care  <- imp_assert_scalar_chr(attr(x, "self_care"))
+    usual      <- imp_assert_scalar_chr(attr(x, "usual"))
+    pain       <- imp_assert_scalar_chr(attr(x, "pain"))
+    anxiety    <- imp_assert_scalar_chr(attr(x, "anxiety"))
+    vas        <- imp_assert_scalar_chr(attr(x, "vas"))
 
     # pull our number of levels
     n <- if (version == "5L") 5L else 3L
@@ -229,9 +229,7 @@ validate_eq5d <- function(x, version) {
     for (i in seq_along(vars)) {
         v <- vars[i]
         if (!v %in% names_x) {
-            cli_abort(
-                "{.arg {names(v)}} variable ({.val {sQuote(v)}}) not present in {.arg x}."
-            )
+            stop(sprintf("`%s` variable (%s) not present in `x`", names(v), sQuote(v)))
         }
     }
 
@@ -241,10 +239,10 @@ validate_eq5d <- function(x, version) {
     if (!all(cols_present)) {
         missing <- cols[!cols_present]
         missing <- paste(sQuote(missing), collapse = ", ")
-        cli_abort(c(
-            "Not all dimensions specified are present in {.arg x}",
-            ">" = "The following columns cannot be found: {missing}"
-        ))
+        stop(
+            "Not all dimensions specified are present in `x`\n",
+            sprintf(" - The following columns cannot be found: %s", missing)
+        )
     }
 
     # convert to data.frame to avoid slow .eq5d_can_reconstruct checks
@@ -254,23 +252,23 @@ validate_eq5d <- function(x, version) {
     # check unique combinations of survey and respondent ID
     combos <- dat[, c(resp, surv)]
     if (anyDuplicated(combos)) {
-        cli_abort("{.arg respondentID} / {.arg surveyID} combinations cannot be duplicated")
+        stop("`respondentID` / `surveyID` combinations must not be duplicated.")
     }
 
     # check dimensions data is numeric
     dat <- dat[, cols]
     if (!all(vapply(dat, is.numeric, logical(1)))) {
-        cli_abort("Dimension values must be whole numbers")
+        stop("Dimension values must be whole numbers.")
     }
 
     # check that the data is whole numbers or na
     if (!(all(.is_whole(dat) | is.na(dat)))) {
-        cli_abort("Dimension values must be whole numbers or NA")
+        stop("Dimension values must be whole numbers or NA.")
     }
 
     # check that the data is bounded correctly or na
     if (!all(is.na(dat) | (dat >= 1 & dat <= n))) {
-        cli_abort("Dimensions  must be either bounded by 1 and {n}, or NA")
+        stop(sprintf("Dimensions must be either bounded by 1 and %d, or NA.", n))
     }
 
     invisible(x)
@@ -319,15 +317,15 @@ validate_eq5dy <- function(x) {
 ) {
 
     # only check class of inputs at this stage
-    x <- .assert_data_frame(x)
-    respondentID <- .assert_scalar_character(respondentID)
-    surveyID <- .assert_scalar_character(surveyID)
-    mobility <- .assert_scalar_character(mobility)
-    self_care <- .assert_scalar_character(self_care)
-    usual <- .assert_scalar_character(usual)
-    pain <- .assert_scalar_character(pain)
-    anxiety <- .assert_scalar_character(anxiety)
-    vas <- .assert_scalar_character(vas)
+    x <- imp_assert_data_frame(x)
+    respondentID <- imp_assert_scalar_chr(respondentID)
+    surveyID <- imp_assert_scalar_chr(surveyID)
+    mobility <- imp_assert_scalar_chr(mobility)
+    self_care <- imp_assert_scalar_chr(self_care)
+    usual <- imp_assert_scalar_chr(usual)
+    pain <- imp_assert_scalar_chr(pain)
+    anxiety <- imp_assert_scalar_chr(anxiety)
+    vas <- imp_assert_scalar_chr(vas)
 
     structure(
         x,

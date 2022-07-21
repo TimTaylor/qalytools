@@ -254,9 +254,9 @@ add_utility.EQ5DY <- function(
     } else if (length(country) == 1L && length(type) > 1L) {
         country <- rep_len(type, length(type))
     } else if (length(type) != length(country)) {
-        cli_abort("lengths of {.arg type} and {.arg country} are not compatible.")
+        stop("lengths of `type` and `country` are not compatible.")
     } else if (!length(type) || !length(country)) {
-        cli_abort("{.arg type} and {.arg country} must have length greater than 0.")
+        stop("`type` and `country` must have length greater than 0.")
     }
 
     # create data frame of combinations
@@ -270,10 +270,10 @@ add_utility.EQ5DY <- function(
     if (nrow(tmp)) {
         tt <- tmp$type[1]
         cc <- tmp$country[1]
-        cli_abort(c(
-            "Invalid value set and country combination:",
-            ">" = "Type = {.val {tmp$type[1]}}, Country = {.val {tmp$country[1]}}"
-        ))
+        stop(
+            "Invalid value set and country combination:\n",
+            sprintf(" - Type = %s, Country = %s\n", tmp$type[1], tmp$country[1])
+        )
     }
 
     # pull out and replicate respondents/surveyId for each combination
@@ -330,8 +330,8 @@ add_utility.EQ5DY <- function(
             "For 'DSU' you must specify the `sex` variable." = !is.null(sex)
         )
 
-        age <- .assert_scalar_character(age)
-        sex <- .assert_scalar_character(sex)
+        age <- imp_assert_scalar_chr(age)
+        sex <- imp_assert_scalar_chr(sex)
 
         # ensure present in data frame
         nms <- names(scores)
@@ -339,29 +339,27 @@ add_utility.EQ5DY <- function(
         for (i in seq_along(vars)) {
             v <- vars[i]
             if (!v %in% nms) {
-                cli_abort(
-                    "{.arg {names(v)}} variable ({.val {sQuote(v)}}) not present in {.arg x}"
-                )
+                stop(sprintf("`%s` variable (%s) not present in `x`", names(v), sQuote(v)))
             }
         }
 
         # check valid values
         ages <- .subset2(scores, age)
         if (!is.numeric(ages)) {
-            cli_abort("{.arg age} variable in {.arg x} should be a numeric vector")
+            stop("`age` variable in `x` must be a numeric vector.")
         }
         if (length(which(ages < 18 | ages > 100))) {
-            cli::cli_warn("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.")
+            warning("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.")
         }
 
         # check valid values
         sexes <- .subset2(scores, sex)
         if (!is.character(sexes)) {
-            cli_abort("`sex` variable in `x` should be a character vector")
+            stop("`sex` variable in `x` must be a character vector.")
         }
         sexes <- tolower(sexes)
         if (any(!sexes %in% c("male", "m", "female", "f", NA_character_))) {
-            cli_abort('`sex` variable entries should be one of "Male", "M", "Female" or "F" (case independent)')
+            stop('`sex` variable entries should be one of "Male", "M", "Female" or "F" (case independent).')
         }
     }
 

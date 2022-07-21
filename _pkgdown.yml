@@ -1,10 +1,6 @@
 url: https://timtaylor.github.io/qalytools/
 template:
   bootstrap: 5
-  bslib:
-    base_font: 'Helvetica, Arial, Verdana, sans-serif'
-    heading_font: 'Georgia, "Times New Roman", Times, serif'
-    code_font: '"Lucida Console", "Courier New", Courier, monospace;'
 
 reference:
 - title: EQ5D objects

@@ -2,8 +2,7 @@
 #'
 #' @description
 #'
-#' Generic for conversion to an [EQ5D](new_eq5d()) object. Methods are provided
-#' for data frame type objects.
+#' Coerce a data frame to an [EQ5D](new_eq5d()) object.
 #'
 #' ## The EQ5D class
 #'
@@ -73,59 +72,7 @@ NULL
 # -------------------------------------------------------------------------
 #' @rdname as_eq5d
 #' @export
-as_eq5d5l <- function(x, ...) {
-    UseMethod("as_eq5d5l")
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5d5l.default <- function(x, ...) {
-    .class_not_implemented(x)
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5d5l.tbl_df <- function(
-    x,
-    respondentID,
-    surveyID,
-    mobility,
-    self_care,
-    usual,
-    pain,
-    anxiety,
-    vas,
-    ...
-) {
-    x <- as.data.frame(x)
-    NextMethod()
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5d5l.data.table <- function(
-    x,
-    respondentID,
-    surveyID,
-    mobility,
-    self_care,
-    usual,
-    pain,
-    anxiety,
-    vas,
-    ...
-) {
-    x <- as.data.frame(x)
-    NextMethod()
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5d5l.data.frame <- function(
+as_eq5d5l <- function(
     x,
     respondentID,
     surveyID,
@@ -154,48 +101,7 @@ as_eq5d5l.data.frame <- function(
 # -------------------------------------------------------------------------
 #' @rdname as_eq5d
 #' @export
-as_eq5d3l <- function(x, ...) {
-    UseMethod("as_eq5d3l")
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5d3l.default <- function(x, ...) {
-    .class_not_implemented(x)
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5d3l.tbl_df <- function(
-    x,
-    respondentID,
-    surveyID,
-    mobility,
-    self_care,
-    usual,
-    pain,
-    anxiety,
-    vas,
-    ...
-) {
-    x <- as.data.frame(x)
-    NextMethod()
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5d3l.data.table <- function(x, ...) {
-    x <- as.data.frame(x)
-    NextMethod()
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5d3l.data.frame <- function(
+as_eq5d3l <- function(
     x,
     respondentID,
     surveyID,
@@ -221,63 +127,11 @@ as_eq5d3l.data.frame <- function(
     )
 }
 
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5dy <- function(x, ...) {
-    UseMethod("as_eq5dy")
-}
 
 # -------------------------------------------------------------------------
 #' @rdname as_eq5d
 #' @export
-as_eq5dy.default <- function(x, ...) {
-    .class_not_implemented(x)
-}
-
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5dy.tbl_df <- function(
-    x,
-    respondentID,
-    surveyID,
-    mobility,
-    self_care,
-    usual,
-    pain,
-    anxiety,
-    vas,
-    ...
-) {
-    x <- as.data.frame(x)
-    NextMethod()
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5dy.data.table <- function(
-    x,
-    respondentID,
-    surveyID,
-    mobility,
-    self_care,
-    usual,
-    pain,
-    anxiety,
-    vas,
-    ...
-) {
-    x <- as.data.frame(x)
-    NextMethod()
-}
-
-# -------------------------------------------------------------------------
-#' @rdname as_eq5d
-#' @export
-as_eq5dy.data.frame <- function(
+as_eq5dy <- function(
     x,
     respondentID,
     surveyID,
@@ -321,6 +175,12 @@ as_eq5dy.data.frame <- function(
     vas,
     version
 ) {
+
+    # only allow data frame input
+    x <- imp_assert_data_frame(x, arg = deparse(substitute(x)), call = sys.call(-1L))
+
+    # drop additional classes (e.g. tbl_df and data.table)
+    x <- as.data.frame(x)
 
     # get the correct function to call
     fun <- switch(version,

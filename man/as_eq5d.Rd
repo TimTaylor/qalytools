@@ -3,27 +3,11 @@
 \name{as_eq5d}
 \alias{as_eq5d}
 \alias{as_eq5d5l}
-\alias{as_eq5d5l.default}
-\alias{as_eq5d5l.tbl_df}
-\alias{as_eq5d5l.data.table}
-\alias{as_eq5d5l.data.frame}
 \alias{as_eq5d3l}
-\alias{as_eq5d3l.default}
-\alias{as_eq5d3l.tbl_df}
-\alias{as_eq5d3l.data.table}
-\alias{as_eq5d3l.data.frame}
 \alias{as_eq5dy}
-\alias{as_eq5dy.default}
-\alias{as_eq5dy.tbl_df}
-\alias{as_eq5dy.data.table}
-\alias{as_eq5dy.data.frame}
 \title{Coerce to an EQ5D object}
 \usage{
-as_eq5d5l(x, ...)
-
-\method{as_eq5d5l}{default}(x, ...)
-
-\method{as_eq5d5l}{tbl_df}(
+as_eq5d5l(
   x,
   respondentID,
   surveyID,
@@ -36,7 +20,7 @@ as_eq5d5l(x, ...)
   ...
 )
 
-\method{as_eq5d5l}{data.table}(
+as_eq5d3l(
   x,
   respondentID,
   surveyID,
@@ -49,82 +33,7 @@ as_eq5d5l(x, ...)
   ...
 )
 
-\method{as_eq5d5l}{data.frame}(
-  x,
-  respondentID,
-  surveyID,
-  mobility,
-  self_care,
-  usual,
-  pain,
-  anxiety,
-  vas,
-  ...
-)
-
-as_eq5d3l(x, ...)
-
-\method{as_eq5d3l}{default}(x, ...)
-
-\method{as_eq5d3l}{tbl_df}(
-  x,
-  respondentID,
-  surveyID,
-  mobility,
-  self_care,
-  usual,
-  pain,
-  anxiety,
-  vas,
-  ...
-)
-
-\method{as_eq5d3l}{data.table}(x, ...)
-
-\method{as_eq5d3l}{data.frame}(
-  x,
-  respondentID,
-  surveyID,
-  mobility,
-  self_care,
-  usual,
-  pain,
-  anxiety,
-  vas,
-  ...
-)
-
-as_eq5dy(x, ...)
-
-\method{as_eq5dy}{default}(x, ...)
-
-\method{as_eq5dy}{tbl_df}(
-  x,
-  respondentID,
-  surveyID,
-  mobility,
-  self_care,
-  usual,
-  pain,
-  anxiety,
-  vas,
-  ...
-)
-
-\method{as_eq5dy}{data.table}(
-  x,
-  respondentID,
-  surveyID,
-  mobility,
-  self_care,
-  usual,
-  pain,
-  anxiety,
-  vas,
-  ...
-)
-
-\method{as_eq5dy}{data.frame}(
+as_eq5dy(
   x,
   respondentID,
   surveyID,
@@ -139,8 +48,6 @@ as_eq5dy(x, ...)
 }
 \arguments{
 \item{x}{An \R object.}
-
-\item{...}{Further arguments passed to or from other methods.}
 
 \item{respondentID}{\verb{[character]} The name of a variable in \code{x} that uniquely
 identifies respondents.}
@@ -160,13 +67,14 @@ surveys over time.}
 \code{x}.}
 
 \item{vas}{\verb{[character]} Name of the 'visual analogue score' variable in \code{x}.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
 An EQ5D5L, EQ5D3L or EQ5DY object.
 }
 \description{
-Generic for conversion to an \href{new_eq5d()}{EQ5D} object. Methods are provided
-for data frame type objects.
+Coerce a data frame to an \href{new_eq5d()}{EQ5D} object.
 \subsection{The EQ5D class}{
 
 We define an EQ5D object as a data frame that meets the following criteria:

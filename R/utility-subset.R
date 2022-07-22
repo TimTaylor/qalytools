@@ -87,6 +87,6 @@
 
 # -------------------------------------------------------------------------
 # Registered in `.onLoad()` in zzz.R to avoid hard dependency on dplyr
-dplyr_reconstruct_utility <- function(data, template) {
+dplyr_reconstruct.utility <- function(data, template) {
     .utility_reconstruct(data, template)
 }

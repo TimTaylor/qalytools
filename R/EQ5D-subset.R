@@ -146,6 +146,6 @@ rbind.EQ5D <- function(..., deparse.level = 1) {
 
 # -------------------------------------------------------------------------
 # Registered in `.onLoad()` in zzz.R to avoid hard dependency on dplyr
-dplyr_reconstruct_eq5d <- function(data, template) {
+dplyr_reconstruct.EQ5D <- function(data, template) {
     .eq5d_reconstruct(data, template)
 }

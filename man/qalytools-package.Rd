@@ -38,9 +38,9 @@ the package can be used as part of a larger analysis.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/TimTaylor/surveyTools}
-  \item \url{https://timtaylor.github.io/surveyTools/}
-  \item Report bugs at \url{https://github.com/TimTaylor/surveyTools/issues}
+  \item \url{https://github.com/TimTaylor/qalytools}
+  \item \url{https://timtaylor.github.io/qalytools/}
+  \item Report bugs at \url{https://github.com/TimTaylor/qalytools/issues}
 }
 
 }

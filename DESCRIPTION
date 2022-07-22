@@ -8,9 +8,9 @@ Authors@R: c(person(given = "Crown Copyright", role = c("cph", "fnd")),
                     comment = c(ORCID = "0000-0002-8587-7113")))
 Description: Provides helper functions to calculate various metrics relating
     to the analysis of EQ5D surveys.
-URL: https://github.com/TimTaylor/surveyTools,
-    https://timtaylor.github.io/surveyTools/
-BugReports: https://github.com/TimTaylor/surveyTools/issues
+URL: https://github.com/TimTaylor/qalytools,
+    https://timtaylor.github.io/qalytools/
+BugReports: https://github.com/TimTaylor/qalytools/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

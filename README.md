@@ -2,10 +2,9 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
-<a href="https://github.com/TimTaylor/qalytools/actions" class="pkgdown-devel"><img src="https://github.com/TimTaylor/qalytools/workflows/R-CMD-check/badge.svg" alt="R-CMD-check" /></a>
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/TimTaylor/surveyTools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TimTaylor/surveyTools/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/TimTaylor/qalytools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TimTaylor/qalytools/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 <br> <span style="color:red"> ***This package is currently under active

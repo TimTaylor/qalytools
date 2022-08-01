@@ -2,7 +2,7 @@
 title: "EQ-5D Analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example EQ-5D analysis}
+  %\VignetteIndexEntry{EQ-5D Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: references.bib
@@ -256,7 +256,116 @@ ggplot2::ggplot(data = plot_dat) +
 
 ## A better model
 
-## An even better model
+```{r brmsanalysis}
+# Use multiple cores for brms
+options(mc.cores = 4)
+library(brms)
+
+input_dat |>
+  dplyr::mutate(acute = surveyID == "survey02") -> dat
+
+brm(bf(.value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup +
+       sex:AgeGroup), data = dat, family = gaussian(), iter = 2000,
+    # Suppress messages for the vignette
+    silent = 2, refresh = 0, open_progress = F) -> brm_model
+
+# Draw posterior samples to use in qaly calculation
+brms::posterior_predict(brm_model, ndraws = 1000, newdata = dat) ->
+  posterior_dat
+
+# For each posterior sample, calculate the qaly loss
+purrr::map(seq_len(nrow(posterior_dat)), function(np_id) {
+  dat |> dplyr::mutate(pvalue = posterior_dat[as.numeric(np_id), ]) |>
+    qalytools::new_utility(respondentID = "respondentID",
+                             surveyID = "surveyID",
+                             country = ".utility_country",
+                             type = ".utility_type",
+                             value = "pvalue") |>
+    qalytools::validate_utility() |>
+    qalytools::calculate_qalys(baseline_survey = "survey01",
+                               time_index = "time_index") |>
+    dplyr::mutate(np = as.numeric(np_id))
+}) |> dplyr::bind_rows() |>
+    dplyr::left_join(dat |>
+      dplyr::select(respondentID, AgeGroup, sex) |>
+      dplyr::distinct()) -> qaly_dat
+```
+
+```{r brmsModel, fig.cap = "Comparing the modelled utility values, using the bayesian model, with the utility values in the model. Utility values were calculated from a EQ5D5L survey using the DSU method."}
+# For comparison, plot posterior using one posterior sample
+dat |> dplyr::mutate(pvalue = posterior_dat[1, ]) |>
+  qalytools::new_utility(respondentID = "respondentID",
+                           surveyID = "surveyID",
+                           country = ".utility_country",
+                           type = ".utility_type",
+                           value = "pvalue") |>
+  qalytools::validate_utility() -> dat0
+dat0 |>
+  dplyr::rename(Actual = .value, Model = pvalue) |>
+  tidyr::gather(type, value, Actual, Model) -> plot_dat
+
+ggplot(plot_dat) +
+  geom_line(aes(x = surveyID, y = value, group = respondentID,
+                colour = sex), alpha = 0.1) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  facet_grid(. ~ type)
+```
+
+```{r coefficientsBrms, fig.cap = "Coefficients of bayesian model. Uncertainty was captured by fitting the model to bootstrapped data. The blue colour highlights coefficients that were significant. Note that because we transformed our utility variable, the sign of these are the opposite of the previous results."}
+fixef(brm_model, probs = c(0.025, 0.25, 0.5, 0.75, 0.975)) -> dat0
+dat0 |>
+  as_tibble() |>
+  dplyr::mutate(id = rownames(dat0)) |>
+  dplyr::mutate(Significant = (`Q2.5` < 0 & `Q97.5` < 0) |
+                (`Q2.5` > 0 & `Q97.5` > 0)) |>
+  # Cleanup names of the coefficients
+  dplyr::mutate(idname = stringr::str_replace(id, "(sex|surveyID)", "")) |>
+  dplyr::filter(idname != "Intercept") -> plot_dat
+
+ggplot(data = plot_dat) +
+  geom_linerange(aes(x = idname, ymin = `Q2.5`, ymax = `Q97.5`,
+                     colour = Significant), size = 1) +
+  geom_linerange(aes(x = idname, ymin = `Q25`, ymax = `Q75`,
+                     colour = Significant), size = 2) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+        axis.title.x = element_blank(),
+        legend.position = "none")
+```
+
+```{r qalyFigBrms, fig.cap = "QALY values based on the bayesian model. The cross is the mean QALY based on the data. The uncertainty represents the uncertainty in the mean QALY loss according to the model"}
+qaly_dat |>
+  dplyr::group_by(.qaly, AgeGroup, np) |>
+  dplyr::summarise(value = mean(.value)) |>
+  dplyr::group_by(.qaly, AgeGroup) |>
+  dplyr::summarise(quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
+                   value = quantile(value, quant)) |>
+  dplyr::ungroup() |>
+  tidyr::spread(quant, value) |>
+  dplyr::filter(.qaly != "raw") -> plot_dat
+
+# Include qalys calculated from the raw data
+input_dat |>
+  qalytools::calculate_qalys(baseline_survey = "survey01", time_index = "time_index") |>
+  dplyr::filter(.qaly != "raw") |>
+  dplyr::left_join(dat |>
+    dplyr::select(respondentID, AgeGroup, sex) |>
+    dplyr::distinct()) |>
+  dplyr::group_by(AgeGroup, .qaly) |>
+  dplyr::summarise(mean = mean(.value)) |>
+  dplyr::ungroup() -> dat0
+ggplot(data = plot_dat) +
+  geom_linerange(aes(x = AgeGroup, ymin = `0.025`, ymax = `0.975`,
+                     colour = .qaly, group = .qaly),
+                 position = position_dodge2(0.5)) +
+  geom_linerange(aes(x = AgeGroup, ymin = `0.25`, ymax = `0.75`,
+                     colour = .qaly, group = .qaly),
+                 position = position_dodge2(0.5),
+                 size = 2) +
+  geom_point(data = dat0, aes(x = AgeGroup, y = mean, group = .qaly),
+                 position = position_dodge2(0.5), size = 3,
+                 shape = 4) +
+  expand_limits(y = 0)
+```
 
 # References
 

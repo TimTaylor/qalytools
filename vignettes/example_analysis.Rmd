@@ -269,9 +269,9 @@ brm(bf(.value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup +
     # Suppress messages for the vignette
     silent = 2, refresh = 0, open_progress = F) -> brm_model
 
-# Draw posterior samples to use in qaly calculation
-brms::posterior_predict(brm_model, ndraws = 1000, newdata = dat) ->
-  posterior_dat
+# Draw posterior samples to use in qaly calculation. We ignore the residual errors/measurement
+# when calculating the QALY
+brms::posterior_epred(brm_model, newdata = dat, ndraws = 1000) -> posterior_dat
 
 # For each posterior sample, calculate the qaly loss
 purrr::map(seq_len(nrow(posterior_dat)), function(np_id) {

@@ -1,11 +1,11 @@
 # validate_eq5d works
 
-    `respondentID` variable ('TEST') not present in `x`
+    `respondentID` variable ("TEST") not present in `x`.
 
 ---
 
     Not all dimensions specified are present in `x`
-     - The following columns cannot be found: 'TEST'
+    > The following columns cannot be found: 'TEST'.
 
 ---
 
@@ -21,5 +21,5 @@
 
 ---
 
-    Dimensions must be either bounded by 1 and 5, or NA.
+    Dimensions must be bounded by 1 and 5 or, NA.
 

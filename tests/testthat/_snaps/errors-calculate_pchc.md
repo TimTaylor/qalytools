@@ -8,11 +8,11 @@
 
 ---
 
-    `no.problems` must be boolean (TRUE/FALSE).
+    `no.problems` must be TRUE or FALSE.
 
 ---
 
-    `by.dimension` must be boolean (TRUE/FALSE).
+    `by.dimension` must be TRUE or FALSE.
 
 ---
 

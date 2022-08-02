@@ -45,28 +45,28 @@ calculate_pchc <- function(pre, post, no.problems = TRUE, by.dimension = FALSE) 
     # check inputs
     pre <- .assert_class(pre, "EQ5D")
     post <- .assert_class(post, "EQ5D")
-    no.problems <- imp_assert_bool(no.problems)
-    by.dimension <- imp_assert_bool(by.dimension)
+    no.problems <- .assert_bool(no.problems)
+    by.dimension <- .assert_bool(by.dimension)
 
     # get eq5d version - also acts as an input check class of pre and post
     version_pre <- .get_version(pre)
     version_post <- .get_version(post)
     if (version_pre != version_post) {
-        stop("`pre` and `post` must be of the same survey type.")
+        cli_abort("{.arg pre} and {.arg post} must be of the same survey type.")
     }
 
     # check each input is for only one pre-survey
     s_pre <- attr(pre, "surveyID")
     tmp <- unique(.subset2(pre, s_pre))
     if (length(tmp) > 1) {
-        stop("`pre` must only contain one survey.")
+        cli_abort("{.arg pre} must only contain one survey.")
     }
 
     # check each input is for only one pre-survey
     s_post <- attr(post, "surveyID")
     tmp <- unique(.subset2(post, s_post))
     if (length(tmp) > 1) {
-        stop("`post` must only contain one survey.")
+        cli_abort("{.arg post} must only contain one survey.")
     }
 
     # pull out the relevant column names from pre and rename for use with pchc

@@ -3,38 +3,72 @@
     abs(x - round(x)) < tol
 }
 
-# assert character (returns invisibly or errors)
-.assert_character <- function(x, arg = deparse(substitute(x)), call = sys.call(-1L)) {
+# assert character and length 1 (returns invisibly or errors)
+# uses cli and vec_assert for nice error messages
+# additional branches alleviate the overhead of vec_assert when an error won't be triggered
+.assert_scalar_character <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
     if (missing(x)) {
-        msg <- sprintf("argument `%s` is missing, with no default.", arg)
-        stop(simpleError(msg, call[1L]))
+        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
     }
-    if (!is.character(x)) {
-        msg <- sprintf("`%s` must be a character vector.", arg)
-        stop(simpleError(msg, call[1L]))
+    if (!(is.character(x) && length(x) == 1L)) {
+        vec_assert(x, ptype = "character", size = 1L, arg = arg, call = call)
     }
     invisible(x)
 }
 
-# assert class (returns input invisibly or errors)
-.assert_class <- function(x, class, arg = deparse(substitute(x)), call = sys.call(-1L)) {
+# assert character (returns invisibly or errors)
+.assert_character <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
     if (missing(x)) {
-        msg <- sprintf("argument `%s` is missing, with no default.", arg)
-        stop(simpleError(msg, call[1L]))
+        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
+    }
+    if (!is.character(x)) {
+        vec_assert(x, ptype = "character", arg = arg, call = call)
+    }
+    invisible(x)
+}
+
+# assert bool (returns input invisibly or errors)
+.assert_bool <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    if (missing(x)) {
+        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
+    }
+
+    if (!(is.logical(x) && length(x) == 1L && !is.na(x))) {
+        cli_abort("{.arg {arg}} must be TRUE or FALSE.", arg = arg, call = call)
+
+    }
+
+    invisible(x)
+}
+
+# assert data frame (returns input invisibly or errors)
+.assert_data_frame <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    if (missing(x)) {
+        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
+    }
+
+    if (!is.data.frame(x)) {
+        cli_abort("{.arg {arg}} must be a data frame.", arg = arg, call = call)
+    }
+
+    invisible(x)
+}
+
+# assert class (returns input invisibly or errors)
+.assert_class <- function(x, class, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    if (missing(x)) {
+        cli_abort("argument {.arg {arg}} is missing, with no default", arg = arg, call = call)
     }
     if (!inherits(x, class)) {
-        msg <- sprintf("`%s` must have class <%s>.", arg, class)
-        stop(simpleError(msg, call[1L]))
+        cli_abort("{.arg {arg}} must have class {.cls {class}}.", arg = arg, call = call)
     }
     invisible(x)
 }
 
 # function to use in default s3 methods with no implementation
-.class_not_implemented <- function(x, call = sys.call(-1L)) {
+.class_not_implemented <- function(x, call = rlang::caller_env()) {
     cls <- class(x)
-    cls <- paste0(cls, collapse = "/")
-    msg <- sprintf("Not implemented for <%s> objects.", cls)
-    stop(simpleError(msg, call[1L]))
+    cli_abort("Not implemented for {.cls {cls}} objects.", call = call)
 }
 
 
@@ -47,8 +81,10 @@
     } else if (inherits(x, "EQ5DY")) {
         "Y"
     } else {
-        msg <- sprintf("`%s` must be of class <EQ5D5L>, <EQ5D3L> or <EQ5DY>.", arg)
-        stop(simpleError(msg, call[1L]))
+        cli_abort(
+            "{.arg {arg}} must be of class {.cls EQ5D5L}, {.cls EQ5D3L} or {.cls EQ5DY}.",
+            call = call
+        )
     }
 }
 
@@ -82,8 +118,11 @@
     rnms <- rownames(x)
     nms <- names(x)
     if (var %in% nms) {
-        stop(sprintf('"%s" is already a column in the input data frame.', var))
+        cli_abort("{.val {var}} is already a column in the input data frame.")
     }
     rownames(x) <- NULL
     setNames(cbind(rnms, x), c(var, nms))
 }
+
+# Need this to remove a note in R CMD check
+.check_hack <- function() rlang::caller_arg

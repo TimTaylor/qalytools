@@ -177,7 +177,7 @@ as_eq5dy <- function(
 ) {
 
     # only allow data frame input
-    x <- imp_assert_data_frame(x, arg = deparse(substitute(x)), call = sys.call(-1L))
+    x <- .assert_data_frame(x, arg = deparse(substitute(x)), call = sys.call(-1L))
 
     # drop additional classes (e.g. tbl_df and data.table)
     x <- as.data.frame(x)
@@ -187,7 +187,7 @@ as_eq5dy <- function(
         "5L" = new_eq5d5l,
         "3L" = new_eq5d3l,
         "Y" = new_eq5dy,
-        stop("Something has gone wrong - please let the developers know.")
+        cli_abort("Something has gone wrong - please let the developers know.")
     )
 
     # call and validate the output

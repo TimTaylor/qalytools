@@ -59,12 +59,12 @@ new_utility <- function(
 ) {
 
     # only check class of inputs at this stage
-    x <- imp_assert_data_frame(x)
-    respondentID <- imp_assert_scalar_chr(respondentID)
-    surveyID <- imp_assert_scalar_chr(surveyID)
-    country <- imp_assert_scalar_chr(country)
-    type <- imp_assert_scalar_chr(type)
-    value <- imp_assert_scalar_chr(value)
+    x <- .assert_data_frame(x)
+    respondentID <- .assert_scalar_character(respondentID)
+    surveyID <- .assert_scalar_character(surveyID)
+    country <- .assert_scalar_character(country)
+    type <- .assert_scalar_character(type)
+    value <- .assert_scalar_character(value)
 
     # tbl for nice-printing
     # https://pillar.r-lib.org/#custom-table-classes
@@ -87,15 +87,15 @@ validate_utility <- function(xx) {
 
     # Error if not passed an utility object
     if (!inherits(xx, "utility")) {
-        stop("`xx` must be of class <utility>.")
+        cli_abort("{.arg xx} must be of class {.cls utility}.")
     }
 
     # pull out relevant variables and check lengths
-    respondentID <- imp_assert_scalar_chr(attr(xx, "respondentID"))
-    surveyID <- imp_assert_scalar_chr(attr(xx, "surveyID"))
-    country <- imp_assert_scalar_chr(attr(xx, "country"))
-    type <- imp_assert_scalar_chr(attr(xx, "type"))
-    value <- imp_assert_scalar_chr(attr(xx, "value"))
+    respondentID <- .assert_scalar_character(attr(xx, "respondentID"))
+    surveyID <- .assert_scalar_character(attr(xx, "surveyID"))
+    country <- .assert_scalar_character(attr(xx, "country"))
+    type <- .assert_scalar_character(attr(xx, "type"))
+    value <- .assert_scalar_character(attr(xx, "value"))
 
     # check columns presence
     names_x <- names(xx)
@@ -109,19 +109,23 @@ validate_utility <- function(xx) {
     for (i in seq_along(vars)) {
         v <- vars[i]
         if (!v %in% names_x) {
-            stop(sprintf("`%s` variable (%s) not present in `xx`", names(v), sQuote(v)))
+            cli_abort(
+                "{.arg {names(v)}} variable ({.val {v}}) not present in {.arg xx}."
+            )
         }
     }
 
     # check unique combinations of survey, respondent ID, country and type
     combos <- xx[, c(respondentID, surveyID, country, type)]
     if (anyDuplicated(combos)) {
-        stop("`respondentID`, `surveyID`, `country` and `type` combinations must not be duplicated.")
+        cli_abort(
+            "{.arg respondentID}, {.arg surveyID}, {.arg country} and {.arg type} combinations must not be duplicated."
+        )
     }
 
     # check value data is numeric
     if (!is.numeric(.subset2(xx, value))) {
-        stop("`value` column must be numeric.")
+        cli_abort("{.arg value} column must be numeric.")
     }
 
     invisible(xx)

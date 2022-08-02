@@ -121,9 +121,11 @@ calculate_qalys.EQ5D <- function(
     units <- match.arg(units)
 
     # check time index
-    time_index <- imp_assert_scalar_chr(time_index)
+    time_index <- .assert_scalar_character(time_index)
     if (!time_index %in% names(x)) {
-        stop(sprintf("`time_index` variable (%s) not present in `x`.", time_index))
+        cli_abort(
+            "{.arg time_index} variable ({.value {time_index}}) not present in {.arg x}"
+        )
     }
 
     # calculate_utility does other input checking
@@ -158,9 +160,9 @@ calculate_qalys.utility <- function(
     units <- match.arg(units)
 
     # check time_index
-    time_index <- imp_assert_scalar_chr(time_index)
+    time_index <- .assert_scalar_character(time_index)
     if (!time_index %in% names(x)) {
-        stop(sprintf("`time_index` variable (%s) not present in `x`.", time_index))
+        cli_abort("{.arg time_index} variable ({.value {time_index}}) not present in {.arg x}.")
     }
 
     # check baseline values
@@ -168,7 +170,7 @@ calculate_qalys.utility <- function(
         scalar <- is.character(baseline_survey) && length(baseline_survey) == 1
         dataframe <- is.data.frame(baseline_survey)
         if (!(scalar || dataframe)) {
-            stop("If specified, `baseline_survey` must be a string or data frame.")
+            cli_abort("If specified, {.arg baseline_survey} must be a string or data frame.")
         }
     }
 
@@ -215,7 +217,7 @@ calculate_qalys.utility <- function(
             survey_var <- attr(x, "surveyID")
             tmp <- x[.subset2(x, survey_var) == baseline_survey, ]
             if (!nrow(tmp)) {
-                stop(sprintf('No surveys matching baseline ("%s").', baseline_survey))
+                cli_abort('No surveys matching baseline ({.val {baseline_survey}}).')
             }
             tmp <- tmp[, c(resp, ucountry, utype, uvalue)]
             out <- merge(out, tmp, by = c(resp, ucountry, utype), sort = FALSE)
@@ -224,7 +226,7 @@ calculate_qalys.utility <- function(
         } else { # baseline must be a data frame input
             nms <- names(baseline_survey)
             if (!resp %in% nms) {
-                stop(sprintf("`baseline_survey` does not contain respondentID column (`%s`).", resp))
+                cli_abort("{.arg baseline_survey} does not contain respondentID column ({.value {resp}}).")
             }
             if (!utype %in% nms) {
                 utype <- NULL
@@ -234,7 +236,7 @@ calculate_qalys.utility <- function(
             }
             utility_var <- nms[!nms %in% c(resp, utype, ucountry)]
             if (length(utility_var) != 1L) {
-                stop("Unable to find utility values in `baseline_survey`.")
+                cli_abort("Unable to find utility values in {.arg baseline_survey}.")
             }
             out <- merge(out, baseline_survey, by = c(resp, ucountry, utype), sort = FALSE)
             out$.loss_vs_baseline <- out[[utility_var]] * out$.time_diff / div[[units]] - out$.raw
@@ -285,7 +287,7 @@ calculate_qalys.utility <- function(
     if (!length(x)) {
         return(NA_real_)
     } else if (length(x) == 1L) {
-        warning("Only one point provided. Treating as 1 unit of time not zero.")
+        cli_warn("Only one point provided. Treating as 1 unit of time not zero.")
         return(y[[1]]) # could just be y but no checks on size so being safe
     }
     tmp <- diff(x) * (head(y, -1) + tail(y, -1))

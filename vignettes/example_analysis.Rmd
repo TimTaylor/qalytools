@@ -69,7 +69,7 @@ input_dat <-
 
 We will be using a mixed effect model to fit the utility values. The model is defined as `value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup + sex:AgeGroup`. This means that we assume each respondent to have a random effect as well as a random interaction between the first survey after symptoms (acute). Other explanatory variables are the survey, sex and age group (and the interaction between sex and age group). This model was chosen based on our knowledge of the data. For your own dataset it is recommended to choose your own model. For example, by exploring multiple models and choosing the best model (using standard model comparison methods).
 
-To fit our mixed effect model we use the `lme4` package. While the utility value is truncated at 1, it has been shown that assuming a normal distribution and performing a non parametric bootstrap is a valid simplification [@pull_analysis_2010]. We will explore a more complex approach later in this vignette.
+To fit our mixed effect model we use the `lme4` package. While the utility value is truncated at 1, it has been shown that assuming a normal distribution and performing a non parametric bootstrap is a valid simplification [@pull_analysis_2010]. 
 
 ```{r lmerModel, fig.cap = "Comparing the modelled utility values with the utility values in the model. Utility values were calculated from a EQ5D5L survey using the DSU method."}
 # Label the acute period of the disease
@@ -95,6 +95,7 @@ ggplot2::ggplot(plot_dat) +
     ggplot2::theme(
         axis.text.x = ggplot2::element_text(angle = 45, vjust = 1, hjust = 1)
     ) +
+    ylab("Utility value") +
     ggplot2::facet_grid(. ~ type)
 ```
 
@@ -254,7 +255,9 @@ ggplot2::ggplot(data = plot_dat) +
     ggplot2::expand_limits(y = 0)
 ```
 
-## A better model
+## Using a Bayesian approach with the brms package
+
+As an alternative to the bootstrap approach highlighted above, one can also use a Bayesian approach using the `brms` R package. The benefit of this approach is that the Bayesian approach takes into account the uncertainty given the data and the bootstrap is therefore not needed. One of the practical challenges of this approach is that fitting the models is more computationally intensive. Consequently any model selection exercise would also take significantly longer than using the approach recommended by [@pull_analysis_2010]. Note that while the overall results of this method are very similar to the mixed effect model above, the resulting uncertainty in much smaller. This is a result of the different ways uncertainty is accounted for in the models.
 
 ```{r brmsanalysis}
 # Use multiple cores for brms
@@ -270,7 +273,7 @@ brm(bf(.value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup +
     silent = 2, refresh = 0, open_progress = F) -> brm_model
 
 # Draw posterior samples to use in qaly calculation. We ignore the residual errors/measurement
-# when calculating the QALY
+# when calculating the QALY by using posterior_epred (instead of posterior_predict) 
 brms::posterior_epred(brm_model, newdata = dat, ndraws = 1000) -> posterior_dat
 
 # For each posterior sample, calculate the qaly loss
@@ -308,6 +311,7 @@ ggplot(plot_dat) +
   geom_line(aes(x = surveyID, y = value, group = respondentID,
                 colour = sex), alpha = 0.1) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  ylab("Utility value") +
   facet_grid(. ~ type)
 ```
 
@@ -364,6 +368,7 @@ ggplot(data = plot_dat) +
   geom_point(data = dat0, aes(x = AgeGroup, y = mean, group = .qaly),
                  position = position_dodge2(0.5), size = 3,
                  shape = 4) +
+  ylab("Utility value") +
   expand_limits(y = 0)
 ```
 

@@ -29,6 +29,8 @@ Depends:
     R (>= 3.5.0)
 Suggests:
     brms,
+    BH,
+    RcppEigen,
     dplyr,
     tidyr,
     stringr,

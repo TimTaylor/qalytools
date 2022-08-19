@@ -260,14 +260,14 @@ ggplot2::ggplot(data = plot_dat) +
 As an alternative to the bootstrap approach highlighted above, one can also use a Bayesian approach using the `brms` R package. The benefit of this approach is that the Bayesian approach takes into account the uncertainty given the data and the bootstrap is therefore not needed. One of the practical challenges of this approach is that fitting the models is more computationally intensive. Consequently any model selection exercise would also take significantly longer than using the approach recommended by [@pull_analysis_2010]. Note that while the overall results of this method are very similar to the mixed effect model above, the resulting uncertainty in much smaller. This is a result of the different ways uncertainty is accounted for in the models.
 
 ```{r brmsanalysis}
-# Use multiple cores for brms
-options(mc.cores = 4)
+# Uncomment to use multiple cores for brms
+# options(mc.cores = 4)
 library(brms)
 
 input_dat |>
   dplyr::mutate(acute = surveyID == "survey02") -> dat
 
-brm(bf(.value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup +
+brms::brm(bf(.value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup +
        sex:AgeGroup), data = dat, family = gaussian(), iter = 2000,
     # Suppress messages for the vignette
     silent = 2, refresh = 0, open_progress = F) -> brm_model

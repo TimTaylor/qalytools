@@ -28,6 +28,7 @@ Imports:
 Depends: 
     R (>= 3.5.0)
 Suggests:
+    brms,
     dplyr,
     tidyr,
     stringr,

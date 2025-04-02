@@ -53,6 +53,11 @@ test_that("available valuesets matches eq5d output", {
     )
     expect_identical(available_valuesets(dat), available_valuesets("eq5d5l"))
 
+    expect_identical(
+        available_valuesets(),
+        tibble::as_tibble(eq5d::valuesets())
+    )
+
 })
 
 test_that("errors are correct", {

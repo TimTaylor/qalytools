@@ -1,74 +1,7 @@
-# check if entries of a vector are whole numbers
-.is_whole <- function(x, tol = .Machine$double.eps^0.5) {
-    abs(x - round(x)) < tol
-}
-
-# assert character and length 1 (returns invisibly or errors)
-# uses cli and vec_assert for nice error messages
-# additional branches alleviate the overhead of vec_assert when an error won't be triggered
-.assert_scalar_character <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
-    }
-    if (!(is.character(x) && length(x) == 1L)) {
-        vec_assert(x, ptype = "character", size = 1L, arg = arg, call = call)
-    }
-    invisible(x)
-}
-
-# assert character (returns invisibly or errors)
-.assert_character <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
-    }
-    if (!is.character(x)) {
-        vec_assert(x, ptype = "character", arg = arg, call = call)
-    }
-    invisible(x)
-}
-
-# assert bool (returns input invisibly or errors)
-.assert_bool <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
-    }
-
-    if (!(is.logical(x) && length(x) == 1L && !is.na(x))) {
-        cli_abort("{.arg {arg}} must be TRUE or FALSE.", arg = arg, call = call)
-
-    }
-
-    invisible(x)
-}
-
-# assert data frame (returns input invisibly or errors)
-.assert_data_frame <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default.", call = call)
-    }
-
-    if (!is.data.frame(x)) {
-        cli_abort("{.arg {arg}} must be a data frame.", arg = arg, call = call)
-    }
-
-    invisible(x)
-}
-
-# assert class (returns input invisibly or errors)
-.assert_class <- function(x, class, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    if (missing(x)) {
-        cli_abort("argument {.arg {arg}} is missing, with no default", arg = arg, call = call)
-    }
-    if (!inherits(x, class)) {
-        cli_abort("{.arg {arg}} must have class {.cls {class}}.", arg = arg, call = call)
-    }
-    invisible(x)
-}
-
 # function to use in default s3 methods with no implementation
-.class_not_implemented <- function(x, call = rlang::caller_env()) {
+.class_not_implemented <- function(x, call = sys.call(-1L)) {
     cls <- class(x)
-    cli_abort("Not implemented for {.cls {cls}} objects.", call = call)
+    .stop(sprintf("Not implemented for <%s> objects.", cls[1L]))
 }
 
 
@@ -78,27 +11,41 @@
         "5L"
     } else if (inherits(x, "EQ5D3L")) {
         "3L"
-    } else if (inherits(x, "EQ5DY")) {
-        "Y"
+    } else if (inherits(x, "EQ5DY3L")) {
+        "Y3L"
     } else {
-        cli_abort(
-            "{.arg {arg}} must be of class {.cls EQ5D5L}, {.cls EQ5D3L} or {.cls EQ5DY}.",
-            call = call
-        )
+        stop()
     }
 }
 
-
 # return a named vector of the dimension names
 .get_dimension_names <- function(x) {
-    c(
-        mobility = attr(x, "mobility"),
-        self_care = attr(x, "self_care"),
-        usual = attr(x, "usual"),
-        pain = attr(x, "pain"),
-        anxiety = attr(x, "anxiety")
-    )
+    unlist(attributes(x)[c("mobility", "self_care", "usual", "pain", "anxiety")])
 }
+
+# check if entries of a vector are whole numbers
+.is_whole <- function(x, tol = .Machine$double.eps^0.5) {
+    abs(x - round(x)) < tol
+}
+
+# assert class (returns input invisibly or errors)
+.assert_class <- function(x, class, arg = deparse(substitute(x)), call = sys.call(-1L)) {
+    if (missing(x)) {
+        .stop(
+            sprintf("`%s` is missing, with no default.", arg),
+            .call = call
+        )
+
+    }
+    if (!inherits(x, class)) {
+        .stop(
+            sprintf("`%s` must have class <%s>.", arg, class),
+            .call = call
+        )
+    }
+    invisible(x)
+}
+
 
 # generate lookup
 .make_lookup <- function(x) {
@@ -109,7 +56,7 @@
         pain = attr(x, "pain"),
         anxiety = attr(x, "anxiety")
     )
-    setNames(c("MO", "SC", "UA", "PD", "AD"), dimensions)
+    stats::setNames(c("MO", "SC", "UA", "PD", "AD"), dimensions)
 }
 
 # convert rownames to a column
@@ -117,12 +64,21 @@
     stopifnot(is.data.frame(x))
     rnms <- rownames(x)
     nms <- names(x)
-    if (var %in% nms) {
-        cli_abort("{.val {var}} is already a column in the input data frame.")
-    }
+    if (var %in% nms)
+        stop(sprintf("`%s` is already a column in the input data frame.", var))
     rownames(x) <- NULL
-    setNames(cbind(rnms, x), c(var, nms))
+    stats::setNames(cbind(rnms, x), c(var, nms))
 }
 
-# Need this to remove a note in R CMD check
-.check_hack <- function() rlang::caller_arg
+# -------------------------------------------------------------------------
+# To quote Davis Vaughan ...
+# "This function is a data frame specific helper. Currently we are recommended
+#  to copy in to our own package but it may eventually find it's way in to one
+#  of the tidy packages."
+.df_reconstruct <- function(x, to) {
+    attrs <- attributes(to)
+    attrs$names <- names(x) # Keep column and row names of `x`
+    attrs$row.names <- .row_names_info(x, type = 0L)
+    attributes(x) <- attrs # Otherwise copy over attributes of `to`
+    x
+}

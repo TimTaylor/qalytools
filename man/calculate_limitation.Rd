@@ -18,17 +18,17 @@ calculate_limitation(x, ...)
 \item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-A data frame of the fraction of individuals without limitation.
+A \link[tibble:tbl_df-class]{tibble} of the fraction of individuals without
+limitation.
 }
 \description{
-Generic function that calculates the limitation of survey
-responses across response dimensions. Here we define a limitation to be a
-dimension value not equal to 1. Methods are provided for
-\code{\link[=new_eq5d]{eq5d}} objects.
+Generic function that calculates the limitation of survey responses across
+response dimensions. Here we define a limitation to be a dimension value not
+equal to 1. Methods are provided for \link[=as_eq5d]{EQ5D} objects.
 }
 \examples{
 
-data("eq5d3l_example")
+data(eq5d3l_example)
 dat <- as_eq5d3l(
     eq5d3l_example,
     respondentID = "respondentID",

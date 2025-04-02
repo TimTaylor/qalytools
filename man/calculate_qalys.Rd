@@ -34,10 +34,14 @@ calculate_qalys(x, ...)
 
 \item{...}{Further arguments passed to or from other methods.}
 
-\item{time_index}{\verb{[character]} Name of variable in x representing the
-relative time within the survey framework.}
+\item{time_index}{\verb{[character]}
 
-\item{type}{\verb{[character]} Method type(s) used for calculating the value sets.
+Name of variable in x representing the relative time within the survey
+framework.}
+
+\item{type}{\verb{[character]}
+
+Method type(s) used for calculating the value sets.
 
 For EQ5D3L inputs this can be:
 \itemize{
@@ -57,28 +61,37 @@ protocol;
 EQ5D5L values accounting for both age and sex.
 }}
 
-\item{country}{\verb{[character]} Value set countries to use.}
+\item{country}{\verb{[character]}
 
-\item{units}{\code{\link{character}} The units of the \code{time_index} column of \code{x}. Can
-be one of "days", "weeks", "months", "quarters" or "years". Note that the
-output will always be a QALY (i.e years) irrespective of the unit input.}
+Value set countries to use.}
 
-\item{baseline_survey}{(optional) Either a \code{character} string specifying the
-surveyID, to use as a baseline or a data frame. If a data frame, it must have
-at least two columns; one for the respondentID (with name matching that in
-\code{x} input) and another (of any name) for the associated utility values. If
-desired you can also specify columns that match on the utility and country
-type columns of the input \code{x}.}
+\item{units}{\code{\link{character}}
+
+The units of the \code{time_index} column of \code{x}. Can be one of "days", "weeks",
+"months", "quarters" or "years".
+
+Note that the output will always be a QALY (i.e years) irrespective of the
+unit input.}
+
+\item{baseline_survey}{(optional)
+
+Either a \code{character} string specifying the surveyID, to use as a baseline or
+a data frame.
+
+If a data frame, it must have at least two columns; one for the respondentID
+(with name matching that in \code{x} input) and another (of any name) for the
+associated utility values. If desired you can also specify columns that match
+on the utility and country type columns of the input \code{x}.}
 }
 \value{
-A data frame.
+A \link[tibble:tbl_df-class]{tibble}.
 }
 \description{
 Generic for calculating quality of life years (QALY) metrics for
 EQ5D survey respondents.
 }
 \details{
-The methods provided for \code{\link[=new_utility]{utility}} and  \code{\link[=new_eq5d]{EQ5D}}
+The methods provided for \link[=as_utility]{utility} and  \link[=as_eq5d]{EQ5D}
 objects, return two metrics by default:
 \itemize{
 \item Firstly, a \code{raw} QALY. This is the area under the utility curve scaled to
@@ -86,10 +99,9 @@ the proportion of the year it corresponds to.
 \item Secondly, a \code{loss_v_fullhealth} value. This represents the loss from
 perfect health which is calculated by assuming all dimensions are 1
 to calculate a full health QALY value.
-}
-
-Optionally, a third metric can also be returned, \code{loss_v_baseline}. This
+\item Optionally, a third metric can also be returned, \code{loss_v_baseline}. This
 represents the loss from a specified baseline utility value.
+}
 }
 \note{
 If a character string \code{baseline_survey} argument is given then this must match
@@ -106,7 +118,7 @@ calculation.
 }
 \examples{
 
-data("EQ5D5L_surveys")
+data(EQ5D5L_surveys)
 dat <- as_eq5d5l(
     EQ5D5L_surveys,
     surveyID = "surveyID",
@@ -121,7 +133,8 @@ dat <- as_eq5d5l(
 calculate_qalys(
     dat,
     time_index = "time_index",
-    type = "VT", country = c("Denmark", "France")
+    type = "VT",
+    country = c("Denmark", "France")
 )
 
 }

@@ -1,30 +1,39 @@
+# -------------------------------------------------------------------------
 #' Calculate quality of life years
 #'
+# -------------------------------------------------------------------------
 #' @description
 #'
 #' Generic for calculating quality of life years (QALY) metrics for
 #' EQ5D survey respondents.
 #'
+# -------------------------------------------------------------------------
 #' @details
 #'
-#' The methods provided for [`utility`][new_utility] and  [`EQ5D`][new_eq5d]
+#' The methods provided for [utility][as_utility] and  [EQ5D][as_eq5d]
 #' objects, return two metrics by default:
 #'
 #'   - Firstly, a `raw` QALY. This is the area under the utility curve scaled to
 #'     the proportion of the year it corresponds to.
+#'
 #'   - Secondly, a `loss_v_fullhealth` value. This represents the loss from
 #'     perfect health which is calculated by assuming all dimensions are 1
 #'     to calculate a full health QALY value.
 #'
-#' Optionally, a third metric can also be returned, `loss_v_baseline`. This
-#' represents the loss from a specified baseline utility value.
+#'   - Optionally, a third metric can also be returned, `loss_v_baseline`. This
+#'     represents the loss from a specified baseline utility value.
 #'
+# -------------------------------------------------------------------------
 #' @param x An \R object.
 #'
-#' @param time_index `[character]` Name of variable in x representing the
-#' relative time within the survey framework.
+#' @param time_index `[character]`
 #'
-#' @param type `[character]` Method type(s) used for calculating the value sets.
+#' Name of variable in x representing the relative time within the survey
+#' framework.
+#'
+#' @param type `[character]`
+#'
+#' Method type(s) used for calculating the value sets.
 #'
 #' For EQ5D3L inputs this can be:
 #'
@@ -42,21 +51,31 @@
 #' - "DSU", the NICE Decision Support Unit's model that allows mappings on to
 #'          EQ5D5L values accounting for both age and sex.
 #'
-#' @param country `[character]` Value set countries to use.
+#' @param country `[character]`
 #'
-#' @param units [`character`] The units of the `time_index` column of `x`. Can
-#' be one of "days", "weeks", "months", "quarters" or "years". Note that the
-#' output will always be a QALY (i.e years) irrespective of the unit input.
+#' Value set countries to use.
 #'
-#' @param baseline_survey (optional) Either a `character` string specifying the
-#' surveyID, to use as a baseline or a data frame. If a data frame, it must have
-#' at least two columns; one for the respondentID (with name matching that in
-#' `x` input) and another (of any name) for the associated utility values. If
-#' desired you can also specify columns that match on the utility and country
-#' type columns of the input `x`.
+#' @param units [`character`]
+#'
+#' The units of the `time_index` column of `x`. Can be one of "days", "weeks",
+#' "months", "quarters" or "years".
+#'
+#' Note that the output will always be a QALY (i.e years) irrespective of the
+#' unit input.
+#'
+#' @param baseline_survey (optional)
+#'
+#' Either a `character` string specifying the surveyID, to use as a baseline or
+#' a data frame.
+#'
+#' If a data frame, it must have at least two columns; one for the respondentID
+#' (with name matching that in `x` input) and another (of any name) for the
+#' associated utility values. If desired you can also specify columns that match
+#' on the utility and country type columns of the input `x`.
 #'
 #' @param ... Further arguments passed to or from other methods.
 #'
+# -------------------------------------------------------------------------
 #' @note
 #'
 #' If a character string `baseline_survey` argument is given then this must match
@@ -71,11 +90,13 @@
 #' specification of baseline, it **is not** included in the unadjusted, `raw`,
 #' calculation.
 #'
-#' @return A data frame.
+# -------------------------------------------------------------------------
+#' @return A [tibble][tibble::tbl_df-class].
 #'
+# -------------------------------------------------------------------------
 #' @examples
 #'
-#' data("EQ5D5L_surveys")
+#' data(EQ5D5L_surveys)
 #' dat <- as_eq5d5l(
 #'     EQ5D5L_surveys,
 #'     surveyID = "surveyID",
@@ -90,9 +111,11 @@
 #' calculate_qalys(
 #'     dat,
 #'     time_index = "time_index",
-#'     type = "VT", country = c("Denmark", "France")
+#'     type = "VT",
+#'     country = c("Denmark", "France")
 #' )
 #'
+# -------------------------------------------------------------------------
 #' @export
 calculate_qalys <- function(x, ...) {
     UseMethod("calculate_qalys")
@@ -121,10 +144,11 @@ calculate_qalys.EQ5D <- function(
     units <- match.arg(units)
 
     # check time index
-    time_index <- .assert_scalar_character(time_index)
+    time_index <- ympes::assert_scalar_character(time_index)
     if (!time_index %in% names(x)) {
-        cli_abort(
-            "{.arg time_index} variable ({.value {time_index}}) not present in {.arg x}"
+        stop(sprintf(
+            "`time_index` variable (%s) not present in `x`",
+            sQuote(time_index))
         )
     }
 
@@ -151,7 +175,7 @@ calculate_qalys.utility <- function(
     ...
 ) {
     # for CRAN checks
-    time_diff_ <- .time_diff <- i.time_diff_ <- NULL
+    `:=` <- time_diff_ <- .time_diff <- i.time_diff_ <- NULL
     .loss_vs_fullhealth <- .loss_vs_baseline <- .raw <- NULL
     .value <- .qaly <- NULL
     ..t <- ..utility_var <- ..uvalue <- NULL
@@ -160,22 +184,24 @@ calculate_qalys.utility <- function(
     units <- match.arg(units)
 
     # check time_index
-    time_index <- .assert_scalar_character(time_index)
+    ympes::assert_scalar_character(time_index)
     if (!time_index %in% names(x)) {
-        cli_abort("{.arg time_index} variable ({.value {time_index}}) not present in {.arg x}.")
+        stop(sprintf(
+            "`time_index` variable (%s) not present in `x`",
+            sQuote(time_index))
+        )
     }
 
     # check baseline values
     if (!is.null(baseline_survey)) {
         scalar <- is.character(baseline_survey) && length(baseline_survey) == 1
         dataframe <- is.data.frame(baseline_survey)
-        if (!(scalar || dataframe)) {
-            cli_abort("If specified, {.arg baseline_survey} must be a string or data frame.")
-        }
+        if (!(scalar || dataframe))
+            stop("If specified, `baseline_survey` must be a string or data frame.")
     }
 
     # strip attributes and convert to data.table
-    out <- setDT(c(x))
+    out <- data.table::setDT(c(x))
 
     # pull out the variables to to split and calculate auc by
     resp <- attr(x, "respondentID")
@@ -191,7 +217,7 @@ calculate_qalys.utility <- function(
 
     # calculate the area under the curve
     # order by t before calling .auc as that function expects ordered input
-    setorderv(out, t)
+    data.table::setorderv(out, t)
     tmp <- bquote(out[, list(.auc = .auc(x = .(as.name(t)), y = .(as.name(uvalue)))), keyby = cols])
     out <- eval(tmp)
 
@@ -217,7 +243,10 @@ calculate_qalys.utility <- function(
             survey_var <- attr(x, "surveyID")
             tmp <- x[.subset2(x, survey_var) == baseline_survey, ]
             if (!nrow(tmp)) {
-                cli_abort('No surveys matching baseline ({.val {baseline_survey}}).')
+                stop(sprintf(
+                    'No surveys matching baseline (%s).',
+                    sQuote(baseline_survey)
+                ))
             }
             tmp <- tmp[, c(resp, ucountry, utype, uvalue)]
             out <- merge(out, tmp, by = c(resp, ucountry, utype), sort = FALSE)
@@ -226,7 +255,10 @@ calculate_qalys.utility <- function(
         } else { # baseline must be a data frame input
             nms <- names(baseline_survey)
             if (!resp %in% nms) {
-                cli_abort("{.arg baseline_survey} does not contain respondentID column ({.value {resp}}).")
+                stop(sprintf(
+                    "`baseline_survey` does not contain respondentID column (%s).",
+                    sQuote(resp)
+                ))
             }
             if (!utype %in% nms) {
                 utype <- NULL
@@ -236,7 +268,7 @@ calculate_qalys.utility <- function(
             }
             utility_var <- nms[!nms %in% c(resp, utype, ucountry)]
             if (length(utility_var) != 1L) {
-                cli_abort("Unable to find utility values in {.arg baseline_survey}.")
+                stop("Unable to find utility values in `baseline_survey`.")
             }
             out <- merge(out, baseline_survey, by = c(resp, ucountry, utype), sort = FALSE)
             out$.loss_vs_baseline <- out[[utility_var]] * out$.time_diff / div[[units]] - out$.raw
@@ -251,17 +283,16 @@ calculate_qalys.utility <- function(
     out[, .time_diff := NULL]
 
     # convert to tidy output
-    out <- melt(out, measure.vars = cols, variable.name = ".qaly", value.name = ".value")
+    out <- data.table::melt(out, measure.vars = cols, variable.name = ".qaly", value.name = ".value")
 
     # clean up qaly naming
     lu <- sub(".", "", cols, fixed = TRUE)
     names(lu) <- cols
     out[, .qaly := lu[out$.qaly]]
 
-    # return as dataframe (tbl for printing purposes only)
-    setDF(out)
-    class(out) <- c("tbl", "data.frame")
-    out
+    # return as tibble
+    data.table::setDF(out)
+    tibble::as_tibble(out)
 }
 
 # ------------------------------------------------------------------------- #
@@ -287,10 +318,10 @@ calculate_qalys.utility <- function(
     if (!length(x)) {
         return(NA_real_)
     } else if (length(x) == 1L) {
-        cli_warn("Only one point provided. Treating as 1 unit of time not zero.")
+        .warning("Only one point provided. Treating as 1 unit of time not zero.", sys.call(-1L))
         return(y[[1]]) # could just be y but no checks on size so being safe
     }
-    tmp <- diff(x) * (head(y, -1) + tail(y, -1))
+    tmp <- diff(x) * (utils::head(y, -1) + utils::tail(y, -1))
     # tmp <- (x[-1L]-x[-length(x)]) * (y[-length(y)] + y[-1L])
     sum(tmp, na.rm = TRUE) / 2
 }

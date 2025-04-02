@@ -5,7 +5,7 @@
 \alias{eq5d3l_example}
 \title{EQ-5D-3L example data}
 \format{
-A data frame with 200 rows and 6 variables:
+A \link[tibble:tbl_df-class]{tibble} with 200 rows and 6 variables:
 \describe{
 \item{respondentID}{Unique respondent identifier}
 \item{surveyID}{Unique survey identifier}

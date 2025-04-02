@@ -15,7 +15,7 @@ out <- as_eq5d5l(
 test_that("as_eq5d5l works", {
 
     # class is correct
-    expect_s3_class(out, c("EQ5D5L", "EQ5D", "tbl", "data.frame"), exact = TRUE)
+    expect_s3_class(out, c("EQ5D5L", "EQ5D", "tbl_df", "tbl", "data.frame"), exact = TRUE)
 
     # class dropped/kept as expected
     tmp <- rbind(out[1:2, ], out[2:3, ])
@@ -107,6 +107,7 @@ test_that("calculate_utility works as expected (non-DSU type)", {
                        .value=c(gutil, futil))
     tmp2 <- tmp2[do.call(order, .subset(tmp2)), ]
     tmp <- tmp[do.call(order, .subset(tmp)), ]
+    rownames(tmp2) <- NULL
     expect_equal(subset(tmp, select = c(respondentID, .utility_country, .value)),
                  tmp2)
 
@@ -149,4 +150,82 @@ test_that("calculate_utility works as expected (DSU type)", {
     )
 
 })
+
+test_that("validation works", {
+    dat <- EQ5D5L_surveys
+    class(dat) <- "data.frame"
+
+    expect_snapshot_error(
+        out <- as_eq5d5l(
+            dat,
+            respondentID = "TEST",
+            surveyID = "surveyID",
+            mobility = "mobility",
+            self_care = "self_care",
+            usual = "usual",
+            pain = "pain",
+            anxiety = "anxiety",
+            vas = "vas"
+        )
+    )
+
+    tmp <- as_eq5d5l(
+        dat,
+        respondentID = "respondentID",
+        surveyID = "surveyID",
+        mobility = "mobility",
+        self_care = "self_care",
+        usual = "usual",
+        pain = "pain",
+        anxiety = "anxiety",
+        vas = "vas"
+    )
+
+    expect_snapshot_error(
+        out <- as_eq5d5l(
+            dat,
+            respondentID = "respondentID",
+            surveyID = "surveyID",
+            mobility = "mobility",
+            self_care = "self_care",
+            usual = "usual",
+            pain = "TEST",
+            anxiety = "anxiety",
+            vas = "vas"
+        )
+    )
+
+    tmp <- rbind(dat, dat)
+    expect_snapshot_error(
+        as_eq5d5l(
+            tmp,
+            respondentID = "respondentID",
+            surveyID = "surveyID",
+            mobility = "mobility",
+            self_care = "self_care",
+            usual = "usual",
+            pain = "pain",
+            anxiety = "anxiety",
+            vas = "vas"
+        )
+    )
+
+    tmp <- dat
+    tmp$pain <- tmp$pain + .5
+    expect_snapshot_error(
+        as_eq5d5l(
+            tmp,
+            respondentID = "respondentID",
+            surveyID = "surveyID",
+            mobility = "mobility",
+            self_care = "self_care",
+            usual = "usual",
+            pain = "pain",
+            anxiety = "anxiety",
+            vas = "vas"
+        )
+    )
+
+})
+
 

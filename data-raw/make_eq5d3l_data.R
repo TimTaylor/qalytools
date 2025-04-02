@@ -17,7 +17,6 @@ dat$vas[dat$vas > 1] <- 1
 dat$vas <- round(dat$vas * 100)
 
 dat$time <- 0
-class(dat) <- c("tbl", "data.frame")
+eq5d3l_example <- tibble::as_tibble(dat)
 
-eq5d3l_example <- dat
 usethis::use_data(eq5d3l_example, overwrite = TRUE, version = 3)

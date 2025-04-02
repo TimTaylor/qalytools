@@ -1,9 +1,11 @@
 #' Calculate utility
 #'
+# -------------------------------------------------------------------------
 #' @description
 #'
 #' Generic function that calculates EQ5D index scores for given value sets.
 #'
+# -------------------------------------------------------------------------
 #' @details
 #'
 #' * `calculate_utility()` returns the utility index scores for a given object
@@ -14,9 +16,12 @@
 #' * `add_utility()` is a wrapper around `calculate_utility()` which keeps all
 #'   columns of the input data `x`.
 #'
+# -------------------------------------------------------------------------
 #' @param x An \R object.
 #'
-#' @param type `[character]` Method type(s) used for calculating the value sets.
+#' @param type `[character]`
+#'
+#' Method type(s) used for calculating the value sets.
 #'
 #' For EQ5D3L inputs this can be:
 #'
@@ -34,36 +39,52 @@
 #' - "DSU", the NICE Decision Support Unit's model that allows mappings on to
 #'          EQ5D5L values accounting for both age and sex.
 #'
-#' @param country `[character]` Value set countries to use.
+#' @param country `[character]`
 #'
-#' @param drop `[logical]` If TRUE (default), only columns corresponding to the
-#' surveyID and respondentID are kept from the input `x`.
+#' Value set countries to use.
 #'
-#' @param age `[character]` Column in `x` representing the age, in years, of the
-#' respondent. Only used if `type = "DSU"`.
+#' @param drop `[logical]`
 #'
-#' @param sex `[character]` Column in `x` representing the sex, in years, of the
-#' respondent. Only used if `type = "DSU"`. Column entries must be one of
-#' "Male", "M", "Female" or "F" (case insensitive).
+#' If TRUE (default), only columns corresponding to the surveyID and
+#' respondentID are kept from the input `x`.
+#'
+#' @param age `[character]`
+#'
+#' Column in `x` representing the age, in years, of the respondent.
+#'
+#' Only used if `type = "DSU"`.
+#'
+#' @param sex `[character]`
+#'
+#' Column in `x` representing the sex, in years, of the respondent.
+#'
+#' Only used if `type = "DSU"`.
+#'
+#' Column entries must be one of "Male", "M", "Female" or "F" (case insensitive).
 #'
 #' @param ... Further arguments passed to or from other methods.
 #'
+# -------------------------------------------------------------------------
 #' @note
 #'
-#' The methods for [`eq5d`][new_eq5d] objects expect `type` and `country`
-#' to be of the same length but will recycle those of length one to a common
-#' size.
+#' The methods for [EQ5D][as_eq5d] objects expect `type` and `country` to be of
+#' the same length but will recycle those of length one to a common size.
 #'
-#' @return A data frame of utility values linked to responses.
+# -------------------------------------------------------------------------
+#' @return
 #'
+#' A data frame of utility values linked to responses.
+#'
+# -------------------------------------------------------------------------
 #' @seealso
 #'
 #' `available_valuesets()` for the method / country combinations available for
 #' each survey type.
 #'
+# -------------------------------------------------------------------------
 #' @examples
 #'
-#' data("eq5d3l_example")
+#' data(eq5d3l_example)
 #' dat <- as_eq5d3l(
 #'     eq5d3l_example,
 #'     respondentID = "respondentID",
@@ -77,6 +98,12 @@
 #' )
 #' calculate_utility(dat, type = "TTO", country = c("UK", "Germany"))
 #'
+# -------------------------------------------------------------------------
+#' @importFrom eq5d eq5d
+#' @importFrom ympes assert_character
+#' @importFrom data.table rbindlist setDF setnames
+#'
+# -------------------------------------------------------------------------
 #' @export
 calculate_utility <- function(x, type, country, ...) {
     UseMethod("calculate_utility")
@@ -138,7 +165,7 @@ calculate_utility.EQ5D3L <- function(
 # -------------------------------------------------------------------------
 #' @rdname calculate_utility
 #' @export
-calculate_utility.EQ5DY <- function(
+calculate_utility.EQ5DY3L <- function(
     x,
     type = "VT",
     country = "England",
@@ -151,7 +178,7 @@ calculate_utility.EQ5DY <- function(
         x = x,
         type = type,
         country = country,
-        version = "Y",
+        version = "Y3L",
         drop = drop,
         age = age,
         sex = sex
@@ -225,7 +252,7 @@ add_utility.EQ5DY <- function(
     sex = NULL,
     ...
 ) {
-    calculate_utility.EQ5DY(
+    calculate_utility.EQ5DY3L(
         x = x,
         type = type,
         country = country,
@@ -240,13 +267,11 @@ add_utility.EQ5DY <- function(
 # -------------------------------- INTERNALS ------------------------------ #
 # ------------------------------------------------------------------------- #
 # ------------------------------------------------------------------------- #
-.calculate_utility <- function(x, type, country, version, drop, age, sex) {
-    age_dat <- x[age]
-    sex_dat <- x[sex]
+.calculate_utility <- function(x, type, country, version, drop, age, sex, call = sys.call(-1L)) {
 
     # check input types
-    type <- .assert_character(type)
-    stopifnot(is.character(type), is.character(country))
+    assert_character(type, .call = call)
+    assert_character(country, .call = call)
 
     # Recycle type and country inputs and check against available value sets
     if (length(type) == 1L && length(country) > 1L) {
@@ -254,9 +279,9 @@ add_utility.EQ5DY <- function(
     } else if (length(country) == 1L && length(type) > 1L) {
         country <- rep_len(type, length(type))
     } else if (length(type) != length(country)) {
-        cli_abort("lengths of {.arg type} and {.arg country} are not compatible.")
+        .stop("lengths of `type` and `country` are not compatible.", .call = call)
     } else if (!length(type) || !length(country)) {
-        cli_abort("{.arg type} and {.arg country} must have length greater than 0.")
+        .stop("`type` and `country` must have length greater than 0.", .call = call)
     }
 
     # create data frame of combinations
@@ -270,10 +295,13 @@ add_utility.EQ5DY <- function(
     if (nrow(tmp)) {
         first_type <- tmp$type[1]
         first_country <- tmp$country[1]
-        cli_abort(c(
-            "Invalid value set and country combination:",
-            ">" = "Type = {.val {first_type}}, Country = {.val {first_country}}"
-        ))
+        .stop_fancy(
+            c(
+                "Invalid value set and country combination:",
+                sprintf("Type = %s, Country = %s", sQuote(first_type), sQuote(first_country))
+            ),
+            .call = call
+        )
     }
 
     # pull out and replicate respondents/surveyId for each combination
@@ -294,23 +322,28 @@ add_utility.EQ5DY <- function(
     names(x) <- c(lookup[names(x)[1:5]], sex, age)
 
     # calculate values for each combination
-    tmp <- .mapply(
-        .eq5d,
-        dots = list(country = combos$country, type = combos$type),
-        MoreArgs = list(scores = x, version = version, age = age, sex = sex)
+    tmp <- withCallingHandlers(
+        .mapply(
+            .eq5d,
+            dots = list(country = combos$country, type = combos$type),
+            MoreArgs = list(scores = x, version = version, age = age, sex = sex)
+        ),
+        qalytools_error = function(cnd) {
+            stop(conditionMessage(cnd), call. = call)
+        }
     )
 
     # combine with respondent and survey IDs
     tmp <- cbind(r, s, rbindlist(tmp))
-    setnames(tmp, old = 1:2, new = c(resp, surv))
-    setDF(tmp)
+    data.table::setnames(tmp, old = 1:2, new = c(resp, surv))
+    data.table::setDF(tmp)
 
     if (isFALSE(drop)) {
         tmp <- merge(tmp, original, by = c(resp, surv), all.x = TRUE)
     }
 
     # construct utility and return
-    new_utility(
+    as_utility(
         x = tmp,
         respondentID = resp,
         surveyID = surv,
@@ -325,15 +358,14 @@ add_utility.EQ5DY <- function(
     if (type == "DSU") {
 
         # check inputs
-        if (is.null(age)) {
-            cli_abort("For 'DSU' you must specify the {.arg age} variable.")
-        }
-        if (is.null(sex)) {
-            cli_abort("For 'DSU' you must specify the {.arg sex} variable.")
-        }
+        if (is.null(age))
+            .stop("For 'DSU' you must specify the `age` variable.")
 
-        age <- .assert_scalar_character(age)
-        sex <- .assert_scalar_character(sex)
+        if (is.null(sex))
+            .stop("For 'DSU' you must specify the `sex` variable.")
+
+        assert_scalar_character(age)
+        assert_scalar_character(sex)
 
         # ensure present in data frame
         nms <- names(scores)
@@ -341,30 +373,29 @@ add_utility.EQ5DY <- function(
         for (i in seq_along(vars)) {
             v <- vars[i]
             if (!v %in% nms) {
-                cli_abort(
-                    "{.arg {names(v)}} variable ({.val {sQuote(v)}}) not present in {.arg x}."
-                )
+                .stop(sprintf(
+                    "`%s` variable (%s) not present in `x`",
+                    names(v), sQuote(v)
+                ))
             }
         }
 
         # check valid values
         ages <- .subset2(scores, age)
-        if (!is.numeric(ages)) {
-            stop("`age` variable in `x` must be a numeric vector.")
-        }
-        if (length(which(ages < 18 | ages > 100))) {
-            cli_warn("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.")
-        }
+        if (!is.numeric(ages))
+            .stop("`age` variable in `x` must be a numeric vector.")
+
+        if (length(which(ages < 18 | ages > 100)))
+            .warning("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.")
 
         # check valid values
         sexes <- .subset2(scores, sex)
-        if (!is.character(sexes)) {
-            cli_abort("`sex` variable in `x` must be a character vector.")
-        }
+        if (!is.character(sexes))
+            .stop("`sex` variable in `x` must be a character vector.")
+
         sexes <- tolower(sexes)
-        if (any(!sexes %in% c("male", "m", "female", "f", NA_character_))) {
-            cli_abort('`sex` variable entries must be one of "Male", "M", "Female" or "F" (case independent).')
-        }
+        if (any(!sexes %in% c("male", "m", "female", "f", NA_character_)))
+            .stop('`sex` variable entries must be one of "Male", "M", "Female" or "F" (case independent).')
     }
 
     out <- eq5d(

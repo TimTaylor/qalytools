@@ -5,14 +5,12 @@ template:
 reference:
 - title: EQ5D objects
   contents:
-  - starts_with("new_eq5d")
-  - starts_with("validate_eq5d")
   - starts_with("as_eq5d")
   - starts_with("as.data.")
+  - starts_with("as_tibble")
 - title: Utility objects
   contents:
-  - new_utility
-  - validate_utility
+  - as_utility
 - title: Metric and summary calculations
   contents:
   - available_valuesets

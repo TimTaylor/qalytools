@@ -1,4 +1,4 @@
-dat <- copy(eq5d3l_example)
+dat <- data.table::copy(eq5d3l_example)
 data.table::setnames(
     dat,
     old = c("MO", "SC", "UA", "PD", "AD", "time"),
@@ -18,7 +18,7 @@ out <- as_eq5d3l(dat,
 test_that("as_eq5d3l works", {
 
     # class is correct
-    expect_s3_class(out, c("EQ5D3L", "EQ5D", "tbl", "data.frame"), exact = TRUE)
+    expect_s3_class(out, c("EQ5D3L", "EQ5D", "tbl_df", "tbl", "data.frame"), exact = TRUE)
 
     # class dropped/kept as expected
     tmp <- rbind(out[1:2, ], out[2:3, ])

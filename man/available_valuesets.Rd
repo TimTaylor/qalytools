@@ -27,8 +27,8 @@ available_valuesets(x, ...)
 \item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-A data.frame containing the available value sets for the given object
-or survey type.
+A \link[tibble:tbl_df-class]{tibble} containing the available value sets for the
+given object or survey type.
 }
 \description{
 Generic function that lists value sets available.
@@ -37,14 +37,14 @@ Generic function that lists value sets available.
 \code{available_valuesets()} returns the available valuesets from the
 \href{https://cran.r-project.org/package=eq5d}{eq5d} package. It is an s3
 generic that wraps the \code{eq5d::valuesets()} function providing additional
-methods for \code{\link[=new_eq5d]{eq5d}} and \code{character} objects.
+methods for \code{\link[=as_eq5d]{eq5d}} and \code{character} objects.
 
 For \code{character} objects, the input is expected to be the survey type with
 various forms permitted:
 \itemize{
 \item "eq5d5l", "EQ5D5L", "eq-5d-5l", "EQ-5D-5L", "5L", "5l"
 \item "eq5d3l", "EQ5D3L", "eq-5d-3l", "EQ-5D-3L", "3L", "3l"
-\item "eq5dy" , "EQ5DY" , "eq-5d-y" , "EQ-5D-Y" , "Y" , "y"
+\item "eq5dy3l" , "EQ5DY3L" , "eq-5d-y-3l" , "EQ-5D-Y-3L" , "Y3L" , "y3l"
 }
 
 If called with no arguments value sets for all available  version, type and
@@ -52,7 +52,7 @@ country combination are returned.
 }
 \examples{
 
-data("eq5d3l_example")
+data(eq5d3l_example)
 dat <- as_eq5d3l(
     eq5d3l_example,
     respondentID = "respondentID",

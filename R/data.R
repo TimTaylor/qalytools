@@ -5,7 +5,7 @@
 #'   package on 2022-06-15, with additional variables added for package
 #'   compatibility.
 #'
-#' @format A data frame with 200 rows and 6 variables:
+#' @format A [tibble][tibble::tbl_df-class] with 200 rows and 6 variables:
 #' \describe{
 #'   \item{respondentID}{Unique respondent identifier}
 #'   \item{surveyID}{Unique survey identifier}
@@ -28,7 +28,7 @@
 #' A dataset containing dimension values and vas score for 1000 respondents
 #'   across 10 surveys. Data was synthetically generated.
 #'
-#' @format A data frame with 10000 rows and 11 variables:
+#' @format A [tibble][tibble::tbl_df-class] with 10000 rows and 11 variables:
 #' \describe{
 #'   \item{surveyID}{Survey ID}
 #'   \item{respondentID}{Respondent ID}

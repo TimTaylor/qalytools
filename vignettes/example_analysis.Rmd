@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{EQ-5D Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{brms, dplyr, ggplot2, lme4, purrr, stringr, tidyr}
 bibliography: references.bib
 ---
 
@@ -95,7 +96,7 @@ ggplot2::ggplot(plot_dat) +
     ggplot2::theme(
         axis.text.x = ggplot2::element_text(angle = 45, vjust = 1, hjust = 1)
     ) +
-    ylab("Utility value") +
+    ggplot2::ylab("Utility value") +
     ggplot2::facet_grid(. ~ type)
 ```
 
@@ -119,7 +120,7 @@ models <-
                 respondents_dat |> 
                 dplyr::sample_n(nboot, replace = TRUE) |> 
                 dplyr::mutate(boot_respondent_id = dplyr::row_number()) |> 
-                dplyr::left_join(dat, by = "respondentID")
+                dplyr::left_join(dat, by = "respondentID", relationship = "many-to-many")
           
             fit <- lme4::lmer(
                 .value ~ (1 + acute | boot_respondent_id) + surveyID + 
@@ -149,12 +150,11 @@ coeff_dat <-
 
 plot_dat <- 
     coeff_dat |>
-    dplyr::group_by(id) |>
     dplyr::summarise(
         quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
         value = quantile(Estimate, quant),
         Significant = all(value < 0) || all(value > 0),
-        .groups = "drop"
+        .by = "id"
     ) |> 
     tidyr::pivot_wider(names_from = quant, values_from = value) |> 
     # Cleanup names of the coefficients
@@ -164,11 +164,11 @@ plot_dat <-
 ggplot2::ggplot(data = plot_dat) +
     ggplot2::geom_linerange(
         ggplot2::aes(x = idname, ymin = `0.025`, ymax = `0.975`, colour = Significant),
-        size = 1
+        linewidth = 1
     ) +
     ggplot2::geom_linerange(
         ggplot2::aes(x = idname, ymin = `0.25`, ymax = `0.75`, colour = Significant),
-        size = 2
+        linewidth = 2
     ) +
     ggplot2::theme(
         axis.text.x = ggplot2::element_text(angle = 45, vjust = 1, hjust = 1),
@@ -187,14 +187,13 @@ qaly_dat <-
         lst0$result$data |>
             dplyr::mutate(pvalue = predict(lst0$result$model)) |>
             # Convert to utility
-            qalytools::new_utility(
+            qalytools::as_utility(
                 respondentID = "boot_respondent_id",
                 surveyID = "surveyID",
                 country = ".utility_country",
                 type = ".utility_type",
                 value = "pvalue"
-            ) |>
-            qalytools::validate_utility() |>
+            ) |> 
             # Calculate the qaly for based on the utility values
             qalytools::calculate_qalys(
                 baseline_survey = "survey01",
@@ -243,7 +242,7 @@ ggplot2::ggplot(data = plot_dat) +
     ggplot2::geom_linerange(
         ggplot2::aes(x = AgeGroup, ymin = `0.25`, ymax = `0.75`, colour = .qaly, group = .qaly),
         position = position_dodge2(0.5),
-        size = 2
+        linewidth = 2
     ) +
     ggplot2::geom_point(
         data = dat0, 
@@ -279,12 +278,11 @@ brms::posterior_epred(brm_model, newdata = dat, ndraws = 1000) -> posterior_dat
 # For each posterior sample, calculate the qaly loss
 purrr::map(seq_len(nrow(posterior_dat)), function(np_id) {
   dat |> dplyr::mutate(pvalue = posterior_dat[as.numeric(np_id), ]) |>
-    qalytools::new_utility(respondentID = "respondentID",
+    qalytools::as_utility(respondentID = "respondentID",
                              surveyID = "surveyID",
                              country = ".utility_country",
                              type = ".utility_type",
                              value = "pvalue") |>
-    qalytools::validate_utility() |>
     qalytools::calculate_qalys(baseline_survey = "survey01",
                                time_index = "time_index") |>
     dplyr::mutate(np = as.numeric(np_id))
@@ -297,12 +295,11 @@ purrr::map(seq_len(nrow(posterior_dat)), function(np_id) {
 ```{r brmsModel, fig.cap = "Comparing the modelled utility values, using the bayesian model, with the utility values in the model. Utility values were calculated from a EQ5D5L survey using the DSU method."}
 # For comparison, plot posterior using one posterior sample
 dat |> dplyr::mutate(pvalue = posterior_dat[1, ]) |>
-  qalytools::new_utility(respondentID = "respondentID",
+  qalytools::as_utility(respondentID = "respondentID",
                            surveyID = "surveyID",
                            country = ".utility_country",
                            type = ".utility_type",
-                           value = "pvalue") |>
-  qalytools::validate_utility() -> dat0
+                           value = "pvalue") -> dat0
 dat0 |>
   dplyr::rename(Actual = .value, Model = pvalue) |>
   tidyr::gather(type, value, Actual, Model) -> plot_dat
@@ -373,4 +370,3 @@ ggplot(data = plot_dat) +
 ```
 
 # References
-

@@ -7,9 +7,9 @@
 calculate_pchc(pre, post, no.problems = TRUE, by.dimension = FALSE)
 }
 \arguments{
-\item{pre}{An \code{EQ5D} object for a single survey.}
+\item{pre}{An EQ5D object for a single survey.}
 
-\item{post}{An \code{EQ5D} object for a single survey.}
+\item{post}{An EQ5D object for a single survey.}
 
 \item{no.problems}{boolean. Summarise 11111 "No change" subjects in a "No problems" 
 group.}
@@ -18,25 +18,24 @@ group.}
 than by the whole dataset.}
 }
 \value{
-\itemize{
-\item For \code{by.dimension = FALSE}:
+For \code{by.dimension = FALSE}:
 \itemize{
 \item A data frame with columns 'Change', 'Number' and 'Percent'.
 }
-\item For \code{by.dimension = TRUE}:
+
+For \code{by.dimension = TRUE}:
 \itemize{
 \item A data frame with columns 'Dimension', 'Change', 'Number' and 'Percent'.
-}
 }
 }
 \description{
 \code{calculate_pchc()} calculates the Paretian Classification of Health Change
 (PCHC) in an individuals health state between two surveys. It wraps the
-\code{eq5d::pchc()} function providing methods for \code{\link[=new_eq5d]{EQ5D}} objects.
+\code{eq5d::pchc()} function providing methods for \link[=as_eq5d]{EQ5D} objects.
 }
 \examples{
 
-data("eq5d3l_example")
+data(eq5d3l_example)
 dat <- as_eq5d3l(
     eq5d3l_example,
     respondentID = "respondentID",
@@ -46,8 +45,7 @@ dat <- as_eq5d3l(
     usual = "UA",
     pain = "PD",
     anxiety = "AD",
-    vas = "vas",
-    drop = FALSE
+    vas = "vas"
 )
 grp1 <- subset(dat, Group == "Group1")
 grp2 <- subset(dat, Group == "Group2")

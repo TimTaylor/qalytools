@@ -5,7 +5,7 @@
 \alias{EQ5D5L_surveys}
 \title{EQ-5D-5L multiple survey example data}
 \format{
-A data frame with 10000 rows and 11 variables:
+A \link[tibble:tbl_df-class]{tibble} with 10000 rows and 11 variables:
 \describe{
 \item{surveyID}{Survey ID}
 \item{respondentID}{Respondent ID}

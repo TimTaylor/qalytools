@@ -1,8 +1,15 @@
 set.seed(32)
+
+# -------------------------------------------------------------------------
+# packages ----------------------------------------------------------------
+# -------------------------------------------------------------------------
+
 library(data.table)
 library(eq5d)
-library(dplyr)
-library(purrr)
+
+# -------------------------------------------------------------------------
+# constants ---------------------------------------------------------------
+# -------------------------------------------------------------------------
 
 # initially we generate for more individuals than we actually want as some
 # observations will be thrown away at a later stage
@@ -16,16 +23,23 @@ nsurveys <- 10
 lower_age <- 20
 upper_age <- 80
 
-# Participants
-dplyr::tibble(
-  id = seq_len(ninit),
-  age = sample(lower_age:upper_age, size = ninit, replace = TRUE),
-  sex = sample(c("Male", "Female"), size = ninit, replace = TRUE)
-) -> dat
+# misc
+male_survey_mu   <- c(1.0, 0.2, 0.85, 0.9, 0.9, rep(0.99, 5))
+female_survey_mu <- c(1.0, 0.3, 0.75, 0.8, 0.9, rep(0.99, 5))
+survey_phi       <- c(100, 10, 70, rep(100, 7))
+
+# safety check
+pars <- list(male_survey_mu, female_survey_mu, survey_phi)
+stopifnot(length(check <- unique(lengths(pars))) == 1L)
+stopifnot(check == nsurveys)
+
+# -------------------------------------------------------------------------
+# helper functions --------------------------------------------------------
+# -------------------------------------------------------------------------
 
 # Alternative parameterisation of beta distribution
 rbeta_mu <- function(n, mu, phi) {
-  rbeta(n, mu * phi, (1 - mu) * phi)
+    rbeta(n, mu * phi, (1 - mu) * phi)
 }
 
 # for male means we add an age effect to base age
@@ -33,31 +47,38 @@ male_mu <- function(x, age, lower_age, upper_age) {
     x - 0.25 * (age - lower_age) / (upper_age - lower_age)
 }
 
+
+# -------------------------------------------------------------------------
+# generate data -----------------------------------------------------------
+# -------------------------------------------------------------------------
+
+# Participants
+dat <- data.table(
+  id = seq_len(ninit),
+  age = sample(lower_age:upper_age, size = ninit, replace = TRUE),
+  sex = sample(c("Male", "Female"), size = ninit, replace = TRUE)
+)
+
 # Maximum values, used as the base for each participant
-dat |>
-  dplyr::mutate(mu = dplyr::case_when(sex == "Male" ~ male_mu(0.85, age, lower_age, upper_age), T ~ 0.85)) |>
-  dplyr::mutate(max_value = rbeta_mu(dplyr::n(), mu, 25)) -> dat0
+dat[, mu := ifelse(sex == "Male", male_mu(0.85, age, lower_age, upper_age), 0.85)]
+dat[, max_value := rbeta_mu(ninit, mu, 25)]
 
+survey_data <- lapply(
+    seq_len(nsurveys),
+    function(i) {
+        tmp <- fifelse(
+            dat$sex == "Male",
+            rbeta_mu(ninit, male_survey_mu[i], survey_phi[i]),
+            rbeta_mu(ninit, female_survey_mu[i], survey_phi[i])
+        )
+        copy(dat)[, `:=`(value = max_value * tmp, survey = i)]
+    }
+)
+survey_data <- rbindlist(survey_data)
+dat <- survey_data[,.(survey, id, age, sex, value)]
+dat[, vas := value * rnorm(ninit, 1, 0.05)]
+dat[, vas := pmax(pmin(vas, 1), 0)]
 
-male_survey_mu <- c(1.0, 0.2, 0.85, 0.9, 0.9, rep(0.99, 5))
-female_survey_mu <- c(1.0, 0.3, 0.75, 0.8, 0.9, rep(0.99, 5))
-survey_phi <- c(100, 10, 70, rep(100, 7))
-
-seq(1, nsurveys) |> purrr::map(function(survey_id) {
-  sid <- as.numeric(survey_id)
-  dat0 |>
-    dplyr::mutate(value = max_value*
-      dplyr::case_when(
-        sex == "Male" ~
-          rbeta_mu(dplyr::n(), male_survey_mu[sid], survey_phi[sid]),
-        T ~ rbeta_mu(dplyr::n(), female_survey_mu[sid], survey_phi[sid])),
-    survey = sid)
-}) |> dplyr::bind_rows() |>
-  dplyr::select(survey, id, age, sex, value) |>
-  dplyr::mutate(vas = value*rnorm(dplyr::n(), 1, 0.05),
-    vas = pmax(pmin(vas, 1), 0)) -> survey_data
-
-dat <- as.data.table(survey_data)
 
 # Generate all possible utility values using the eq5d package
 x=1:5
@@ -88,7 +109,8 @@ EQ5D5L_surveys[, dummy:=sample(c(TRUE, FALSE), size = .N, replace=TRUE)]
 
 # save output
 setDF(EQ5D5L_surveys)
-class(EQ5D5L_surveys) <- c("tbl", "data.frame")
+
+EQ5D5L_surveys <- tibble::as_tibble(EQ5D5L_surveys)
 
 write.csv(
     EQ5D5L_surveys,

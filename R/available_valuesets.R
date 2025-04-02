@@ -1,36 +1,39 @@
 #' Available value sets
 #'
-#' @description
-#'
+# -----------------------------------------------------------------------
 #' Generic function that lists value sets available.
 #'
-#' @details
-#'
+# -----------------------------------------------------------------------
 #' `available_valuesets()` returns the available valuesets from the
 #' [eq5d](https://cran.r-project.org/package=eq5d) package. It is an s3
 #' generic that wraps the `eq5d::valuesets()` function providing additional
-#' methods for [`eq5d`][new_eq5d] and `character` objects.
+#' methods for [`eq5d`][as_eq5d] and `character` objects.
 #'
 #' For `character` objects, the input is expected to be the survey type with
 #' various forms permitted:
 #'
 #'   - "eq5d5l", "EQ5D5L", "eq-5d-5l", "EQ-5D-5L", "5L", "5l"
 #'   - "eq5d3l", "EQ5D3L", "eq-5d-3l", "EQ-5D-3L", "3L", "3l"
-#'   - "eq5dy" , "EQ5DY" , "eq-5d-y" , "EQ-5D-Y" , "Y" , "y"
+#'   - "eq5dy3l" , "EQ5DY3L" , "eq-5d-y-3l" , "EQ-5D-Y-3L" , "Y3L" , "y3l"
 #'
 #' If called with no arguments value sets for all available  version, type and
 #' country combination are returned.
 #'
+# -----------------------------------------------------------------------
 #' @param x An \R object.
 #'
 #' @param ... Further arguments passed to or from other methods.
 #'
-#' @return A data.frame containing the available value sets for the given object
-#' or survey type.
+# -------------------------------------------------------------------------
+#' @return
 #'
+#' A [tibble][tibble::tbl_df-class] containing the available value sets for the
+#' given object or survey type.
+#'
+# -------------------------------------------------------------------------
 #' @examples
 #'
-#' data("eq5d3l_example")
+#' data(eq5d3l_example)
 #' dat <- as_eq5d3l(
 #'     eq5d3l_example,
 #'     respondentID = "respondentID",
@@ -45,6 +48,7 @@
 #' available_valuesets(dat)
 #' available_valuesets("eq5d5l")
 #'
+# -------------------------------------------------------------------------
 #' @export
 available_valuesets <- function(x, ...) {
     UseMethod("available_valuesets")
@@ -78,7 +82,7 @@ available_valuesets.EQ5D3L <- function(x, ...) {
 #' @rdname available_valuesets
 #' @export
 available_valuesets.EQ5DY <- function(x, ...) {
-    .valuesets(version = "Y")
+    .valuesets(version = "Y3L")
 }
 
 # -------------------------------------------------------------------------
@@ -89,14 +93,17 @@ available_valuesets.character <- function(x, ...) {
 
     x <- tolower(x)
 
-    possible <- c("eq5d5l", "eq-5d-5l", "eq5d3l", "eq-5d-3l", "eq5dy", "eq-5d-y")
+    possible <- c("eq5d5l", "eq-5d-5l", "eq5d3l", "eq-5d-3l", "eq5dy3l", "eq-5d-y-3l")
     if (!x %in% possible) {
-        cli_abort(c(
-            "When {.arg x} is a {.cls character} object, it must be one of:",
-            "*" = '"eq5d5l", "EQ5D5L", "eq-5d-5l" or "EQ-5D-5L".',
-            "*" = '"eq5d3l", "EQ5D3L", "eq-5d-3l" or "EQ-5D-3L".',
-            "*" = '"eq5dy" , "EQ5DY" , "eq-5d-y"  or "EQ-5D-Y".'
-        ))
+        .stop_fancy(
+            c(
+                "When `x` is a character object, it must be one of:",
+                '"eq5d5l", "EQ5D5L", "eq-5d-5l" or "EQ-5D-5L".',
+                '"eq5d3l", "EQ5D3L", "eq-5d-3l" or "EQ-5D-3L".',
+                '"eq5dy" , "EQ5DY" , "eq-5d-y"  or "EQ-5D-Y".'
+            ),
+            .call = sys.call(-1L)
+        )
     }
 
     x <- switch(x,
@@ -104,8 +111,8 @@ available_valuesets.character <- function(x, ...) {
         "eq-5d-5l" = "5L",
         "eq5d3l" = ,
         "eq-5d-3l" = "3L",
-        "eq5dy" = ,
-        "eq-5d-y" = "Y"
+        "eq5dy3l" = ,
+        "eq-5d-y-3l" = "Y3L"
     )
 
     .valuesets(version = x)
@@ -118,7 +125,6 @@ available_valuesets.character <- function(x, ...) {
 # ------------------------------------------------------------------------- #
 
 .valuesets <- function(version = NULL) {
-    out <- valuesets(version = version)
-    class(out) <- c("tbl", "data.frame")
-    out
+    out <- eq5d::valuesets(version = version)
+    tibble::as_tibble(out)
 }

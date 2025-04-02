@@ -314,8 +314,7 @@ dat <- as_eq5d3l(
     usual = "UA",
     pain = "PD",
     anxiety = "AD",
-    vas = "vas",
-    drop = FALSE # ensure we do not drop additional columns
+    vas = "vas"
 )
 grp1 <- filter(dat, Group == "Group1")
 grp2 <- filter(dat, Group == "Group2")

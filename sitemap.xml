@@ -1,78 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/404.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/articles/example_analysis.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/articles/qalytools.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/index.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/EQ5D5L_surveys.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/as.data.frame.EQ5D.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/as.data.table.EQ5D.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/as_eq5d.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/available_valuesets.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/calculate_limitation.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/calculate_pchc.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/calculate_qalys.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/calculate_utility.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/eq5d3l_example.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/new_eq5d.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/new_utility.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/qalytools-package.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/s3_register.html</loc>
-  </url>
-  <url>
-    <loc>https://timtaylor.github.io/qalytools/reference/summary.EQ5D.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://timtaylor.github.io/qalytools/404.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/LICENSE-text.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/LICENSE.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/articles/example_analysis.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/articles/index.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/articles/qalytools.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/authors.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/index.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/news/index.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/EQ5D5L_surveys.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/as_eq5d.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/as_utility.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/available_valuesets.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/calculate_limitation.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/calculate_pchc.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/calculate_qalys.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/calculate_utility.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/coercion.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/eq5d3l_example.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/index.html</loc></url>
+<url><loc>https://timtaylor.github.io/qalytools/reference/summary.EQ5D.html</loc></url>
 </urlset>
+

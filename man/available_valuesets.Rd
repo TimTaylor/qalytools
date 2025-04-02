@@ -5,7 +5,7 @@
 \alias{available_valuesets.default}
 \alias{available_valuesets.EQ5D5L}
 \alias{available_valuesets.EQ5D3L}
-\alias{available_valuesets.EQ5DY}
+\alias{available_valuesets.EQ5DY3L}
 \alias{available_valuesets.character}
 \title{Available value sets}
 \usage{
@@ -17,7 +17,7 @@ available_valuesets(x, ...)
 
 \method{available_valuesets}{EQ5D3L}(x, ...)
 
-\method{available_valuesets}{EQ5DY}(x, ...)
+\method{available_valuesets}{EQ5DY3L}(x, ...)
 
 \method{available_valuesets}{character}(x, ...)
 }

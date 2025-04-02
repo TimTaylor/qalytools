@@ -81,7 +81,7 @@ available_valuesets.EQ5D3L <- function(x, ...) {
 # -------------------------------------------------------------------------
 #' @rdname available_valuesets
 #' @export
-available_valuesets.EQ5DY <- function(x, ...) {
+available_valuesets.EQ5DY3L <- function(x, ...) {
     .valuesets(version = "Y3L")
 }
 
@@ -100,7 +100,7 @@ available_valuesets.character <- function(x, ...) {
                 "When `x` is a character object, it must be one of:",
                 '"eq5d5l", "EQ5D5L", "eq-5d-5l" or "EQ-5D-5L".',
                 '"eq5d3l", "EQ5D3L", "eq-5d-3l" or "EQ-5D-3L".',
-                '"eq5dy" , "EQ5DY" , "eq-5d-y"  or "EQ-5D-Y".'
+                '"eq5dy3l" , "EQ5DY3L" , "eq-5d-y-3l"  or "EQ-5D-Y-3L".'
             ),
             .call = sys.call(-1L)
         )

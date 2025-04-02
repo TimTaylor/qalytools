@@ -1,5 +1,6 @@
 ---
 title: "EQ-5D Analysis"
+author: "Edwin van Leeuwen"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{EQ-5D Analysis}

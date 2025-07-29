@@ -43,10 +43,6 @@
 #' A [tibble][tibble::tbl_df-class] like `<utility>` object.
 #'
 # -------------------------------------------------------------------------
-#' @importFrom ympes assert_data_frame
-#' @importFrom tibble new_tibble
-#'
-# -------------------------------------------------------------------------
 #' @export
 as_utility <- function(
         x,
@@ -58,15 +54,15 @@ as_utility <- function(
 ) {
 
     # only allow data frame input and drop additional classes
-    x <- as.data.frame(assert_data_frame(x))
+    x <- as.data.frame(ympes::assert_data_frame(x))
 
     # validate the other inputs are scalar
     all <- c(
-        respondentID = assert_scalar_character(respondentID),
-        surveyID     = assert_scalar_character(surveyID),
-        country      = assert_scalar_character(country),
-        type         = assert_scalar_character(type),
-        value        = assert_scalar_character(value)
+        respondentID = ympes::assert_scalar_character(respondentID),
+        surveyID     = ympes::assert_scalar_character(surveyID),
+        country      = ympes::assert_scalar_character(country),
+        type         = ympes::assert_scalar_character(type),
+        value        = ympes::assert_scalar_character(value)
     )
 
     # check for duplicates
@@ -102,11 +98,11 @@ as_utility <- function(
     # restrict respondentID and surveyID to character/whole
     xx <- .subset2(x, respondentID)
     if (!(is.character(xx) || is.factor(xx)))
-        assert_whole(xx)
+        ympes::assert_whole(xx)
 
     xx <- .subset2(x, surveyID) # TODO - should we enforce integer or factor as we need ordering?
     if (!(is.character(xx) || is.factor(xx)))
-        assert_whole(xx)
+        ympes::assert_whole(xx)
 
     # check unique combinations of survey, respondent ID, country and type
     combos <- x[c(respondentID, surveyID, country, type)]
@@ -117,7 +113,7 @@ as_utility <- function(
     if (!is.numeric(.subset2(x, value)))
         stop("`value` column must be numeric.")
 
-    new_tibble(
+    tibble::new_tibble(
         x,
         respondentID = respondentID,
         surveyID = surveyID,

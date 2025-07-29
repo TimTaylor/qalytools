@@ -226,7 +226,7 @@ calculate_qalys.utility <- function(
     out[, .auc := .auc / div[[units]]]
 
     # rename ".auc" column to ".raw"
-    setnames(out, ".auc", ".raw")
+    data.table::setnames(out, ".auc", ".raw")
 
     # join output with the time difference
     out[timediff, on = c(resp), .time_diff := i.time_diff_]

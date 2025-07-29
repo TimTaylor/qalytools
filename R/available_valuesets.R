@@ -107,11 +107,11 @@ available_valuesets.character <- function(x, ...) {
     }
 
     x <- switch(x,
-        "eq5d5l" = ,
-        "eq-5d-5l" = "5L",
-        "eq5d3l" = ,
-        "eq-5d-3l" = "3L",
-        "eq5dy3l" = ,
+        "eq5d5l"     =     ,
+        "eq-5d-5l"   = "5L",
+        "eq5d3l"     =     ,
+        "eq-5d-3l"   = "3L",
+        "eq5dy3l"    =     ,
         "eq-5d-y-3l" = "Y3L"
     )
 

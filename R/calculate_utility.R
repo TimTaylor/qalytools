@@ -99,11 +99,6 @@
 #' calculate_utility(dat, type = "TTO", country = c("UK", "Germany"))
 #'
 # -------------------------------------------------------------------------
-#' @importFrom eq5d eq5d
-#' @importFrom ympes assert_character
-#' @importFrom data.table rbindlist setDF setnames
-#'
-# -------------------------------------------------------------------------
 #' @export
 calculate_utility <- function(x, type, country, ...) {
     UseMethod("calculate_utility")
@@ -270,8 +265,8 @@ add_utility.EQ5DY <- function(
 .calculate_utility <- function(x, type, country, version, drop, age, sex, call = sys.call(-1L)) {
 
     # check input types
-    assert_character(type, .call = call)
-    assert_character(country, .call = call)
+    ympes::assert_character(type, .call = call)
+    ympes::assert_character(country, .call = call)
 
     # Recycle type and country inputs and check against available value sets
     if (length(type) == 1L && length(country) > 1L) {
@@ -335,7 +330,7 @@ add_utility.EQ5DY <- function(
     )
 
     # combine with respondent and survey IDs
-    tmp <- cbind(r, s, rbindlist(tmp))
+    tmp <- cbind(r, s, data.table::rbindlist(tmp))
     data.table::setnames(tmp, old = 1:2, new = c(resp, surv))
     data.table::setDF(tmp)
 
@@ -365,8 +360,8 @@ add_utility.EQ5DY <- function(
         if (is.null(sex))
             .stop("For 'DSU' you must specify the `sex` variable.")
 
-        assert_scalar_character(age)
-        assert_scalar_character(sex)
+        ympes::assert_scalar_character(age)
+        ympes::assert_scalar_character(sex)
 
         # ensure present in data frame
         nms <- names(scores)
@@ -399,7 +394,7 @@ add_utility.EQ5DY <- function(
             .stop('`sex` variable entries must be one of "Male", "M", "Female" or "F" (case independent).')
     }
 
-    out <- eq5d(
+    out <- eq5d::eq5d(
         scores = scores,
         version = version,
         type = type,

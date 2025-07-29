@@ -83,7 +83,7 @@ dat[, vas := pmax(pmin(vas, 1), 0)]
 # Generate all possible utility values using the eq5d package
 x=1:5
 possible <- CJ(MO=x,SC=x,UA=x,PD=x,AD=x)
-possible[,value:=eq5d(possible, "5L", "VT", "England")]
+possible[, value := eq5d::eq5d(possible, "5L", "VT", "England")]
 setorder(possible, value)
 
 # match our synthetic data to get the nearest dimensions based on the utility value

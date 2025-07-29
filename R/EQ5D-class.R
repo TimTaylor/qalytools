@@ -70,10 +70,6 @@ NULL
 #' )
 #'
 # -------------------------------------------------------------------------
-#' @importFrom ympes assert_scalar_character assert_data_frame assert_whole
-#' @importFrom tibble new_tibble
-#'
-# -------------------------------------------------------------------------
 #' @name as_eq5d
 NULL
 
@@ -160,8 +156,7 @@ as_eq5dy3l <- function(
         pain = pain,
         anxiety = anxiety,
         vas = vas,
-        version = "Y3L",
-        call = sys.call(0L)
+        version = "Y3L"
     )
 }
 
@@ -333,12 +328,14 @@ dplyr_reconstruct.EQ5D <- function(data, template) {
     pain,
     anxiety,
     vas,
-    version = c("5L", "3L", "Y3L"),
-    call
+    version = c("5L", "3L", "Y3L")
 ) {
 
+    # get the parent call for use in error messages
+    call <- sys.call(-1L)
+
     # only allow data frame input and drop additional classes
-    x <- as.data.frame(assert_data_frame(x))
+    x <- as.data.frame(ympes::assert_data_frame(x, .call = call))
 
     # check version
     version <- match.arg(version)
@@ -347,16 +344,15 @@ dplyr_reconstruct.EQ5D <- function(data, template) {
     nlevels <- if (version == "5L") 5L else 3L
 
     # validate the other inputs are scalar
-    call <- sys.call(-1L)
     all <- c(
-        respondentID = assert_scalar_character(respondentID, .call = call),
-        surveyID     = assert_scalar_character(surveyID,     .call = call),
-        mobility     = assert_scalar_character(mobility,     .call = call),
-        self_care    = assert_scalar_character(self_care,    .call = call),
-        usual        = assert_scalar_character(usual,        .call = call),
-        pain         = assert_scalar_character(pain,         .call = call),
-        anxiety      = assert_scalar_character(anxiety,      .call = call),
-        vas          = assert_scalar_character(vas,          .call = call)
+        respondentID = ympes::assert_scalar_character(respondentID, .call = call),
+        surveyID     = ympes::assert_scalar_character(surveyID,     .call = call),
+        mobility     = ympes::assert_scalar_character(mobility,     .call = call),
+        self_care    = ympes::assert_scalar_character(self_care,    .call = call),
+        usual        = ympes::assert_scalar_character(usual,        .call = call),
+        pain         = ympes::assert_scalar_character(pain,         .call = call),
+        anxiety      = ympes::assert_scalar_character(anxiety,      .call = call),
+        vas          = ympes::assert_scalar_character(vas,          .call = call)
     )
 
     # check for duplicates
@@ -392,11 +388,11 @@ dplyr_reconstruct.EQ5D <- function(data, template) {
     # restrict respondentID and surveyID to character/whole
     xx <- .subset2(x, respondentID)
     if (!(is.character(xx) || is.factor(xx)))
-        assert_whole(xx)
+        ympes::assert_whole(xx, .call = call)
 
     xx <- .subset2(x, surveyID)
     if (!(is.character(xx) || is.factor(xx)))
-        assert_whole(xx)
+        ympes::assert_whole(xx, .call = call)
 
     # check unique combinations of survey and respondent ID
     combos <- x[c(respondentID, surveyID)]
@@ -447,7 +443,7 @@ dplyr_reconstruct.EQ5D <- function(data, template) {
     }
 
     # return tibble
-    new_tibble(
+    tibble::new_tibble(
         x,
         respondentID = respondentID,
         surveyID = surveyID,

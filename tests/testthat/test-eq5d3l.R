@@ -96,8 +96,8 @@ test_that("calculate_utility works as expected", {
     tmp <- calculate_utility(out, type = "TTO", country = c("Germany", "France"))
     dat2 <- subset(dat, select = c(mobility, self_care, usual, pain, anxiety))
     names(dat2) <- c("MO", "SC", "UA", "PD", "AD")
-    gutil <- eq5d(dat2, version="3L", type = "TTO", country="Germany")
-    futil <- eq5d(dat2, version="3L", type = "TTO",country="France")
+    gutil <- eq5d::eq5d(dat2, version="3L", type = "TTO", country="Germany")
+    futil <- eq5d::eq5d(dat2, version="3L", type = "TTO",country="France")
     tmp2 <- data.frame(respondentID = dat[["respondentID"]],
                        .utility_country = c(rep_len("Germany", length(dat2[[1]])),
                                             rep_len("France", length(dat2[[1]]))),

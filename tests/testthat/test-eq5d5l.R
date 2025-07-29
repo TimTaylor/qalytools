@@ -99,8 +99,8 @@ test_that("calculate_utility works as expected (non-DSU type)", {
 
     dat2 <- subset(dat, select = c(mobility, self_care, usual, pain, anxiety))
     names(dat2) <- c("MO", "SC", "UA", "PD", "AD")
-    gutil <- eq5d(dat2, version="5L", type = "VT", country="Germany")
-    futil <- eq5d(dat2, version="5L", type = "VT",country="France")
+    gutil <- eq5d::eq5d(dat2, version="5L", type = "VT", country="Germany")
+    futil <- eq5d::eq5d(dat2, version="5L", type = "VT",country="France")
     tmp2 <- data.frame(respondentID = dat[[2]],
                        .utility_country = c(rep_len("Germany", length(dat2[[1]])),
                                             rep_len("France", length(dat2[[1]]))),
@@ -128,7 +128,7 @@ test_that("calculate_utility works as expected (DSU type)", {
 
     dat2 <- subset(dat, select = c(mobility, self_care, usual, pain, anxiety, sex, age))
     names(dat2) <- c("MO", "SC", "UA", "PD", "AD", "sex", "age")
-    uutil <- eq5d(dat2, version="5L", type = "DSU", country="UK", age = "age", sex="sex")
+    uutil <- eq5d::eq5d(dat2, version="5L", type = "DSU", country="UK", age = "age", sex="sex")
 
     tmp2 <- data.frame(
         respondentID = dat[[2]],

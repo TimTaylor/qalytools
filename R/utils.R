@@ -6,7 +6,7 @@
 
 
 # return the version of an eq5d object
-.get_version <- function(x, arg = deparse(substitute(x)), call = sys.call(-1L)) {
+.get_version <- function(x) {
     if (inherits(x, "EQ5D5L")) {
         "5L"
     } else if (inherits(x, "EQ5D3L")) {

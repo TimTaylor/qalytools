@@ -1,9 +1,3 @@
-#' @importFrom data.table as.data.table
-NULL
-
-#' @importFrom tibble as_tibble
-NULL
-
 #' Coerce an EQ5D object
 #'
 # -------------------------------------------------------------------------
@@ -57,6 +51,7 @@ as.data.frame.EQ5D <- function(x, row.names, optional, ...) {
 
 
 #' @rdname coercion
+#' @importFrom data.table as.data.table
 #' @export
 as.data.table.EQ5D <- function(x, keep.rownames, ...) {
     if (!missing(keep.rownames)) {
@@ -67,6 +62,7 @@ as.data.table.EQ5D <- function(x, keep.rownames, ...) {
 }
 
 #' @rdname coercion
+#' @importFrom tibble as_tibble
 #' @export
 as_tibble.EQ5D <- function (x, ..., .rows, .name_repair, rownames) {
     if (!missing(.rows))
@@ -78,7 +74,7 @@ as_tibble.EQ5D <- function (x, ..., .rows, .name_repair, rownames) {
     if (!missing(rownames))
         .warning("`.name_repair` argument will be ignored.")
 
-    out <- new_tibble(c(x))
+    out <- tibble::new_tibble(c(x))
     out
 }
 

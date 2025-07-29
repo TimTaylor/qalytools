@@ -47,5 +47,5 @@ the included documentation:
 
 - `vignette("qalytools")` provides an introduction to the main functionality
   of the package.
-- `vignette("example_analysis")` illustrates how to use the package as part of a
-  larger analysis.
+- The [EQ5D Analysis](https://timtaylor.github.io/qalytools/articles/example_analysis.html)
+  illustrates how to use the package as part of a larger analysis.

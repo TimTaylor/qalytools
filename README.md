@@ -1,5 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -32,7 +33,8 @@ The development version of the package can be installed via:
 Once installed the best way to familiarise yourself with the package is
 to view the included documentation:
 
--   `vignette("qalytools")` provides an introduction to the main
-    functionality of the package.
--   `vignette("example_analysis")` illustrates how to use the package as
-    part of a larger analysis.
+- `vignette("qalytools")` provides an introduction to the main
+  functionality of the package.
+- The [EQ5D
+  Analysis](https://timtaylor.github.io/qalytools/articles/example_analysis.html)
+  illustrates how to use the package as part of a larger analysis.

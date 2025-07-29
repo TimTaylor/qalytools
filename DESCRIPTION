@@ -31,16 +31,8 @@ Imports:
 Depends: 
     R (>= 4.1.0)
 Suggests:
-    brms,
-    BH,
-    RcppEigen,
     dplyr,
-    tidyr,
-    stringr,
-    lme4,
-    covr,
     ggplot2,
-    purrr,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
@@ -48,3 +40,4 @@ VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: eq5d5l, eq5d3l
+Config/Needs/website: rmarkdown, brms, BH, RcppEigen, dplyr, tidyr, stringr, lme4, ggplot2, purrr

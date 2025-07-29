@@ -26,7 +26,8 @@ Imports:
     utils,
     pillar,
     ympes,
-    tibble
+    tibble,
+    super
 Depends: 
     R (>= 4.1.0)
 Suggests:

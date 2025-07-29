@@ -295,10 +295,11 @@ add_utility.EQ5DY <- function(
     if (nrow(tmp)) {
         first_type <- tmp$type[1]
         first_country <- tmp$country[1]
-        .stop_fancy(
-            c(
-                "Invalid value set and country combination:",
-                sprintf("Type = %s, Country = %s", sQuote(first_type), sQuote(first_country))
+        .stop(
+            sprintf(
+                "Invalid value set and country combination:\n    Type = %s, Country = %s",
+                sQuote(first_type),
+                sQuote(first_country)
             ),
             .call = call
         )

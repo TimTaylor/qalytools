@@ -1,6 +1,7 @@
 url: https://timtaylor.github.io/qalytools/
 template:
   bootstrap: 5
+  math-rendering: "mathjax"
 
 reference:
 - title: EQ5D objects

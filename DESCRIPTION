@@ -31,7 +31,6 @@ Imports:
 Depends: 
     R (>= 4.1.0)
 Suggests:
-    dplyr,
     ggplot2,
     knitr,
     rmarkdown,

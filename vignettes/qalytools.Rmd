@@ -5,7 +5,7 @@ vignette: >
   %\VignetteIndexEntry{qalytools}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteDepends{dplyr, ggplot2}
+  %\VignetteDepends{ggplot2}
 editor_options:
   chunk_output_type: console
   markdown:
@@ -37,8 +37,8 @@ data frame subclasses (EQ5D3L, EQ5D5L and EQ5DY3L).
 
 - The calculation of utility values based on a range of different value sets.
 This functionality is provided via the `calculate_utility()`, `add_utility()`
-and `available_valuesets()` functions which are wrappers around the
-[eq5d](https://cran.r-project.org/package=eq5d) package.
+and `available_valuesets()` functions which are wrappers around the functionality
+of the underlying eq5d package.
 
 - The calculation of different Quality of Life Years (QALY) metrics including
 unadjusted 'raw' values, and the disutility from both perfect health and,
@@ -46,14 +46,14 @@ optionally, a specified baseline. See `calculate_qalys()`.
 
 - The calculation of the Paretian Classification of Health Change (PCHC) in an
 individual's health state between two surveys via `calculate_pchc()` (again
-wrapping the [eq5d](https://cran.r-project.org/package=eq5d) package).
+wrapping functions from the eq5d package).
 
 - Easy calculation of responses with a health limitation (i.e. a non-one
 response in one of the dimensions) via `calculate_limitation()`.
 
 Whilst this vignette provides an introduction to the core functionality of the
-package, a more detailed analysis example can be found in
-`vignette("example_analysis")`.
+package, a more detailed analysis example can be found in the
+[EQ5D Analysis article](https://timtaylor.github.io/qalytools/articles/example_analysis.html) on the package website.
 
 
 ## The EQ5D object class
@@ -97,12 +97,11 @@ included in the package
 
 ```{r}
 library(qalytools)
-library(dplyr)
 library(ggplot2)
 
 # Example EQ5D5L data
 data("EQ5D5L_surveys")
-glimpse(EQ5D5L_surveys)
+str(EQ5D5L_surveys)
 ```
 
 ### Coercion
@@ -111,7 +110,7 @@ Before utilising methods from qalytools we must first coerce our input data to
 the `<EQ5D5L>` object class via `as_eq5d5l()`
 
 ```{r}
-dat <- as_eq5d5l(
+(dat <- as_eq5d5l(
     EQ5D5L_surveys,
     mobility = "mobility",
     self_care = "self_care",
@@ -121,8 +120,7 @@ dat <- as_eq5d5l(
     respondentID = "respondentID",
     surveyID = "surveyID",
     vas = "vas",
-)
-dat
+))
 ```
 
 ### Descriptive methods
@@ -147,8 +145,7 @@ that are not equal to one. This can be done with the `calculate_limitation()`
 function
 
 ```{r}
-limitation <- calculate_limitation(dat)
-limitation
+(limitation <- calculate_limitation(dat))
 
 ggplot(limitation, aes(x = surveyID, y = without_limitation, group = dimension)) +
     geom_line(aes(colour = dimension)) +
@@ -173,23 +170,23 @@ passing a comparable string.
 
 For EQ5D3L inputs the type can be:
 
--   "TTO", the time trade-off valuation technique;
+-   TTO, the time trade-off valuation technique;
 
--   "VAS", the visual analogue scale valuation technique;
+-   VAS, the visual analogue scale valuation technique;
 
--   "RCW", a reverse crosswalk conversion to EQ5D5L values; or
+-   RCW, a reverse crosswalk conversion to EQ5D5L values; or
 
--   "DSU", the NICE Decision Support Unit's model that allows mappings on to
+-   DSU, the NICE Decision Support Unit's model that allows mappings on to
 EQ5D5L values accounting for both age and sex.
 
 For EQ5D5L inputs this can be:
 
--   "VT", value sets generated via a EuroQol standardised valuation study
+-   VT, value sets generated via a EuroQol standardised valuation study
 protocol;
 
--   "CW", a crosswalk conversion EQ5D3L values; or
+-   CW, a crosswalk conversion EQ5D3L values; or
 
--   "DSU", the NICE Decision Support Unit's model that allows mappings on to
+-   DSU, the NICE Decision Support Unit's model that allows mappings on to
 EQ5D5L values accounting for both age and sex.
 
 Note that `available_valuesets()`is a convenience wrapper around the
@@ -204,7 +201,7 @@ head(vs, 10)
 identical(vs, available_valuesets("eq5d5l"))
 
 # cross walk comparison
-vs <- filter(vs, Country %in% c("England", "UK"), Type %in% c("VT", "CW"))
+vs <- subset(vs, Country %in% c("England", "UK") & Type %in% c("VT", "CW"))
 util <- calculate_utility(dat, type = vs$Type, country = vs$Country)
 
 # plot the results
@@ -242,8 +239,8 @@ qalys <-
     add_utility(type = "VT", country = c("Denmark", "France")) |>
     calculate_qalys(time_index = "time_index")
 
-filter(qalys, .qaly=="raw")
-filter(qalys, .qaly=="loss_vs_fullhealth")
+subset(qalys, .qaly == "raw")
+subset(qalys, .qaly == "loss_vs_fullhealth")
 ```
 
 `calculate_qalys()` also allows us to calculate the loss from a specified
@@ -271,7 +268,7 @@ dat <-
 
 add_utility(dat, type = "VT", country = c("Denmark", "France")) |>
     calculate_qalys(baseline_survey = "survey01", time_index = "time_index") |>
-    filter(.qaly == "loss_vs_baseline")
+    subset(.qaly == "loss_vs_baseline")
 ```
 
 Alternatively the `baseline_survey` argument can be specified as a data frame
@@ -293,10 +290,10 @@ utility_dat <- add_utility(
 baseline_utility <-
     baseline |>
     add_utility(type = "VT", country = c("Denmark", "France")) |>
-    select(respondentID,.utility_country,.utility_type,.value)
+    subset(select = c(respondentID, .utility_country, .utility_type, .value))
 
 calculate_qalys(utility_dat, baseline_survey = baseline_utility, time_index = "time_index") |>
-    filter(.qaly == "loss_vs_baseline")
+    subset(.qaly == "loss_vs_baseline")
 ```
 
 ### Other functionality
@@ -316,8 +313,8 @@ dat <- as_eq5d3l(
     anxiety = "AD",
     vas = "vas"
 )
-grp1 <- filter(dat, Group == "Group1")
-grp2 <- filter(dat, Group == "Group2")
+grp1 <- subset(dat, Group == "Group1")
+grp2 <- subset(dat, Group == "Group2")
 calculate_pchc(grp1, grp2)
 calculate_pchc(grp1, grp2, by.dimension = TRUE)
 ```

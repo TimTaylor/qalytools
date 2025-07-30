@@ -31,10 +31,10 @@ The development version of the package can be installed via:
 ## Guidance
 
 Once installed the best way to familiarise yourself with the package is
-to view the included documentation:
+to view the long form documentation:
 
 - `vignette("qalytools")` provides an introduction to the main
   functionality of the package.
-- The [EQ5D
-  Analysis](https://timtaylor.github.io/qalytools/articles/example_analysis.html)
-  illustrates how to use the package as part of a larger analysis.
+- The package website also has an ‘EQ5D Analysis’
+  [article](https://timtaylor.github.io/qalytools/articles/example_analysis.html)
+  that illustrates how to use the package with more context.

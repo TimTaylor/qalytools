@@ -219,8 +219,8 @@ dat0 <-
     ) |>
     dplyr::filter(.qaly != "raw") |>
     dplyr::left_join(
-        distinct(dat, respondentID, AgeGroup, sex),
-        by = join_by(respondentID)
+        dplyr::distinct(dat, respondentID, AgeGroup, sex),
+        by = dplyr::join_by(respondentID)
     ) |>
     dplyr::summarise(mean = mean(.value), .by = c("AgeGroup", ".qaly"))
 

@@ -119,7 +119,7 @@ the `<EQ5D5L>` object class via `as_eq5d5l()`
     anxiety = "anxiety",
     respondentID = "respondentID",
     surveyID = "surveyID",
-    vas = "vas",
+    vas = "vas"
 ))
 ```
 
@@ -253,18 +253,17 @@ raw, unadjusted calculation, prior to the calculation of loss.
 ```{r}
 # Reload the example data and combine with some baseline measurements
 data("EQ5D5L_surveys")
-dat <-
-    EQ5D5L_surveys |>
-    as_eq5d5l(
-        mobility = "mobility",
-        self_care = "self_care",
-        usual = "usual",
-        pain = "pain",
-        anxiety = "anxiety",
-        respondentID = "respondentID",
-        surveyID = "surveyID",
-        vas = "vas"
-    )
+dat <- as_eq5d5l(
+    EQ5D5L_surveys,
+    mobility = "mobility",
+    self_care = "self_care",
+    usual = "usual",
+    pain = "pain",
+    anxiety = "anxiety",
+    respondentID = "respondentID",
+    surveyID = "surveyID",
+    vas = "vas"
+)
 
 add_utility(dat, type = "VT", country = c("Denmark", "France")) |>
     calculate_qalys(baseline_survey = "survey01", time_index = "time_index") |>
@@ -279,7 +278,7 @@ this specification of baseline, it is **not** included in the unadjusted, raw,
 calculation.
 
 ```{r}
-split_dat <- split(dat, dat$surveyID=="survey01")
+split_dat <- split(dat, dat$surveyID == "survey01")
 surveys <- split_dat[[1]]
 baseline <- split_dat[[2]]
 utility_dat <- add_utility(

@@ -64,7 +64,7 @@ as.data.table.EQ5D <- function(x, keep.rownames, ...) {
 #' @rdname coercion
 #' @importFrom tibble as_tibble
 #' @export
-as_tibble.EQ5D <- function (x, ..., .rows, .name_repair, rownames) {
+as_tibble.EQ5D <- function(x, ..., .rows, .name_repair, rownames) {
     if (!missing(.rows))
         .warning("`.rows` argument will be ignored.")
 
@@ -77,6 +77,3 @@ as_tibble.EQ5D <- function (x, ..., .rows, .name_repair, rownames) {
     out <- tibble::new_tibble(c(x))
     out
 }
-
-
-

@@ -382,7 +382,7 @@ add_utility.EQ5DY <- function(
             .stop("`age` variable in `x` must be a numeric vector.")
 
         if (length(which(ages < 18 | ages > 100)))
-            .warning("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.")
+            .warning("`DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.") # nolint: line_length_linter.
 
         # check valid values
         sexes <- .subset2(scores, sex)
@@ -390,8 +390,8 @@ add_utility.EQ5DY <- function(
             .stop("`sex` variable in `x` must be a character vector.")
 
         sexes <- tolower(sexes)
-        if (any(!sexes %in% c("male", "m", "female", "f", NA_character_)))
-            .stop('`sex` variable entries must be one of "Male", "M", "Female" or "F" (case independent).')
+        if (!all(sexes %in% c("male", "m", "female", "f", NA_character_)))
+            .stop('`sex` variable entries must be one of "Male", "M", "Female" or "F" (case independent).') # nolint: line_length_linter.
     }
 
     out <- eq5d::eq5d(

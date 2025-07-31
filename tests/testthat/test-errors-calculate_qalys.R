@@ -14,9 +14,43 @@ test_that("calculate_qalys errors correctly", {
     )
 
     u <- add_utility(dat, type = "VT", country = "Denmark")
-    expect_snapshot_error(calculate_qalys(mtcars, time_index = "mpg", type = "VT", country = "Denmark"))
-    expect_snapshot_error(calculate_qalys(dat, time_index = "time_index", baseline_survey=1, type = "VT", country = "Denmark"))
-    expect_snapshot_error(calculate_qalys(u, time_index = "time_index", baseline_survey=1, type = "VT", country = "Denmark"))
-    expect_snapshot_error(calculate_qalys(dat, time_index = "time_index", baseline_survey="bob", type = "VT", country = "Denmark"))
+    expect_snapshot_error(
+        calculate_qalys(
+            mtcars,
+            time_index = "mpg",
+            type = "VT",
+            country = "Denmark"
+        )
+    )
+
+    expect_snapshot_error(
+        calculate_qalys(
+            dat,
+            time_index = "time_index",
+            baseline_survey = 1,
+            type = "VT",
+            country = "Denmark"
+        )
+    )
+
+    expect_snapshot_error(
+        calculate_qalys(
+            u,
+            time_index = "time_index",
+            baseline_survey = 1,
+            type = "VT",
+            country = "Denmark"
+        )
+    )
+
+    expect_snapshot_error(
+        calculate_qalys(
+            dat,
+            time_index = "time_index",
+            baseline_survey = "bob",
+            type = "VT",
+            country = "Denmark"
+        )
+    )
 
 })

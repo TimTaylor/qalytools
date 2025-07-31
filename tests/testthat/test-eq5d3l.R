@@ -23,9 +23,9 @@ test_that("as_eq5d3l works", {
     # class dropped/kept as expected
     tmp <- rbind(out[1:2, ], out[2:3, ])
     expect_false(inherits(tmp, "EQ5D"))
-    tmp <- rbind(out[1:2, ], out[3:4,])
+    tmp <- rbind(out[1:2, ], out[3:4, ])
     expect_s3_class(tmp, "EQ5D3L")
-    expect_identical(tmp, out[1:4,])
+    expect_identical(tmp, out[1:4, ])
 
     # attributes are as expected
     expect_identical(attr(out, "surveyID"), "surveyID")
@@ -54,13 +54,13 @@ test_that("as_eq5d3l works", {
 test_that("EQ5D3L maintains class and names appropriately", {
 
     # row selection maintains class
-    expect_s3_class(out[1:10,], "EQ5D3L")
+    expect_s3_class(out[1:10, ], "EQ5D3L")
 
     # column selection may drop class if necessary columns are missing
     expect_s3_class(out[, -6], "EQ5D3L")
-    expect_false("EQ5D3L" %in% class(out[,1:4]))
-    expect_false("EQ5D3L" %in% class(out[,-9]))
-    expect_false("EQ5D3L" %in% class(out[3,3,drop=TRUE]))
+    expect_false(inherits(out[, 1:4], "EQ5D3L"))
+    expect_false(inherits(out[, -9], "EQ5D3L"))
+    expect_false(inherits(out[3, 3, drop = TRUE], "EQ5D3L"))
 
     # renaming maintains class and stores attributes
     tmp <- out
@@ -69,14 +69,14 @@ test_that("EQ5D3L maintains class and names appropriately", {
     expect_s3_class(tmp, "EQ5D3L")
     expect_named(
         tmp,
-        c( attr(tmp, "surveyID"),
-           attr(tmp, "respondentID"),
-           attr(tmp, "mobility"),
-           attr(tmp, "self_care"),
-           attr(tmp, "usual"),
-           attr(tmp, "pain"),
-           attr(tmp, "anxiety"),
-           attr(tmp, "vas") ),
+        c(attr(tmp, "surveyID"),
+          attr(tmp, "respondentID"),
+          attr(tmp, "mobility"),
+          attr(tmp, "self_care"),
+          attr(tmp, "usual"),
+          attr(tmp, "pain"),
+          attr(tmp, "anxiety"),
+          attr(tmp, "vas")),
         ignore.order = TRUE
     )
 
@@ -84,7 +84,7 @@ test_that("EQ5D3L maintains class and names appropriately", {
 
 test_that("Adding incorrect values to an EQ5D3L object will error", {
     tmp <- out
-    tmp[3,3] <- 3.0
+    tmp[3, 3] <- 3.0
     expect_s3_class(out, "EQ5D3L")
     expect_error(tmp[3, 4] <- 4.5)
     expect_error(tmp[3, 4] <- "bob")
@@ -96,14 +96,20 @@ test_that("calculate_utility works as expected", {
     tmp <- calculate_utility(out, type = "TTO", country = c("Germany", "France"))
     dat2 <- subset(dat, select = c(mobility, self_care, usual, pain, anxiety))
     names(dat2) <- c("MO", "SC", "UA", "PD", "AD")
-    gutil <- eq5d::eq5d(dat2, version="3L", type = "TTO", country="Germany")
-    futil <- eq5d::eq5d(dat2, version="3L", type = "TTO",country="France")
-    tmp2 <- data.frame(respondentID = dat[["respondentID"]],
-                       .utility_country = c(rep_len("Germany", length(dat2[[1]])),
-                                            rep_len("France", length(dat2[[1]]))),
-                       .value=c(gutil, futil))
-    expect_equal(subset(tmp, select = c(respondentID, .utility_country, .value)),
-                 tmp2)
+    gutil <- eq5d::eq5d(dat2, version = "3L", type = "TTO", country = "Germany")
+    futil <- eq5d::eq5d(dat2, version = "3L", type = "TTO", country = "France")
+    tmp2 <- data.frame(
+        respondentID = dat[["respondentID"]],
+        .utility_country = c(
+            rep_len("Germany", length(dat2[[1]])),
+            rep_len("France", length(dat2[[1]]))
+        ),
+        .value = c(gutil, futil)
+    )
+    expect_identical(
+        subset(tmp, select = c(respondentID, .utility_country, .value)),
+        tmp2
+    )
 
     # correct class
     expect_s3_class(tmp, "utility")
@@ -113,6 +119,4 @@ test_that("calculate_utility works as expected", {
         tmp,
         c("respondentID", "surveyID", ".utility_country", ".utility_type", ".value")
     )
-
 })
-

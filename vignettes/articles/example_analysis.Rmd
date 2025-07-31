@@ -24,14 +24,7 @@ knitr::opts_chunk$set(
 This article will show a way to analyse longitudinal EQ-5D data using statistical models and functionality from the qalytools package. The goal is to calculate the utility values, identify explanatory variables and calculate the QALY loss. It builds upon the introductory vignette (`vignette("example_analysis", package = "qalytools")`) and again utilises the synthetic EQ-5D-5L data contained within the package.
 
 ```{r setup, message=FALSE}
-library(qalytools) # for utility and qaly calculations
-library(dplyr)     # for data wrangling
-library(tidyr)     # for data wrangling
-library(ageutils)  # for data wrangling
-library(purrr)     # for mapping
-library(stringr)   # for string manipulation
-library(lme4)      # for modelling
-library(ggplot2)   # for plotting
+library(ggplot2)
 data("EQ5D5L_surveys")
 ```
 
@@ -49,8 +42,8 @@ Next we calculate the utility values using the value the NICE Decision Support U
 5L and 3L whilst also accounting for the sex and age of respondents.
 
 ```{r loaddata}
-input_dat <- 
-    dat |> 
+input_dat <-
+    dat |>
     qalytools::as_eq5d5l(
         mobility = "mobility",
         self_care = "self_care",
@@ -81,7 +74,7 @@ model <- .value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup + sex:A
 fit2 <- lme4::lmer(model, data = dat)
 
 # Compare predictions to the actual value
-plot_dat <- 
+plot_dat <-
     dat |>
     dplyr::mutate(Model = predict(fit2)) |>
     dplyr::rename(Actual = .value) |>
@@ -96,7 +89,6 @@ ggplot(plot_dat) +
     theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
     ylab("Utility value") +
     facet_grid(. ~ type)
-    
 ```
 
 We will use a non parametric bootstrap to calculate the uncertainty in our model. For this bootstrap we resample (with replacement) from our respondents and fit the model to the resampled data.
@@ -109,26 +101,26 @@ nboot <- 100
 
 respondents_dat <- dplyr::distinct(dat, respondentID)
 
-models <- 
-    seq(1, nboot) |> 
+models <-
+    seq(1, nboot) |>
     purrr::map(
-        purrr:::quietly(function(np_id) {
+        purrr::quietly(function(np_id) {
             # Sample the respondents to include in this bootstrap and give them
             # a unique id (boot_respondent_id)
-            boot_dat <- 
-                respondents_dat |> 
-                dplyr::sample_n(nboot, replace = TRUE) |> 
-                dplyr::mutate(boot_respondent_id = dplyr::row_number()) |> 
+            boot_dat <-
+                respondents_dat |>
+                dplyr::sample_n(nboot, replace = TRUE) |>
+                dplyr::mutate(boot_respondent_id = dplyr::row_number()) |>
                 dplyr::left_join(dat, by = "respondentID", relationship = "many-to-many")
-          
+
             fit <- lme4::lmer(
                 .value ~ (1 + acute | boot_respondent_id) + surveyID + sex + AgeGroup + sex:AgeGroup,
                 data = boot_dat
             )
-          
+
             list(model = fit, np = as.numeric(np_id), data = boot_dat)
         })
-    ) |> 
+    ) |>
     purrr::keep(function(lst0) length(lst0$warnings) == 0)
 ```
 
@@ -136,24 +128,24 @@ Using the bootstrapped models we can capture the uncertainty in the coefficients
 
 ```{r coefficients, fig.cap = "Coefficients of the statistical model. Uncertainty was captured by fitting the model to bootstrapped data. The blue colour highlights coefficients that were significant."}
 # Gather coefficients from the bootstrapped models
-coeff_dat <- 
-    models |> 
+coeff_dat <-
+    models |>
     purrr::imap(function(model, np_id) {
-        summary(model$result$model)$coefficients |> 
+        summary(model$result$model)$coefficients |>
             dplyr::as_tibble(rownames = "id") |>
             dplyr::mutate(np = np_id)
-    }) |> 
+    }) |>
     dplyr::bind_rows()
 
-plot_dat <- 
+plot_dat <-
     coeff_dat |>
     dplyr::reframe(
         quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
         value = quantile(Estimate, quant),
         Significant = all(value < 0) || all(value > 0),
         .by = "id"
-    ) |> 
-    tidyr::pivot_wider(names_from = quant, values_from = value) |> 
+    ) |>
+    tidyr::pivot_wider(names_from = quant, values_from = value) |>
     # Cleanup names of the coefficients
     dplyr::mutate(idname = stringr::str_replace(id, "(sex|surveyID)", "")) |>
     dplyr::filter(idname != "(Intercept)")
@@ -179,7 +171,7 @@ Finally, we use the model to generate utility values and calculate the QALY loss
 
 ```{r qaly}
 # Calculate the QALY values for the different bootstrapped models
-qaly_dat <- 
+qaly_dat <-
     models |>
     purrr::imap(function(lst0, np_id) {
         lst0$result$data |>
@@ -191,7 +183,7 @@ qaly_dat <-
                 country = ".utility_country",
                 type = ".utility_type",
                 value = "pvalue"
-            ) |> 
+            ) |>
             # Calculate the qaly for based on the utility values
             qalytools::calculate_qalys(
                 baseline_survey = "survey01",
@@ -202,24 +194,24 @@ qaly_dat <-
                 dplyr::distinct(lst0$result$data, boot_respondent_id, AgeGroup, sex),
                 by = "boot_respondent_id"
             )
-    }) |> 
+    }) |>
     dplyr::bind_rows()
 ```
 
 ```{r qalyFig, fig.cap = "QALY values based on the model. The cross is the mean QALY based on the data. The uncertainty represents the uncertainty in the mean QALY loss according to the model"}
-plot_dat <- 
+plot_dat <-
     qaly_dat |>
     dplyr::summarise(value = mean(.value), .by = c(".qaly", "AgeGroup", "np")) |>
     dplyr::reframe(
         quant = c(0.025, 0.25, 0.5, 0.75, 0.975),
         value = quantile(value, quant),
-        .by = c(".qaly", "AgeGroup"),
+        .by = c(".qaly", "AgeGroup")
     ) |>
-    tidyr::pivot_wider(names_from = quant, values_from = value) |> 
+    tidyr::pivot_wider(names_from = quant, values_from = value) |>
     dplyr::filter(.qaly != "raw")
 
 # Include qalys calculated from the raw data
-dat0 <- 
+dat0 <-
     input_dat |>
     qalytools::calculate_qalys(
         baseline_survey = "survey01",
@@ -227,7 +219,7 @@ dat0 <-
     ) |>
     dplyr::filter(.qaly != "raw") |>
     dplyr::left_join(
-        distinct(dat,respondentID, AgeGroup, sex),
+        distinct(dat, respondentID, AgeGroup, sex),
         by = join_by(respondentID)
     ) |>
     dplyr::summarise(mean = mean(.value), .by = c("AgeGroup", ".qaly"))
@@ -243,7 +235,7 @@ ggplot(data = plot_dat) +
         linewidth = 2
     ) +
     geom_point(
-        data = dat0, 
+        data = dat0,
         aes(x = AgeGroup, y = mean, group = .qaly),
         position = position_dodge2(0.5),
         size = 3,
@@ -258,13 +250,13 @@ ggplot(data = plot_dat) +
 As an alternative to the bootstrap approach highlighted above, one can also use a Bayesian approach using the `brms` R package. The benefit of this approach is that the Bayesian approach takes into account the uncertainty given the data and the bootstrap is therefore not needed. One of the practical challenges of this approach is that fitting the models is more computationally intensive. Consequently any model selection exercise would also take significantly longer than using the approach recommended by [@pull_analysis_2010]. Note that while the overall results of this method are very similar to the mixed effect model above, the resulting uncertainty in much smaller. This is a result of the different ways uncertainty is accounted for in the models.
 
 ```{r brmsanalysis, message=FALSE}
-# use multiple cores for brms (needs adjusting by the user)
-options(mc.cores = 12)
+# uncomment and set to desired value to use multiple cores
+# options(mc.cores = 12)
 library(brms)
 
 dat <- dplyr::mutate(input_dat, acute = surveyID == "survey02")
 
-brm_model <- 
+brm_model <-
     brms::brm(
         bf(.value ~ (1 + acute | respondentID) + surveyID + sex + AgeGroup + sex:AgeGroup),
         data = dat,
@@ -277,11 +269,11 @@ brm_model <-
     )
 
 # Draw posterior samples to use in qaly calculation. We ignore the residual errors/measurement
-# when calculating the QALY by using posterior_epred (instead of posterior_predict) 
+# when calculating the QALY by using posterior_epred (instead of posterior_predict)
 posterior_dat <- brms::posterior_epred(brm_model, newdata = dat, ndraws = 1000)
 
 # For each posterior sample, calculate the qaly loss
-qaly_dat <- 
+qaly_dat <-
     purrr::map(
         seq_len(nrow(posterior_dat)),
         function(np_id) {
@@ -300,7 +292,7 @@ qaly_dat <-
                 ) |>
                 dplyr::mutate(np = as.numeric(np_id))
         }
-    ) |> 
+    ) |>
     dplyr::bind_rows() |>
     dplyr::left_join(
         dat |> dplyr::select(respondentID, AgeGroup, sex) |> dplyr::distinct(),
@@ -310,7 +302,7 @@ qaly_dat <-
 
 ```{r brmsModel, fig.cap = "Comparing the modelled utility values, using the bayesian model, with the utility values in the model. Utility values were calculated from a EQ5D5L survey using the DSU method."}
 # For comparison, plot posterior using one posterior sample
-dat0 <- 
+dat0 <-
     dat |>
     dplyr::mutate(pvalue = posterior_dat[1, ]) |>
     qalytools::as_utility(
@@ -321,7 +313,7 @@ dat0 <-
         value = "pvalue"
     )
 
-plot_dat <- 
+plot_dat <-
     dat0 |>
     dplyr::rename(Actual = .value, Model = pvalue) |>
     tidyr::gather(type, value, Actual, Model)
@@ -340,13 +332,15 @@ ggplot(plot_dat) +
 ```{r coefficientsBrms, fig.cap = "Coefficients of bayesian model. Uncertainty was captured by fitting the model to bootstrapped data. The blue colour highlights coefficients that were significant. Note that because we transformed our utility variable, the sign of these are the opposite of the previous results."}
 dat0 <- fixef(brm_model, probs = c(0.025, 0.25, 0.5, 0.75, 0.975))
 
-plot_dat <- 
+plot_dat <-
     dat0 |>
     dplyr::as_tibble() |>
-    dplyr::mutate(id = rownames(dat0)) |>
-    dplyr::mutate(Significant = (`Q2.5` < 0 & `Q97.5` < 0) | (`Q2.5` > 0 & `Q97.5` > 0)) |>
-    # Cleanup names of the coefficients
-    dplyr::mutate(idname = stringr::str_replace(id, "(sex|surveyID)", "")) |>
+    dplyr::mutate(
+        id = rownames(dat0),
+        Significant = (`Q2.5` < 0 & `Q97.5` < 0) | (`Q2.5` > 0 & `Q97.5` > 0),
+        # Cleanup names of the coefficients
+        idname = stringr::str_replace(id, "(sex|surveyID)", "")
+    ) |>
     dplyr::filter(idname != "Intercept")
 
 ggplot(data = plot_dat) +
@@ -367,7 +361,7 @@ ggplot(data = plot_dat) +
 ```
 
 ```{r qalyFigBrms, fig.cap = "QALY values based on the bayesian model. The cross is the mean QALY based on the data. The uncertainty represents the uncertainty in the mean QALY loss according to the model"}
-plot_dat <- 
+plot_dat <-
     qaly_dat |>
     dplyr::summarise(value = mean(.value), .by = c(".qaly", "AgeGroup", "np")) |>
     dplyr::reframe(
@@ -375,11 +369,11 @@ plot_dat <-
         value = quantile(value, quant),
         .by = c(".qaly", "AgeGroup")
     ) |>
-  tidyr::spread(quant, value) |>
-  dplyr::filter(.qaly != "raw")
+    tidyr::spread(quant, value) |>
+    dplyr::filter(.qaly != "raw")
 
 # Include qalys calculated from the raw data
-dat0 <- 
+dat0 <-
     input_dat |>
     qalytools::calculate_qalys(baseline_survey = "survey01", time_index = "time_index") |>
     dplyr::filter(.qaly != "raw") |>
@@ -388,7 +382,7 @@ dat0 <-
         by = dplyr::join_by(respondentID)
     ) |>
     dplyr::summarise(mean = mean(.value), .by = c("AgeGroup", ".qaly"))
-  
+
 ggplot(data = plot_dat) +
     geom_linerange(
         aes(x = AgeGroup, ymin = `0.025`, ymax = `0.975`, colour = .qaly, group = .qaly),

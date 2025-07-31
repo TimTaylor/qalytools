@@ -16,3 +16,4 @@
 ^codecov\.yml$
 ^Dockerfile$
 ^vignettes/articles$
+^.lintr.R$

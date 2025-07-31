@@ -45,12 +45,12 @@
 # -------------------------------------------------------------------------
 #' @export
 as_utility <- function(
-        x,
-        respondentID,
-        surveyID,
-        country,
-        type,
-        value
+    x,
+    respondentID,
+    surveyID,
+    country,
+    type,
+    value
 ) {
 
     # only allow data frame input and drop additional classes
@@ -107,7 +107,7 @@ as_utility <- function(
     # check unique combinations of survey, respondent ID, country and type
     combos <- x[c(respondentID, surveyID, country, type)]
     if (anyDuplicated(combos))
-        stop("`respondentID`, `surveyID`, `country` and `type` combinations must not be duplicated.")
+        stop("`respondentID`, `surveyID`, `country` and `type` combinations must not be duplicated.") # nolint: line_length_linter.
 
     # check value data is numeric
     if (!is.numeric(.subset2(x, value)))
@@ -223,5 +223,3 @@ dplyr_reconstruct.utility <- function(data, template) {
         x
     }
 }
-
-

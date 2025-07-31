@@ -1,6 +1,9 @@
 #' @importFrom pillar tbl_sum
 NULL
 
+#' @importFrom data.table .N `:=`
+NULL
+
 # -------------------------------------------------------------------------
 #' Coerce to an EQ5D object
 #'
@@ -417,7 +420,7 @@ dplyr_reconstruct.EQ5D <- function(data, template) {
         if (!is.numeric(xx)) {
             .stop(
                 sprintf(
-                    "%s dimension (column %s) must be integerish and bounded by 1 and %d (inclusive).",
+                    "%s dimension (column %s) must be integerish and bounded by 1 and %d (inclusive).", # nolint: line_length_linter.
                     var, sQuote(nm), nlevels
                 ),
                 .call = call
@@ -428,10 +431,10 @@ dplyr_reconstruct.EQ5D <- function(data, template) {
         valid <- is.na(xx) & !is.nan(xx)
         tol <- .Machine$double.eps ^ 0.5
         valid <- valid | (abs(xx - round(xx)) < tol & xx >= 1L & xx <= nlevels)
-        if (any(!valid)) {
+        if (!all(valid)) {
             .stop(
                 sprintf(
-                    "%s dimension (column %s) must be integerish and bounded by 1 and %d (inclusive).",
+                    "%s dimension (column %s) must be integerish and bounded by 1 and %d (inclusive).", # nolint: line_length_linter.
                     var, sQuote(nm), nlevels
                 ),
                 .call = call
@@ -559,4 +562,3 @@ dplyr_reconstruct.EQ5D <- function(data, template) {
         x
     }
 }
-

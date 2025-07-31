@@ -175,7 +175,7 @@ calculate_qalys.utility <- function(
     ...
 ) {
     # for CRAN checks
-    `:=` <- time_diff_ <- .time_diff <- i.time_diff_ <- NULL
+    time_diff_ <- .time_diff <- i.time_diff_ <- NULL
     .loss_vs_fullhealth <- .loss_vs_baseline <- .raw <- NULL
     .value <- .qaly <- NULL
     ..t <- ..utility_var <- ..uvalue <- NULL
@@ -244,7 +244,7 @@ calculate_qalys.utility <- function(
             tmp <- x[.subset2(x, survey_var) == baseline_survey, ]
             if (!nrow(tmp)) {
                 stop(sprintf(
-                    'No surveys matching baseline (%s).',
+                    "No surveys matching baseline (%s).",
                     sQuote(baseline_survey)
                 ))
             }
@@ -283,7 +283,7 @@ calculate_qalys.utility <- function(
     out[, .time_diff := NULL]
 
     # convert to tidy output
-    out <- data.table::melt(out, measure.vars = cols, variable.name = ".qaly", value.name = ".value")
+    out <- data.table::melt(out, measure.vars = cols, variable.name = ".qaly", value.name = ".value") # nolint: line_length_linter.
 
     # clean up qaly naming
     lu <- sub(".", "", cols, fixed = TRUE)

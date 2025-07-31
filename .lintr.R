@@ -1,0 +1,70 @@
+linters <- all_linters(
+
+    # often like to have alternative code flagged to know when we have considered
+    # tradeoffs for a particular approach
+    commented_code_linter = NULL,
+
+    # Showing the call is useful and prefer to rethrow / handle errors if
+    # wanting a better user experience
+    condition_call_linter(display_call = TRUE),
+
+    # Debatable
+    cyclocomp_linter = NULL,
+
+    # although I'm receptive to using L for integers, the same does not hold for
+    # decimal where it feels like unwanted noise.
+    implicit_integer_linter = NULL,
+
+    # Currently we cannot exclude `if` via an `except` argument so not using
+    # until that is resolved.
+    # See: https://github.com/r-lib/lintr/issues/2913
+    implicit_assignment_linter = NULL,
+
+    # Seems to give false positives. Will revisit.
+    indentation_linter = NULL,
+
+    # Can be stylistically annoying when names are mixed (i.e. some need quoting
+    # and some don't).
+    keyword_quote_linter = NULL,
+
+    # Whilst I do prefer to keep library calls together at the top there are
+    # exceptions so this adds unwanted noise for something easily seen during
+    # review anyway.
+    library_call_linter = NULL,
+
+    # This is a reasonable compromise in terms of flagging. Less or more can
+    # both be appropriate
+    line_length_linter(length = 100L),
+
+    # Too many false positives
+    nonportable_path_linter = NULL,
+
+    # Too noisy - flexibility is good especially as I slowly come round to
+    # camelCase and it's variations
+    object_name_linter = NULL,
+
+    # Annoying when it comes to NULL assignments for data.table NSE/CRAN workaround
+    object_usage_linter = NULL,
+
+    # Too restrictive
+    object_overwrite_linter = NULL,
+
+    # It's good to have them flagged but perhaps better via a specific hook?
+    todo_comment_linter = NULL,
+
+    # User dfe
+    undesirable_function_linter = NULL,
+    undesirable_function_name_linter = undesirable_function_linter(modify_defaults(
+        defaults = default_undesirable_functions,
+        library = NULL
+    ))
+
+)
+
+exclusions <- list(
+    "vignettes/articles/example_analysis.Rmd" = list(line_length_linter = 117),
+    "tests/testthat.R" = list(unused_import_linter = Inf)
+)
+
+
+

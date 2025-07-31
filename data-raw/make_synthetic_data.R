@@ -1,11 +1,6 @@
 set.seed(32)
 
-# -------------------------------------------------------------------------
-# packages ----------------------------------------------------------------
-# -------------------------------------------------------------------------
-
 library(data.table)
-library(eq5d)
 
 # -------------------------------------------------------------------------
 # constants ---------------------------------------------------------------
@@ -30,8 +25,7 @@ survey_phi       <- c(100, 10, 70, rep(100, 7))
 
 # safety check
 pars <- list(male_survey_mu, female_survey_mu, survey_phi)
-stopifnot(length(check <- unique(lengths(pars))) == 1L)
-stopifnot(check == nsurveys)
+stopifnot(identical(unique(length(pars)), nsurveys))
 
 # -------------------------------------------------------------------------
 # helper functions --------------------------------------------------------
@@ -54,9 +48,9 @@ male_mu <- function(x, age, lower_age, upper_age) {
 
 # Participants
 dat <- data.table(
-  id = seq_len(ninit),
-  age = sample(lower_age:upper_age, size = ninit, replace = TRUE),
-  sex = sample(c("Male", "Female"), size = ninit, replace = TRUE)
+    id = seq_len(ninit),
+    age = sample(lower_age:upper_age, size = ninit, replace = TRUE),
+    sex = sample(c("Male", "Female"), size = ninit, replace = TRUE)
 )
 
 # Maximum values, used as the base for each participant
@@ -75,28 +69,40 @@ survey_data <- lapply(
     }
 )
 survey_data <- rbindlist(survey_data)
-dat <- survey_data[,.(survey, id, age, sex, value)]
+dat <- survey_data[, .(survey, id, age, sex, value)]
 dat[, vas := value * rnorm(ninit, 1, 0.05)]
 dat[, vas := pmax(pmin(vas, 1), 0)]
 
 
 # Generate all possible utility values using the eq5d package
-x=1:5
-possible <- CJ(MO=x,SC=x,UA=x,PD=x,AD=x)
+x <- 1:5
+possible <- CJ(MO = x, SC = x, UA = x, PD = x, AD = x)
 possible[, value := eq5d::eq5d(possible, "5L", "VT", "England")]
 setorder(possible, value)
 
 # match our synthetic data to get the nearest dimensions based on the utility value
 out <- possible[dat, on = "value", roll = -Inf]
-tmp <- out[out[, .I[which.max(value)],by=id]$V1]
-tmp[, survey:=1]
-out <- out[survey!=1]
-out <- rbind(tmp,out)
-out <- out[,.(surveyID=survey,respondentID=id,sex,age,mobility=MO,self_care=SC,usual=UA,pain=PD,anxiety=AD,time_index=30*survey, vas=vas)]
+tmp <- out[out[, .I[which.max(value)], by = id]$V1]
+tmp[, survey := 1]
+out <- out[survey != 1]
+out <- rbind(tmp, out)
+out <- out[, .(
+    surveyID = survey,
+    respondentID = id,
+    sex,
+    age,
+    mobility = MO,
+    self_care = SC,
+    usual = UA,
+    pain = PD,
+    anxiety = AD,
+    time_index = 30 * survey,
+    vas = vas
+)]
 
 # pick n unique IDs
 chosen <- out[order(respondentID), .(respondentID = unique(respondentID))][seq_len(n)]
-EQ5D5L_surveys <- out[chosen, on="respondentID"]
+EQ5D5L_surveys <- out[chosen, on = "respondentID"]
 
 # Ensure vas is integer between 0 and 100
 EQ5D5L_surveys[, vas := round(vas * 100)]
@@ -105,7 +111,7 @@ EQ5D5L_surveys[, vas := round(vas * 100)]
 EQ5D5L_surveys[, surveyID := sprintf("survey%02d", surveyID)]
 
 # Add a dummy variable
-EQ5D5L_surveys[, dummy:=sample(c(TRUE, FALSE), size = .N, replace=TRUE)]
+EQ5D5L_surveys[, dummy := sample(c(TRUE, FALSE), size = .N, replace = TRUE)]
 
 # save output
 setDF(EQ5D5L_surveys)
@@ -142,6 +148,6 @@ util <- add_utility(
 
 
 # plot
-ggplot(util, aes(x=surveyID, y = .value, group = respondentID)) +
-    geom_line(aes(colour=sex), alpha = 0.1) +
-    geom_smooth(aes(group=sex,colour=sex))
+ggplot(util, aes(x = surveyID, y = .value, group = respondentID)) +
+    geom_line(aes(colour = sex), alpha = 0.1) +
+    geom_smooth(aes(group = sex, colour = sex))

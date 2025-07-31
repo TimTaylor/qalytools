@@ -54,7 +54,7 @@ calculate_limitation.default <- function(x, ...) {
 calculate_limitation.EQ5D <- function(x, ...) {
 
     # For CRAN checks
-    .N <- value <- NULL
+    value <- NULL
 
     # get the survey variable and dimension names
     survey_var <- attr(x, "surveyID")
@@ -64,7 +64,7 @@ calculate_limitation.EQ5D <- function(x, ...) {
     x <- data.table::setDT(c(x))
 
     # convert to long format and calculate percentage without limitation
-    x <- data.table::melt(x, id.vars = survey_var, measure.vars = dimensions, variable.name = "dimension")
+    x <- data.table::melt(x, id.vars = survey_var, measure.vars = dimensions, variable.name = "dimension") # nolint: line_length_linter.
     x <- x[, list(without_limitation = sum(value == 1) / .N), by = c(survey_var, "dimension")]
 
     # return as tibble

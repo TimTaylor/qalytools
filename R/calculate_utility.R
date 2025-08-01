@@ -272,7 +272,7 @@ add_utility.EQ5DY <- function(
     if (length(type) == 1L && length(country) > 1L) {
         type <- rep_len(type, length(country))
     } else if (length(country) == 1L && length(type) > 1L) {
-        country <- rep_len(type, length(type))
+        country <- rep_len(country, length(type))
     } else if (length(type) != length(country)) {
         .stop("lengths of `type` and `country` are not compatible.", .call = call)
     } else if (!length(type) || !length(country)) {

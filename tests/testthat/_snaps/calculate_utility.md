@@ -31,3 +31,11 @@
     Invalid value set and country combination:
         Type = 'CW', Country = 'England'
 
+---
+
+    `DSU` can only applied for ages in the range 18-100. Returning NA where this does not hold.
+
+---
+
+    `sex` variable entries must be one of "Male", "M", "Female" or "F" (case independent).
+

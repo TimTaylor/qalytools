@@ -193,5 +193,19 @@ test_that("calculate_utility errors correctly", {
     expect_snapshot_error(
         calculate_utility(dat, type = c("VT", "CW"), country = "England")
     )
+
+    tmp <- subset(dat, surveyID == "survey01")
+    tmp$age[1L] <- 1
+    expect_snapshot_warning(
+        calculate_utility(tmp, type = "DSU", country = "UK", age = "age", sex = "sex")
+    )
+
+    tmp <- subset(dat, surveyID == "survey01")
+    tmp$sex[1L] <- "bob"
+    expect_snapshot_error(
+        calculate_utility(tmp, type = "DSU", country = "UK", age = "age", sex = "sex")
+    )
+
+
 })
 

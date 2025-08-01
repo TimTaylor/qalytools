@@ -6,7 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>EQ-5D Analysis • qalytools</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -75,19 +81,13 @@ development and subject to change.</em></strong> </span></p>
 statistical models and functionality from the qalytools package. The
 goal is to calculate the utility values, identify explanatory variables
 and calculate the QALY loss. It builds upon the introductory vignette
-(<code><a href="https://timtaylor.github.io/qalytools/articles/example_analysis.html">vignette("example_analysis", package = "qalytools")</a></code>) and
+(<code>vignette("example_analysis", package = "qalytools")</code>) and
 again utilises the synthetic EQ-5D-5L data contained within the
 package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TimTaylor/qalytools" class="external-link">qalytools</a></span><span class="op">)</span> <span class="co"># for utility and qaly calculations</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>     <span class="co"># for data wrangling</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>     <span class="co"># for data wrangling</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://timtaylor.github.io/ageutils/" class="external-link">ageutils</a></span><span class="op">)</span>  <span class="co"># for data wrangling</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span>     <span class="co"># for mapping</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span>   <span class="co"># for string manipulation</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span>      <span class="co"># for modelling</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>   <span class="co"># for plotting</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in data("EQ5D5L_surveys"): data set 'EQ5D5L_surveys' not found</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="a-simple-model">A simple model<a class="anchor" aria-label="anchor" href="#a-simple-model"></a>
@@ -106,8 +106,8 @@ participants.</p>
 Decision Support Unit (DSU) value set. This maps between 5L and 3L
 whilst also accounting for the sex and age of respondents.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">input_dat</span> <span class="op">&lt;-</span> </span>
-<span>    <span class="va">dat</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">input_dat</span> <span class="op">&lt;-</span></span>
+<span>    <span class="va">dat</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">qalytools</span><span class="fu">::</span><span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
 <span>        mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
 <span>        self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
@@ -144,7 +144,7 @@ is a valid simplification <span class="citation">(Pullenayegum et al.
 <span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu">lme4</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">model</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Compare predictions to the actual value</span></span>
-<span><span class="va">plot_dat</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">plot_dat</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">dat</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Actual <span class="op">=</span> <span class="va">.value</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -177,26 +177,26 @@ respondents and fit the model to the resampled data.</p>
 <span></span>
 <span><span class="va">respondents_dat</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">respondentID</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">models</span> <span class="op">&lt;-</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">nboot</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">models</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">nboot</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
-<span>        <span class="fu">purrr</span><span class="fu">:::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/quietly.html" class="external-link">quietly</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">np_id</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/quietly.html" class="external-link">quietly</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">np_id</span><span class="op">)</span> <span class="op">{</span></span>
 <span>            <span class="co"># Sample the respondents to include in this bootstrap and give them</span></span>
 <span>            <span class="co"># a unique id (boot_respondent_id)</span></span>
-<span>            <span class="va">boot_dat</span> <span class="op">&lt;-</span> </span>
-<span>                <span class="va">respondents_dat</span> <span class="op">|&gt;</span> </span>
-<span>                <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="va">nboot</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>                <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>boot_respondent_id <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html" class="external-link">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>            <span class="va">boot_dat</span> <span class="op">&lt;-</span></span>
+<span>                <span class="va">respondents_dat</span> <span class="op">|&gt;</span></span>
+<span>                <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="va">nboot</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>                <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>boot_respondent_id <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html" class="external-link">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>                <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">dat</span>, by <span class="op">=</span> <span class="st">"respondentID"</span>, relationship <span class="op">=</span> <span class="st">"many-to-many"</span><span class="op">)</span></span>
-<span>          </span>
+<span></span>
 <span>            <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">lme4</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span></span>
 <span>                <span class="va">.value</span> <span class="op">~</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">acute</span> <span class="op">|</span> <span class="va">boot_respondent_id</span><span class="op">)</span> <span class="op">+</span> <span class="va">surveyID</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">AgeGroup</span> <span class="op">+</span> <span class="va">sex</span><span class="op">:</span><span class="va">AgeGroup</span>,</span>
 <span>                data <span class="op">=</span> <span class="va">boot_dat</span></span>
 <span>            <span class="op">)</span></span>
-<span>          </span>
+<span></span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">fit</span>, np <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">np_id</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">boot_dat</span><span class="op">)</span></span>
 <span>        <span class="op">}</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/keep.html" class="external-link">keep</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">lst0</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lst0</span><span class="op">$</span><span class="va">warnings</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p>Using the bootstrapped models we can capture the uncertainty in the
 coefficients of our explanatory variables (see figure below).
@@ -208,24 +208,24 @@ age and sex with their utility values, except for 60 and over year old
 males, who experienced lower utility than the other groups.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Gather coefficients from the bootstrapped models</span></span>
-<span><span class="va">coeff_dat</span> <span class="op">&lt;-</span> </span>
-<span>    <span class="va">models</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">coeff_dat</span> <span class="op">&lt;-</span></span>
+<span>    <span class="va">models</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/imap.html" class="external-link">imap</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">np_id</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op">|&gt;</span> </span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op">|&gt;</span></span>
 <span>            <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>            <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>np <span class="op">=</span> <span class="va">np_id</span><span class="op">)</span></span>
-<span>    <span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">plot_dat</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">plot_dat</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">coeff_dat</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/reframe.html" class="external-link">reframe</a></span><span class="op">(</span></span>
 <span>        quant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.975</span><span class="op">)</span>,</span>
 <span>        value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">Estimate</span>, <span class="va">quant</span><span class="op">)</span>,</span>
 <span>        Significant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">value</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">value</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>,</span>
 <span>        .by <span class="op">=</span> <span class="st">"id"</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">quant</span>, values_from <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">quant</span>, values_from <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="co"># Cleanup names of the coefficients</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>idname <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace</a></span><span class="op">(</span><span class="va">id</span>, <span class="st">"(sex|surveyID)"</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">idname</span> <span class="op">!=</span> <span class="st">"(Intercept)"</span><span class="op">)</span></span>
@@ -258,7 +258,7 @@ increase with age, but when compared to the baseline health (survey 1)
 it stayed relatively stable.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate the QALY values for the different bootstrapped models</span></span>
-<span><span class="va">qaly_dat</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">qaly_dat</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">models</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/imap.html" class="external-link">imap</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">lst0</span>, <span class="va">np_id</span><span class="op">)</span> <span class="op">{</span></span>
 <span>        <span class="va">lst0</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span></span>
@@ -270,7 +270,7 @@ it stayed relatively stable.</p>
 <span>                country <span class="op">=</span> <span class="st">".utility_country"</span>,</span>
 <span>                type <span class="op">=</span> <span class="st">".utility_type"</span>,</span>
 <span>                value <span class="op">=</span> <span class="st">"pvalue"</span></span>
-<span>            <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>            <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>            <span class="co"># Calculate the qaly for based on the utility values</span></span>
 <span>            <span class="fu">qalytools</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span></span>
 <span>                baseline_survey <span class="op">=</span> <span class="st">"survey01"</span>,</span>
@@ -281,22 +281,22 @@ it stayed relatively stable.</p>
 <span>                <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">lst0</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">data</span>, <span class="va">boot_respondent_id</span>, <span class="va">AgeGroup</span>, <span class="va">sex</span><span class="op">)</span>,</span>
 <span>                by <span class="op">=</span> <span class="st">"boot_respondent_id"</span></span>
 <span>            <span class="op">)</span></span>
-<span>    <span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">plot_dat</span> <span class="op">&lt;-</span> </span>
+<code class="sourceCode R"><span><span class="va">plot_dat</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">qaly_dat</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.value</span><span class="op">)</span>, .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".qaly"</span>, <span class="st">"AgeGroup"</span>, <span class="st">"np"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/reframe.html" class="external-link">reframe</a></span><span class="op">(</span></span>
 <span>        quant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.975</span><span class="op">)</span>,</span>
 <span>        value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">value</span>, <span class="va">quant</span><span class="op">)</span>,</span>
-<span>        .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".qaly"</span>, <span class="st">"AgeGroup"</span><span class="op">)</span>,</span>
+<span>        .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".qaly"</span>, <span class="st">"AgeGroup"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">quant</span>, values_from <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">quant</span>, values_from <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">!=</span> <span class="st">"raw"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Include qalys calculated from the raw data</span></span>
-<span><span class="va">dat0</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">dat0</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">input_dat</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">qalytools</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span></span>
 <span>        baseline_survey <span class="op">=</span> <span class="st">"survey01"</span>,</span>
@@ -304,8 +304,8 @@ it stayed relatively stable.</p>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">!=</span> <span class="st">"raw"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">dat</span>,<span class="va">respondentID</span>, <span class="va">AgeGroup</span>, <span class="va">sex</span><span class="op">)</span>,</span>
-<span>        by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">respondentID</span><span class="op">)</span></span>
+<span>        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">respondentID</span>, <span class="va">AgeGroup</span>, <span class="va">sex</span><span class="op">)</span>,</span>
+<span>        by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">respondentID</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.value</span><span class="op">)</span>, .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AgeGroup"</span>, <span class="st">".qaly"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -320,7 +320,7 @@ it stayed relatively stable.</p>
 <span>        linewidth <span class="op">=</span> <span class="fl">2</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
-<span>        data <span class="op">=</span> <span class="va">dat0</span>, </span>
+<span>        data <span class="op">=</span> <span class="va">dat0</span>,</span>
 <span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AgeGroup</span>, y <span class="op">=</span> <span class="va">mean</span>, group <span class="op">=</span> <span class="va">.qaly</span><span class="op">)</span>,</span>
 <span>        position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge2</a></span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>        size <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -352,13 +352,13 @@ are very similar to the mixed effect model above, the resulting
 uncertainty in much smaller. This is a result of the different ways
 uncertainty is accounted for in the models.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># use multiple cores for brms (needs adjusting by the user)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>mc.cores <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># uncomment and set to desired value to use multiple cores</span></span>
+<span><span class="co"># options(mc.cores = 12)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">input_dat</span>, acute <span class="op">=</span> <span class="va">surveyID</span> <span class="op">==</span> <span class="st">"survey02"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">brm_model</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">brm_model</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://paulbuerkner.com/brms/reference/brm.html" class="external-link">brm</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="https://paulbuerkner.com/brms/reference/brmsformula.html" class="external-link">bf</a></span><span class="op">(</span><span class="va">.value</span> <span class="op">~</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">acute</span> <span class="op">|</span> <span class="va">respondentID</span><span class="op">)</span> <span class="op">+</span> <span class="va">surveyID</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">AgeGroup</span> <span class="op">+</span> <span class="va">sex</span><span class="op">:</span><span class="va">AgeGroup</span><span class="op">)</span>,</span>
 <span>        data <span class="op">=</span> <span class="va">dat</span>,</span>
@@ -371,11 +371,11 @@ uncertainty is accounted for in the models.</p>
 <span>    <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Draw posterior samples to use in qaly calculation. We ignore the residual errors/measurement</span></span>
-<span><span class="co"># when calculating the QALY by using posterior_epred (instead of posterior_predict) </span></span>
+<span><span class="co"># when calculating the QALY by using posterior_epred (instead of posterior_predict)</span></span>
 <span><span class="va">posterior_dat</span> <span class="op">&lt;-</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstantools/reference/posterior_epred.html" class="external-link">posterior_epred</a></span><span class="op">(</span><span class="va">brm_model</span>, newdata <span class="op">=</span> <span class="va">dat</span>, ndraws <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># For each posterior sample, calculate the qaly loss</span></span>
-<span><span class="va">qaly_dat</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">qaly_dat</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">posterior_dat</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>        <span class="kw">function</span><span class="op">(</span><span class="va">np_id</span><span class="op">)</span> <span class="op">{</span></span>
@@ -394,7 +394,7 @@ uncertainty is accounted for in the models.</p>
 <span>                <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>                <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>np <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">np_id</span><span class="op">)</span><span class="op">)</span></span>
 <span>        <span class="op">}</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
 <span>        <span class="va">dat</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">respondentID</span>, <span class="va">AgeGroup</span>, <span class="va">sex</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -402,7 +402,7 @@ uncertainty is accounted for in the models.</p>
 <span>    <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># For comparison, plot posterior using one posterior sample</span></span>
-<span><span class="va">dat0</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">dat0</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">dat</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pvalue <span class="op">=</span> <span class="va">posterior_dat</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">qalytools</span><span class="fu">::</span><span class="fu"><a href="../reference/as_utility.html">as_utility</a></span><span class="op">(</span></span>
@@ -413,7 +413,7 @@ uncertainty is accounted for in the models.</p>
 <span>        value <span class="op">=</span> <span class="st">"pvalue"</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
-<span><span class="va">plot_dat</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">plot_dat</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">dat0</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Actual <span class="op">=</span> <span class="va">.value</span>, Model <span class="op">=</span> <span class="va">pvalue</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">gather</a></span><span class="op">(</span><span class="va">type</span>, <span class="va">value</span>, <span class="va">Actual</span>, <span class="va">Model</span><span class="op">)</span></span>
@@ -437,13 +437,15 @@ EQ5D5L survey using the DSU method.
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/fixed.effects.html" class="external-link">fixef</a></span><span class="op">(</span><span class="va">brm_model</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">plot_dat</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">plot_dat</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">dat0</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">dat0</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Significant <span class="op">=</span> <span class="op">(</span><span class="va">`Q2.5`</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">`Q97.5`</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">`Q2.5`</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">`Q97.5`</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="co"># Cleanup names of the coefficients</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>idname <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace</a></span><span class="op">(</span><span class="va">id</span>, <span class="st">"(sex|surveyID)"</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>        id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">dat0</span><span class="op">)</span>,</span>
+<span>        Significant <span class="op">=</span> <span class="op">(</span><span class="va">`Q2.5`</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">`Q97.5`</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">`Q2.5`</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">`Q97.5`</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>,</span>
+<span>        <span class="co"># Cleanup names of the coefficients</span></span>
+<span>        idname <span class="op">=</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace</a></span><span class="op">(</span><span class="va">id</span>, <span class="st">"(sex|surveyID)"</span>, <span class="st">""</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">idname</span> <span class="op">!=</span> <span class="st">"Intercept"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plot_dat</span><span class="op">)</span> <span class="op">+</span></span>
@@ -470,7 +472,7 @@ the sign of these are the opposite of the previous results.
 </p>
 </div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">plot_dat</span> <span class="op">&lt;-</span> </span>
+<code class="sourceCode R"><span><span class="va">plot_dat</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">qaly_dat</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.value</span><span class="op">)</span>, .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".qaly"</span>, <span class="st">"AgeGroup"</span>, <span class="st">"np"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/reframe.html" class="external-link">reframe</a></span><span class="op">(</span></span>
@@ -478,11 +480,11 @@ the sign of these are the opposite of the previous results.
 <span>        value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">value</span>, <span class="va">quant</span><span class="op">)</span>,</span>
 <span>        .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".qaly"</span>, <span class="st">"AgeGroup"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">spread</a></span><span class="op">(</span><span class="va">quant</span>, <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">!=</span> <span class="st">"raw"</span><span class="op">)</span></span>
+<span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">spread</a></span><span class="op">(</span><span class="va">quant</span>, <span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">!=</span> <span class="st">"raw"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Include qalys calculated from the raw data</span></span>
-<span><span class="va">dat0</span> <span class="op">&lt;-</span> </span>
+<span><span class="va">dat0</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">input_dat</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">qalytools</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span>baseline_survey <span class="op">=</span> <span class="st">"survey01"</span>, time_index <span class="op">=</span> <span class="st">"time_index"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">!=</span> <span class="st">"raw"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -491,7 +493,7 @@ the sign of these are the opposite of the previous results.
 <span>        by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">respondentID</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.value</span><span class="op">)</span>, .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AgeGroup"</span>, <span class="st">".qaly"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plot_dat</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_linerange</a></span><span class="op">(</span></span>
 <span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">AgeGroup</span>, ymin <span class="op">=</span> <span class="va">`0.025`</span>, ymax <span class="op">=</span> <span class="va">`0.975`</span>, colour <span class="op">=</span> <span class="va">.qaly</span>, group <span class="op">=</span> <span class="va">.qaly</span><span class="op">)</span>,</span>
@@ -541,7 +543,7 @@ Pharmacoeconomics and Outcomes Research</em> 13 (4): 487–94. <a href="https://
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, 2022, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
+  <p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
 </div>
 
 <div class="pkgdown-footer-right">

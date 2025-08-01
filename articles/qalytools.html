@@ -6,7 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>qalytools • qalytools</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -83,15 +89,14 @@ frame subclasses (EQ5D3L, EQ5D5L and EQ5DY3L).</p></li>
 value sets. This functionality is provided via the
 <code><a href="../reference/calculate_utility.html">calculate_utility()</a></code>, <code><a href="../reference/calculate_utility.html">add_utility()</a></code> and
 <code><a href="../reference/available_valuesets.html">available_valuesets()</a></code> functions which are wrappers around
-the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a>
-package.</p></li>
+the functionality of the underlying eq5d package.</p></li>
 <li><p>The calculation of different Quality of Life Years (QALY) metrics
 including unadjusted ‘raw’ values, and the disutility from both perfect
 health and, optionally, a specified baseline. See
 <code><a href="../reference/calculate_qalys.html">calculate_qalys()</a></code>.</p></li>
 <li><p>The calculation of the Paretian Classification of Health Change
 (PCHC) in an individual’s health state between two surveys via
-<code><a href="../reference/calculate_pchc.html">calculate_pchc()</a></code> (again wrapping the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a>
+<code><a href="../reference/calculate_pchc.html">calculate_pchc()</a></code> (again wrapping functions from the eq5d
 package).</p></li>
 <li><p>Easy calculation of responses with a health limitation (i.e. a
 non-one response in one of the dimensions) via
@@ -99,7 +104,8 @@ non-one response in one of the dimensions) via
 </ul>
 <p>Whilst this vignette provides an introduction to the core
 functionality of the package, a more detailed analysis example can be
-found in <code>vignette("example_analysis")</code>.</p>
+found in the <a href="https://timtaylor.github.io/qalytools/articles/example_analysis.html">EQ5D
+Analysis article</a> on the package website.</p>
 </div>
 <div class="section level2">
 <h2 id="the-eq5d-object-class">The EQ5D object class<a class="anchor" aria-label="anchor" href="#the-eq5d-object-class"></a>
@@ -266,34 +272,24 @@ with this class.</p>
 set that is included in the package</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TimTaylor/qalytools" class="external-link">qalytools</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Example EQ5D5L data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">EQ5D5L_surveys</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 10,000</span></span>
-<span><span class="co">#&gt; Columns: 12</span></span>
-<span><span class="co">#&gt; $ surveyID     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "survey01"<span style="color: #949494;">, </span>"survey02"<span style="color: #949494;">, </span>"survey03"<span style="color: #949494;">, </span>"survey04"<span style="color: #949494;">, </span>"survey05…</span></span>
-<span><span class="co">#&gt; $ respondentID <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ sex          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Female"<span style="color: #949494;">, </span>"Female"<span style="color: #949494;">, </span>"Female"<span style="color: #949494;">, </span>"Female"<span style="color: #949494;">, </span>"Female"<span style="color: #949494;">, </span>"Female…</span></span>
-<span><span class="co">#&gt; $ age          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>30<span style="color: #949494;">, </span>30<span style="color: #949494;">, </span>30<span style="color: #949494;">, </span>30<span style="color: #949494;">, </span>3…</span></span>
-<span><span class="co">#&gt; $ mobility     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ self_care    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1<span style="color: #949494;">, </span>4<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>4<span style="color: #949494;">, </span>4<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ usual        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ pain         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ anxiety      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>…</span></span>
-<span><span class="co">#&gt; $ time_index   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 30<span style="color: #949494;">, </span>60<span style="color: #949494;">, </span>90<span style="color: #949494;">, </span>120<span style="color: #949494;">, </span>150<span style="color: #949494;">, </span>180<span style="color: #949494;">, </span>210<span style="color: #949494;">, </span>240<span style="color: #949494;">, </span>270<span style="color: #949494;">, </span>300<span style="color: #949494;">, </span>30<span style="color: #949494;">, </span>60<span style="color: #949494;">, </span>90…</span></span>
-<span><span class="co">#&gt; $ vas          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 96<span style="color: #949494;">, </span>23<span style="color: #949494;">, </span>70<span style="color: #949494;">, </span>68<span style="color: #949494;">, </span>87<span style="color: #949494;">, </span>95<span style="color: #949494;">, </span>96<span style="color: #949494;">, </span>96<span style="color: #949494;">, </span>94<span style="color: #949494;">, </span>96<span style="color: #949494;">, </span>73<span style="color: #949494;">, </span>8<span style="color: #949494;">, </span>66<span style="color: #949494;">, </span>70<span style="color: #949494;">, </span>67…</span></span>
-<span><span class="co">#&gt; $ dummy        <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>TRUE<span style="color: #949494;">, </span>FALSE<span style="color: #949494;">,</span>…</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">EQ5D5L_surveys</span><span class="op">)</span></span>
+<span><span class="co">#&gt; tibble [10,000 × 12] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ surveyID    : chr [1:10000] "survey01" "survey02" "survey03" "survey04" ...</span></span>
+<span><span class="co">#&gt;  $ respondentID: int [1:10000] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ sex         : chr [1:10000] "Female" "Female" "Female" "Female" ...</span></span>
+<span><span class="co">#&gt;  $ age         : int [1:10000] 25 25 25 25 25 25 25 25 25 25 ...</span></span>
+<span><span class="co">#&gt;  $ mobility    : int [1:10000] 2 1 1 1 1 2 2 1 1 2 ...</span></span>
+<span><span class="co">#&gt;  $ self_care   : int [1:10000] 1 4 5 2 2 1 1 1 3 1 ...</span></span>
+<span><span class="co">#&gt;  $ usual       : int [1:10000] 2 5 2 5 3 1 2 2 2 2 ...</span></span>
+<span><span class="co">#&gt;  $ pain        : int [1:10000] 1 5 1 2 3 2 1 2 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ anxiety     : int [1:10000] 1 3 3 2 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ time_index  : num [1:10000] 30 60 90 120 150 180 210 240 270 300 ...</span></span>
+<span><span class="co">#&gt;  $ vas         : num [1:10000] 96 23 70 68 87 95 96 96 94 96 ...</span></span>
+<span><span class="co">#&gt;  $ dummy       : logi [1:10000] TRUE FALSE TRUE FALSE TRUE FALSE ...</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="coercion">Coercion<a class="anchor" aria-label="anchor" href="#coercion"></a>
 </h3>
@@ -301,7 +297,7 @@ set that is included in the package</p>
 input data to the <code>&lt;EQ5D5L&gt;</code> object class via
 <code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
 <span>    <span class="va">EQ5D5L_surveys</span>,</span>
 <span>    mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
 <span>    self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
@@ -310,9 +306,8 @@ input data to the <code>&lt;EQ5D5L&gt;</code> object class via
 <span>    anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span>
 <span>    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span>
 <span>    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span>
-<span>    vas <span class="op">=</span> <span class="st">"vas"</span>,</span>
-<span><span class="op">)</span></span>
-<span><span class="va">dat</span></span>
+<span>    vas <span class="op">=</span> <span class="st">"vas"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># EQ-5D-5L: 10,000 x 12</span></span></span>
 <span><span class="co">#&gt;    surveyID respondentID sex      age mobility self_care usual  pain anxiety</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -381,8 +376,7 @@ obtain the summary data in a “tidy” (long) format.</p>
 dimensions, that are not equal to one. This can be done with the
 <code><a href="../reference/calculate_limitation.html">calculate_limitation()</a></code> function</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">limitation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_limitation.html">calculate_limitation</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
-<span><span class="va">limitation</span></span>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">limitation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_limitation.html">calculate_limitation</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 50 × 3</span></span></span>
 <span><span class="co">#&gt;    surveyID dimension without_limitation</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -423,20 +417,19 @@ type) by passing our EQ5D object directly to the
 string.</p>
 <p>For EQ5D3L inputs the type can be:</p>
 <ul>
-<li><p>“TTO”, the time trade-off valuation technique;</p></li>
-<li><p>“VAS”, the visual analogue scale valuation technique;</p></li>
-<li><p>“RCW”, a reverse crosswalk conversion to EQ5D5L values;
-or</p></li>
-<li><p>“DSU”, the NICE Decision Support Unit’s model that allows
-mappings on to EQ5D5L values accounting for both age and sex.</p></li>
+<li><p>TTO, the time trade-off valuation technique;</p></li>
+<li><p>VAS, the visual analogue scale valuation technique;</p></li>
+<li><p>RCW, a reverse crosswalk conversion to EQ5D5L values; or</p></li>
+<li><p>DSU, the NICE Decision Support Unit’s model that allows mappings
+on to EQ5D5L values accounting for both age and sex.</p></li>
 </ul>
 <p>For EQ5D5L inputs this can be:</p>
 <ul>
-<li><p>“VT”, value sets generated via a EuroQol standardised valuation
+<li><p>VT, value sets generated via a EuroQol standardised valuation
 study protocol;</p></li>
-<li><p>“CW”, a crosswalk conversion EQ5D3L values; or</p></li>
-<li><p>“DSU”, the NICE Decision Support Unit’s model that allows
-mappings on to EQ5D5L values accounting for both age and sex.</p></li>
+<li><p>CW, a crosswalk conversion EQ5D3L values; or</p></li>
+<li><p>DSU, the NICE Decision Support Unit’s model that allows mappings
+on to EQ5D5L values accounting for both age and sex.</p></li>
 </ul>
 <p>Note that <code><a href="../reference/available_valuesets.html">available_valuesets()</a></code>is a convenience wrapper
 around the <code><a href="https://rdrr.io/pkg/eq5d/man/valuesets.html" class="external-link">eq5d::valuesets()</a></code> function. It will return a
@@ -464,7 +457,7 @@ country and the value set type.</p>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span></span>
 <span><span class="co"># cross walk comparison</span></span>
-<span><span class="va">vs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">Country</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"England"</span>, <span class="st">"UK"</span><span class="op">)</span>, <span class="va">Type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"VT"</span>, <span class="st">"CW"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">vs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">Country</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"England"</span>, <span class="st">"UK"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">Type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"VT"</span>, <span class="st">"CW"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">util</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_utility.html">calculate_utility</a></span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="va">vs</span><span class="op">$</span><span class="va">Type</span>, country <span class="op">=</span> <span class="va">vs</span><span class="op">$</span><span class="va">Country</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot the results</span></span>
@@ -507,7 +500,7 @@ value which represents the loss from full health.</p>
 <span>    <span class="fu"><a href="../reference/calculate_utility.html">add_utility</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Denmark"</span>, <span class="st">"France"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span>time_index <span class="op">=</span> <span class="st">"time_index"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">qalys</span>, <span class="va">.qaly</span><span class="op">==</span><span class="st">"raw"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">qalys</span>, <span class="va">.qaly</span> <span class="op">==</span> <span class="st">"raw"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,000 × 5</span></span></span>
 <span><span class="co">#&gt;    respondentID .utility_type .utility_country .qaly .value</span></span>
 <span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -522,7 +515,7 @@ value which represents the loss from full health.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            5 VT            Denmark          raw    0.506</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            5 VT            France           raw    0.575</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,990 more rows</span></span></span>
-<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">qalys</span>, <span class="va">.qaly</span><span class="op">==</span><span class="st">"loss_vs_fullhealth"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">qalys</span>, <span class="va">.qaly</span> <span class="op">==</span> <span class="st">"loss_vs_fullhealth"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,000 × 5</span></span></span>
 <span><span class="co">#&gt;    respondentID .utility_type .utility_country .qaly              .value</span></span>
 <span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -547,22 +540,21 @@ calculation, prior to the calculation of loss.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reload the example data and combine with some baseline measurements</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"EQ5D5L_surveys"</span><span class="op">)</span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span></span>
-<span>    <span class="va">EQ5D5L_surveys</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
-<span>        mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
-<span>        self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
-<span>        usual <span class="op">=</span> <span class="st">"usual"</span>,</span>
-<span>        pain <span class="op">=</span> <span class="st">"pain"</span>,</span>
-<span>        anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span>
-<span>        respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span>
-<span>        surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span>
-<span>        vas <span class="op">=</span> <span class="st">"vas"</span></span>
-<span>    <span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_eq5d.html">as_eq5d5l</a></span><span class="op">(</span></span>
+<span>    <span class="va">EQ5D5L_surveys</span>,</span>
+<span>    mobility <span class="op">=</span> <span class="st">"mobility"</span>,</span>
+<span>    self_care <span class="op">=</span> <span class="st">"self_care"</span>,</span>
+<span>    usual <span class="op">=</span> <span class="st">"usual"</span>,</span>
+<span>    pain <span class="op">=</span> <span class="st">"pain"</span>,</span>
+<span>    anxiety <span class="op">=</span> <span class="st">"anxiety"</span>,</span>
+<span>    respondentID <span class="op">=</span> <span class="st">"respondentID"</span>,</span>
+<span>    surveyID <span class="op">=</span> <span class="st">"surveyID"</span>,</span>
+<span>    vas <span class="op">=</span> <span class="st">"vas"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/calculate_utility.html">add_utility</a></span><span class="op">(</span><span class="va">dat</span>, type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Denmark"</span>, <span class="st">"France"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span>baseline_survey <span class="op">=</span> <span class="st">"survey01"</span>, time_index <span class="op">=</span> <span class="st">"time_index"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">==</span> <span class="st">"loss_vs_baseline"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">==</span> <span class="st">"loss_vs_baseline"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,000 × 5</span></span></span>
 <span><span class="co">#&gt;    respondentID .utility_country .utility_type .qaly              .value</span></span>
 <span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -585,7 +577,7 @@ included to allow more granular comparisons. Note that for this
 specification of baseline, it is <strong>not</strong> included in the
 unadjusted, raw, calculation.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">split_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span><span class="op">==</span><span class="st">"survey01"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">split_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">dat</span><span class="op">$</span><span class="va">surveyID</span> <span class="op">==</span> <span class="st">"survey01"</span><span class="op">)</span></span>
 <span><span class="va">surveys</span> <span class="op">&lt;-</span> <span class="va">split_dat</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">baseline</span> <span class="op">&lt;-</span> <span class="va">split_dat</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">utility_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_utility.html">add_utility</a></span><span class="op">(</span></span>
@@ -596,10 +588,10 @@ unadjusted, raw, calculation.</p>
 <span><span class="va">baseline_utility</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">baseline</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/calculate_utility.html">add_utility</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"VT"</span>, country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Denmark"</span>, <span class="st">"France"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">respondentID</span>,<span class="va">.utility_country</span>,<span class="va">.utility_type</span>,<span class="va">.value</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span>select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">respondentID</span>, <span class="va">.utility_country</span>, <span class="va">.utility_type</span>, <span class="va">.value</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/calculate_qalys.html">calculate_qalys</a></span><span class="op">(</span><span class="va">utility_dat</span>, baseline_survey <span class="op">=</span> <span class="va">baseline_utility</span>, time_index <span class="op">=</span> <span class="st">"time_index"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">==</span> <span class="st">"loss_vs_baseline"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.qaly</span> <span class="op">==</span> <span class="st">"loss_vs_baseline"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,000 × 5</span></span></span>
 <span><span class="co">#&gt;    respondentID .utility_country .utility_type .qaly             .value</span></span>
 <span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -634,8 +626,8 @@ unadjusted, raw, calculation.</p>
 <span>    anxiety <span class="op">=</span> <span class="st">"AD"</span>,</span>
 <span>    vas <span class="op">=</span> <span class="st">"vas"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">grp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">Group</span> <span class="op">==</span> <span class="st">"Group1"</span><span class="op">)</span></span>
-<span><span class="va">grp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">Group</span> <span class="op">==</span> <span class="st">"Group2"</span><span class="op">)</span></span>
+<span><span class="va">grp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">Group</span> <span class="op">==</span> <span class="st">"Group1"</span><span class="op">)</span></span>
+<span><span class="va">grp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dat</span>, <span class="va">Group</span> <span class="op">==</span> <span class="st">"Group2"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/calculate_pchc.html">calculate_pchc</a></span><span class="op">(</span><span class="va">grp1</span>, <span class="va">grp2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
 <span><span class="co">#&gt;   Change       Number Percent</span></span>
@@ -679,7 +671,7 @@ unadjusted, raw, calculation.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, 2022, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
+  <p>© <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" class="external-link">Crown Copyright</a>, UKHSA.<br>The source code for the software is released under the MIT licence as per the the <a href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/open-government-licence/open-software-licences/" class="external-link">UK Government Licensing Framework</a> and the <a href="https://gds-way.cloudapps.digital/manuals/licensing.html" class="external-link">GDS Way licensing guidance</a>.<br>The documentation for the software is released under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" class="external-link">Open Government Licence</a></p>
 </div>
 
 <div class="pkgdown-footer-right">

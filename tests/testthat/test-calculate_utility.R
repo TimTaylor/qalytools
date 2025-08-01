@@ -189,5 +189,9 @@ test_that("calculate_utility errors correctly", {
     expect_snapshot_error(
         calculate_utility(dat, type = "DSU", country = "UK", age = "sex", sex = "sex")
     )
+
+    expect_snapshot_error(
+        calculate_utility(dat, type = c("VT", "CW"), country = "England")
+    )
 })
 

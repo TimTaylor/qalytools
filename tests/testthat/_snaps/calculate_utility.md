@@ -26,3 +26,8 @@
 
     `age` variable in `x` must be a numeric vector.
 
+---
+
+    Invalid value set and country combination:
+        Type = 'CW', Country = 'England'
+

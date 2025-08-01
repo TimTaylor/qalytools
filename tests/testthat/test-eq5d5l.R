@@ -1,18 +1,18 @@
-dat <- EQ5D5L_surveys
-dat <- transform(dat, surveyID = as.factor(surveyID))
-out <- as_eq5d5l(
-    dat,
-    surveyID = "surveyID",
-    respondentID = "respondentID",
-    mobility = "mobility",
-    self_care = "self_care",
-    usual = "usual",
-    pain = "pain",
-    anxiety = "anxiety",
-    vas = "vas"
-)
-
 test_that("as_eq5d5l works", {
+
+    # setup
+    dat <- transform(EQ5D5L_surveys, surveyID = as.factor(surveyID))
+    out <- as_eq5d5l(
+        dat,
+        surveyID = "surveyID",
+        respondentID = "respondentID",
+        mobility = "mobility",
+        self_care = "self_care",
+        usual = "usual",
+        pain = "pain",
+        anxiety = "anxiety",
+        vas = "vas"
+    )
 
     # class is correct
     expect_s3_class(out, c("EQ5D5L", "EQ5D", "tbl_df", "tbl", "data.frame"), exact = TRUE)
@@ -48,6 +48,21 @@ test_that("as_eq5d5l works", {
 })
 
 test_that("EQ5D5L maintain and drop class appropriately", {
+
+    # setup
+    dat <- transform(EQ5D5L_surveys, surveyID = as.factor(surveyID))
+    out <- as_eq5d5l(
+        dat,
+        surveyID = "surveyID",
+        respondentID = "respondentID",
+        mobility = "mobility",
+        self_care = "self_care",
+        usual = "usual",
+        pain = "pain",
+        anxiety = "anxiety",
+        vas = "vas"
+    )
+
     # row selection maintains class
     expect_s3_class(out[1:10, ], "EQ5D5L")
 
@@ -80,6 +95,21 @@ test_that("EQ5D5L maintain and drop class appropriately", {
 })
 
 test_that("Adding incorrect values to an EQ5D5L object will error", {
+
+    # setup
+    dat <- transform(EQ5D5L_surveys, surveyID = as.factor(surveyID))
+    out <- as_eq5d5l(
+        dat,
+        surveyID = "surveyID",
+        respondentID = "respondentID",
+        mobility = "mobility",
+        self_care = "self_care",
+        usual = "usual",
+        pain = "pain",
+        anxiety = "anxiety",
+        vas = "vas"
+    )
+
     tmp <- out
     tmp[3, 5] <- 4.0
     expect_s3_class(out, "EQ5D5L")
@@ -89,6 +119,21 @@ test_that("Adding incorrect values to an EQ5D5L object will error", {
 })
 
 test_that("calculate_utility works as expected (non-DSU type)", {
+
+    # setup
+    dat <- transform(EQ5D5L_surveys, surveyID = as.factor(surveyID))
+    out <- as_eq5d5l(
+        dat,
+        surveyID = "surveyID",
+        respondentID = "respondentID",
+        mobility = "mobility",
+        self_care = "self_care",
+        usual = "usual",
+        pain = "pain",
+        anxiety = "anxiety",
+        vas = "vas"
+    )
+
     # matches eq5d direct calculation
     dat <- subset(out, surveyID == "survey01")
     tmp <- calculate_utility(dat, type = "VT", country = c("Germany", "France"))
@@ -124,6 +169,21 @@ test_that("calculate_utility works as expected (non-DSU type)", {
 })
 
 test_that("calculate_utility works as expected (DSU type)", {
+
+    # setup
+    dat <- transform(EQ5D5L_surveys, surveyID = as.factor(surveyID))
+    out <- as_eq5d5l(
+        dat,
+        surveyID = "surveyID",
+        respondentID = "respondentID",
+        mobility = "mobility",
+        self_care = "self_care",
+        usual = "usual",
+        pain = "pain",
+        anxiety = "anxiety",
+        vas = "vas"
+    )
+
     # matches eq5d direct calculation
     dat <- subset(out, surveyID == "survey01")
     tmp <- calculate_utility(dat, type = "DSU", country = "UK", age = "age", sex = "sex")

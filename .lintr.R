@@ -15,9 +15,9 @@ linters <- all_linters(
     # decimal where it feels like unwanted noise.
     implicit_integer_linter = NULL,
 
-    # Currently we cannot exclude `if` via an `except` argument so not using
-    # until that is resolved.
+    # Currently we cannot exclude `if` via an `except` argument so not using.
     # See: https://github.com/r-lib/lintr/issues/2913
+    # Can use again once https://github.com/r-lib/lintr/pull/2914 lands
     implicit_assignment_linter = NULL,
 
     # Seems to give false positives. Will revisit.

@@ -16,10 +16,10 @@ development and the code subject to change.*** </span>
 *qalytools* provides a simple and intuitive user interface for the
 analysis of
 [EQ-5D](https://euroqol.org/information-and-support/euroqol-instruments/)
-surveys. It builds upon the [eq5d
-package](https://cran.r-project.org/package=eq5d) to facilitate the
-calculation of QALY metrics, and other related values, across multiple
-surveys.
+surveys. It builds upon the
+[eq5d](https://cran.r-project.org/package=eq5d) package to facilitate
+the calculation of QALY metrics, and other related values, across
+multiple surveys.
 
 ## Installation
 

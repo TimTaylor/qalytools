@@ -22,9 +22,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-qalytools provides a simple and intuitive user interface for the
+qalytools provides a simple and intuitive user interface for the 
 analysis of [EQ-5D](https://euroqol.org/eq-5d-instruments) surveys. It builds
-upon the [eq5d package](https://cran.r-project.org/package=eq5d) to facilitate
+upon the [eq5d](https://cran.r-project.org/package=eq5d) package to facilitate
 the calculation of QALY metrics and other related values across multiple
 surveys.
 
@@ -32,28 +32,30 @@ surveys.
 
 The package provides a range of functions:
 
-- Coercion functions `as_eq5d3l()`, `as_eq5d5l()` and `as_eq5dy3l()` for EQ5D
-data frame subclasses (EQ5D3L, EQ5D5L and EQ5DY3L).
+- Coercion functions `as_eq5d3l()`, `as_eq5d5l()` and `as_eq5dy3l()` for
+  converting existing \R objects to EQ5D data frame subclasses (EQ5D3L, EQ5D5L
+  and EQ5DY3L).
 
 - The calculation of utility values based on a range of different value sets.
-This functionality is provided via the `calculate_utility()`, `add_utility()`
-and `available_valuesets()` functions which are wrappers around the functionality
-of the underlying eq5d package.
+  This functionality is provided via the `calculate_utility()`, `add_utility()`
+  and `available_valuesets()` functions which are wrappers around the
+  functionality of the underlying eq5d package.
 
 - The calculation of different Quality of Life Years (QALY) metrics including
-unadjusted 'raw' values, and the disutility from both perfect health and,
-optionally, a specified baseline. See `calculate_qalys()`.
+  unadjusted 'raw' values, and the disutility from both perfect health and,
+  optionally, a specified baseline. See `calculate_qalys()`.
 
 - The calculation of the Paretian Classification of Health Change (PCHC) in an
-individual's health state between two surveys via `calculate_pchc()` (again
-wrapping functions from the eq5d package).
+  individual's health state between two surveys via `calculate_pchc()` (again
+  wrapping functionality of the eq5d package).
 
 - Easy calculation of responses with a health limitation (i.e. a non-one
-response in one of the dimensions) via `calculate_limitation()`.
+  response in one of the dimensions) via `calculate_limitation()`.
 
 Whilst this vignette provides an introduction to the core functionality of the
-package, a more detailed analysis example can be found in the
-[EQ5D Analysis article](https://timtaylor.github.io/qalytools/articles/example_analysis.html) on the package website.
+package, an example analysis can be found in the
+[EQ5D Analysis](https://timtaylor.github.io/qalytools/articles/example_analysis.html)
+article on the package website.
 
 
 ## The EQ5D object class
@@ -61,18 +63,18 @@ package, a more detailed analysis example can be found in the
 We define an `EQ5D` object as a table with data represented in long format that
 meets a few additional criteria:
 
--   It contains columns that represent dimensions from the EQ5D survey
-specification as well as a column representing the Visual Analogue Score
-(columns 'mobility', 'self_care', 'usual', 'pain', 'anxiety' and 'vas' in the
-example table below)
+- It contains columns that represent dimensions from the EQ5D survey
+  specification as well as a column representing the Visual Analogue Score
+  (columns 'mobility', 'self_care', 'usual', 'pain', 'anxiety' and 'vas' in the
+  example table below)
 
--   Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L
-and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys
+- Dimension values must be whole numbers, bounded between 1 and 3 for EQ5D3L and
+  EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L surveys.
 
--   It contains a column that acts as a unique respondent identifier
-(`respondentID`) and another that identifying different surveys over time
-(`surveyID). Together these should uniquely identify a response (i.e. no
-combination of these should be duplicated within the given data frame).
+- It contains a column that acts as a unique respondent identifier
+  (`respondentID`) and another that identifying different surveys over time
+  (`surveyID). Together these should uniquely identify a response (i.e. no
+  combination of these should be duplicated within the given data frame).
 
 Table: Example of an EQ5D5L object
 
@@ -87,8 +89,8 @@ Table: Example of an EQ5D5L object
 |        1|            6|         30|        1|         3|     2|    1|       1|  83|Male   |  59|
 |        .|            .|         . |        .|         .|     .|    .|       .|   .|.      |   .|
 
-In qalytools these `EQ5D` objects are implemented as a subclass of data
-frame and we provide associated methods for working with this class.
+In qalytools these `EQ5D` objects are implemented as a subclass of data frame
+and we provide associated methods for working with this class.
 
 ## Usage
 
@@ -190,8 +192,9 @@ protocol;
 EQ5D5L values accounting for both age and sex.
 
 Note that `available_valuesets()`is a convenience wrapper around the
-`eq5d::valuesets()` function. It will return a data frame with columns
-representing the EQ5D version, the value set country and the value set type.
+`eq5d::valuesets()` function. It will return a A [`tibble`][tibble::tibble] with
+columns representing the EQ5D version, the value set country and the valueset
+type.
 
 ```{r}
 vs <- available_valuesets(dat)

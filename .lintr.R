@@ -64,8 +64,8 @@ linters <- all_linters(
 
 exclusions <- list(
     "vignettes/articles/example_analysis.Rmd" = list(line_length_linter = 117),
-    "vignettes/qalytools.Rmd" = list(implicit_assignment_linter = 113),
-    "vignettes/qalytools.Rmd" = list(implicit_assignment_linter = 148),
+    "vignettes/qalytools.Rmd" = list(implicit_assignment_linter = 115),
+    "vignettes/qalytools.Rmd" = list(implicit_assignment_linter = 150),
     "tests/testthat.R" = list(unused_import_linter = Inf)
 )
 

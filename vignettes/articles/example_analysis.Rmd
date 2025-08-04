@@ -34,7 +34,7 @@ The survey includes the age of the participants. For the analysis we group the p
 ```{r thedata}
 dat <- dplyr::mutate(
     qalytools::EQ5D5L_surveys,
-    AgeGroup = ageutils::cut_ages(age, breaks = c(20, 40, 60))$interval
+    AgeGroup =  cut(age, c(20, 40, 60, Inf), right = FALSE)
 )
 ```
 
@@ -147,7 +147,7 @@ plot_dat <-
     ) |>
     tidyr::pivot_wider(names_from = quant, values_from = value) |>
     # Cleanup names of the coefficients
-    dplyr::mutate(idname = stringr::str_replace(id, "(sex|surveyID)", "")) |>
+    dplyr::mutate(idname = sub("sex|surveyID", "", id)) |>
     dplyr::filter(idname != "(Intercept)")
 
 ggplot(data = plot_dat) +
@@ -339,7 +339,7 @@ plot_dat <-
         id = rownames(dat0),
         Significant = (`Q2.5` < 0 & `Q97.5` < 0) | (`Q2.5` > 0 & `Q97.5` > 0),
         # Cleanup names of the coefficients
-        idname = stringr::str_replace(id, "(sex|surveyID)", "")
+        idname = sub("sex|surveyID", "", id)
     ) |>
     dplyr::filter(idname != "Intercept")
 

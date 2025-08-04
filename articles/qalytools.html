@@ -74,7 +74,7 @@
     
 <p>qalytools provides a simple and intuitive user interface for the
 analysis of <a href="https://euroqol.org/eq-5d-instruments" class="external-link">EQ-5D</a>
-surveys. It builds upon the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d package</a> to
+surveys. It builds upon the <a href="https://cran.r-project.org/package=eq5d" class="external-link">eq5d</a> package to
 facilitate the calculation of QALY metrics and other related values
 across multiple surveys.</p>
 <div class="section level2">
@@ -83,8 +83,9 @@ across multiple surveys.</p>
 <p>The package provides a range of functions:</p>
 <ul>
 <li><p>Coercion functions <code><a href="../reference/as_eq5d.html">as_eq5d3l()</a></code>,
-<code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="../reference/as_eq5d.html">as_eq5dy3l()</a></code> for EQ5D data
-frame subclasses (EQ5D3L, EQ5D5L and EQ5DY3L).</p></li>
+<code><a href="../reference/as_eq5d.html">as_eq5d5l()</a></code> and <code><a href="../reference/as_eq5d.html">as_eq5dy3l()</a></code> for converting
+existing objects to EQ5D data frame subclasses (EQ5D3L, EQ5D5L and
+EQ5DY3L).</p></li>
 <li><p>The calculation of utility values based on a range of different
 value sets. This functionality is provided via the
 <code><a href="../reference/calculate_utility.html">calculate_utility()</a></code>, <code><a href="../reference/calculate_utility.html">add_utility()</a></code> and
@@ -96,16 +97,15 @@ health and, optionally, a specified baseline. See
 <code><a href="../reference/calculate_qalys.html">calculate_qalys()</a></code>.</p></li>
 <li><p>The calculation of the Paretian Classification of Health Change
 (PCHC) in an individual’s health state between two surveys via
-<code><a href="../reference/calculate_pchc.html">calculate_pchc()</a></code> (again wrapping functions from the eq5d
+<code><a href="../reference/calculate_pchc.html">calculate_pchc()</a></code> (again wrapping functionality of the eq5d
 package).</p></li>
 <li><p>Easy calculation of responses with a health limitation (i.e. a
 non-one response in one of the dimensions) via
 <code><a href="../reference/calculate_limitation.html">calculate_limitation()</a></code>.</p></li>
 </ul>
 <p>Whilst this vignette provides an introduction to the core
-functionality of the package, a more detailed analysis example can be
-found in the <a href="https://timtaylor.github.io/qalytools/articles/example_analysis.html">EQ5D
-Analysis article</a> on the package website.</p>
+functionality of the package, an example analysis can be found in the <a href="https://timtaylor.github.io/qalytools/articles/example_analysis.html">EQ5D
+Analysis</a> article on the package website.</p>
 </div>
 <div class="section level2">
 <h2 id="the-eq5d-object-class">The EQ5D object class<a class="anchor" aria-label="anchor" href="#the-eq5d-object-class"></a>
@@ -119,7 +119,7 @@ Analogue Score (columns ‘mobility’, ‘self_care’, ‘usual’, ‘pain’
 ‘anxiety’ and ‘vas’ in the example table below)</p></li>
 <li><p>Dimension values must be whole numbers, bounded between 1 and 3
 for EQ5D3L and EQ5D3Y surveys or bounded between 1 and 5 for EQ5D5L
-surveys</p></li>
+surveys.</p></li>
 <li><p>It contains a column that acts as a unique respondent identifier
 (<code>respondentID</code>) and another that identifying different
 surveys over time (`surveyID). Together these should uniquely identify a
@@ -432,9 +432,9 @@ study protocol;</p></li>
 on to EQ5D5L values accounting for both age and sex.</p></li>
 </ul>
 <p>Note that <code><a href="../reference/available_valuesets.html">available_valuesets()</a></code>is a convenience wrapper
-around the <code><a href="https://rdrr.io/pkg/eq5d/man/valuesets.html" class="external-link">eq5d::valuesets()</a></code> function. It will return a
-data frame with columns representing the EQ5D version, the value set
-country and the value set type.</p>
+around the <code><a href="https://rdrr.io/pkg/eq5d/man/valuesets.html" class="external-link">eq5d::valuesets()</a></code> function. It will return a A
+[<code>tibble</code>][tibble::tibble] with columns representing the EQ5D
+version, the value set country and the valueset type.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/available_valuesets.html">available_valuesets</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">vs</span>, <span class="fl">10</span><span class="op">)</span></span>

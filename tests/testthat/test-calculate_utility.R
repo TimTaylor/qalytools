@@ -208,4 +208,3 @@ test_that("calculate_utility errors correctly", {
 
 
 })
-

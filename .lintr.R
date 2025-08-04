@@ -15,10 +15,11 @@ linters <- all_linters(
     # decimal where it feels like unwanted noise.
     implicit_integer_linter = NULL,
 
-    # Currently we cannot exclude `if` via an `except` argument so not using.
-    # See: https://github.com/r-lib/lintr/issues/2913
-    # Can use again once https://github.com/r-lib/lintr/pull/2914 lands
-    implicit_assignment_linter = NULL,
+    # Currently we cannot assign within an `if` statement even when
+    # allow_scoped = TRUE. See: https://github.com/r-lib/lintr/issues/2913
+    # Relying on https://github.com/r-lib/lintr/pull/2914 for the moment and
+    # hopefully this wall land in a future release,
+    implicit_assignment_linter(except = c("expect_error", "expect_snapshot_error"), allow_scoped = TRUE),
 
     # Seems to give false positives. Will revisit.
     indentation_linter = NULL,
@@ -63,6 +64,8 @@ linters <- all_linters(
 
 exclusions <- list(
     "vignettes/articles/example_analysis.Rmd" = list(line_length_linter = 117),
+    "vignettes/qalytools.Rmd" = list(implicit_assignment_linter = 113),
+    "vignettes/qalytools.Rmd" = list(implicit_assignment_linter = 148),
     "tests/testthat.R" = list(unused_import_linter = Inf)
 )
 

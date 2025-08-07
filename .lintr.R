@@ -1,5 +1,10 @@
 linters <- all_linters(
 
+    # general -----------------------------------------------------------------
+
+    # seems ok to me
+    brace_linter(allow_single_line = TRUE),
+
     # often like to have alternative code flagged to know when we have considered
     # tradeoffs for a particular approach
     commented_code_linter = NULL,
@@ -19,7 +24,10 @@ linters <- all_linters(
     # allow_scoped = TRUE. See: https://github.com/r-lib/lintr/issues/2913
     # Relying on https://github.com/r-lib/lintr/pull/2914 for the moment and
     # hopefully this wall land in a future release,
-    implicit_assignment_linter(except = c("expect_error", "expect_snapshot_error"), allow_scoped = TRUE),
+    implicit_assignment_linter(
+        except = c("expect_error", "expect_snapshot_error", "within"),
+        allow_scoped = TRUE
+    ),
 
     # Seems to give false positives. Will revisit.
     indentation_linter = NULL,
@@ -40,6 +48,9 @@ linters <- all_linters(
     # Too many false positives
     nonportable_path_linter = NULL,
 
+    # dubious especially considering methods
+    object_length_linter = NULL,
+
     # Too noisy - flexibility is good especially as I slowly come round to
     # camelCase and it's variations
     object_name_linter = NULL,
@@ -57,7 +68,8 @@ linters <- all_linters(
     undesirable_function_linter = NULL,
     undesirable_function_name_linter = undesirable_function_linter(modify_defaults(
         defaults = default_undesirable_functions,
-        library = NULL
+        library = NULL,
+        structure = NULL # unless we find it to be a bottleneck in our own code
     ))
 
 )

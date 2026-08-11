@@ -18,7 +18,6 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Imports: 
     data.table,
     eq5d (>= 0.15.7),
@@ -40,3 +39,4 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/testthat/start-first: eq5d5l, eq5d3l
 Config/Needs/website: rmarkdown, brms, BH, RcppEigen, dplyr, tidyr, lme4, ggplot2, purrr
+Config/roxygen2/version: 8.1.0

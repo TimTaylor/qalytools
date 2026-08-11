@@ -44,8 +44,10 @@ export(calculate_limitation)
 export(calculate_pchc)
 export(calculate_qalys)
 export(calculate_utility)
-importFrom(data.table,.N)
-importFrom(data.table,`:=`)
-importFrom(data.table,as.data.table)
+importFrom(data.table,
+  ":=",
+  .N,
+  as.data.table
+)
 importFrom(pillar,tbl_sum)
 importFrom(tibble,as_tibble)

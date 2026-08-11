@@ -1,0 +1,4 @@
+# License
+
+    YEAR: 2022
+    COPYRIGHT HOLDER: Crown Copyright (UK Health Security Agency)

@@ -1,0 +1,83 @@
+# qalytools
+
+  
+***This package is currently under active development and the code
+subject to change.***
+
+*qalytools* provides a simple and intuitive user interface for the
+analysis of
+[EQ-5D](https://euroqol.org/information-and-support/euroqol-instruments/)
+surveys. It builds upon the
+[eq5d](https://cran.r-project.org/package=eq5d) package to facilitate
+the calculation of QALY metrics, and other related values, across
+multiple surveys.
+
+## Installation
+
+The development version of the package can be installed via:
+
+``` r
+
+    repos <- c("https://timtaylor.r-universe.dev", getOption("repos"))
+    install.packages("qalytools", repos = repos)
+```
+
+## Guidance
+
+Once installed the best way to familiarise yourself with the package is
+to view the long form documentation:
+
+- [`vignette("qalytools")`](https://timtaylor.github.io/qalytools/articles/qalytools.md)
+  provides an introduction to the main functionality of the package.
+- The package website also has an ‘EQ5D Analysis’
+  [article](https://timtaylor.github.io/qalytools/articles/example_analysis.html)
+  that illustrates how to use the package with more context.
+
+# Package index
+
+## EQ5D objects
+
+- [`as_eq5d5l()`](https://timtaylor.github.io/qalytools/reference/as_eq5d.md)
+  [`as_eq5d3l()`](https://timtaylor.github.io/qalytools/reference/as_eq5d.md)
+  [`as_eq5dy3l()`](https://timtaylor.github.io/qalytools/reference/as_eq5d.md)
+  : Coerce to an EQ5D object
+- [`as.data.frame(`*`<EQ5D>`*`)`](https://timtaylor.github.io/qalytools/reference/coercion.md)
+  [`as.data.table(`*`<EQ5D>`*`)`](https://timtaylor.github.io/qalytools/reference/coercion.md)
+  [`as_tibble(`*`<EQ5D>`*`)`](https://timtaylor.github.io/qalytools/reference/coercion.md)
+  : Coerce an EQ5D object
+
+## Utility objects
+
+- [`as_utility()`](https://timtaylor.github.io/qalytools/reference/as_utility.md)
+  : Coerce to a utility object
+
+## Metric and summary calculations
+
+- [`available_valuesets()`](https://timtaylor.github.io/qalytools/reference/available_valuesets.md)
+  : Available value sets
+- [`calculate_utility()`](https://timtaylor.github.io/qalytools/reference/calculate_utility.md)
+  [`add_utility()`](https://timtaylor.github.io/qalytools/reference/calculate_utility.md)
+  : Calculate utility
+- [`calculate_limitation()`](https://timtaylor.github.io/qalytools/reference/calculate_limitation.md)
+  : Calculate limitation
+- [`calculate_pchc()`](https://timtaylor.github.io/qalytools/reference/calculate_pchc.md)
+  : Calculate the Paretian Classification of Health Change
+- [`calculate_qalys()`](https://timtaylor.github.io/qalytools/reference/calculate_qalys.md)
+  : Calculate quality of life years
+- [`summary(`*`<EQ5D>`*`)`](https://timtaylor.github.io/qalytools/reference/summary.EQ5D.md)
+  : Summary method for eq5d objects
+
+## Datasets
+
+- [`eq5d3l_example`](https://timtaylor.github.io/qalytools/reference/eq5d3l_example.md)
+  : EQ-5D-3L example data
+- [`EQ5D5L_surveys`](https://timtaylor.github.io/qalytools/reference/EQ5D5L_surveys.md)
+  : EQ-5D-5L multiple survey example data
+
+# Articles
+
+### All vignettes
+
+- [EQ-5D
+  Analysis](https://timtaylor.github.io/qalytools/articles/example_analysis.md):
+- [qalytools](https://timtaylor.github.io/qalytools/articles/qalytools.md):

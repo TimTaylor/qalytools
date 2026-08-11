@@ -1,7 +1,7 @@
 #' @importFrom pillar tbl_sum
 NULL
 
-#' @importFrom data.table .N `:=`
+#' @importFrom data.table .N ":="
 NULL
 
 # -------------------------------------------------------------------------
